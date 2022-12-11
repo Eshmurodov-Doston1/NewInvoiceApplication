@@ -1,4 +1,4 @@
-package uz.idea.mylibrary
+package uz.idea.data
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

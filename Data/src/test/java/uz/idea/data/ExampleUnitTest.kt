@@ -1,4 +1,4 @@
-package uz.idea.mylibrary
+package uz.idea.data
 
 import org.junit.Test
 
