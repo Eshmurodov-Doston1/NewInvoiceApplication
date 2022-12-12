@@ -28,7 +28,7 @@ interface ResponseFetcher{
             var flow = try {
                 coroutineScope {
                     if (response?.isSuccessful == true) ResponseState.Success(response.body())
-                    else throw HttpException(response)
+                    else throw java.lang.Exception(response?.errorBody()?.string())
                 }
             } catch (e:Exception){
                 var error = e
@@ -47,7 +47,7 @@ interface ResponseFetcher{
 
                 if(e is HttpException){
                     when(e.code()){
-                        502 -> {
+                        in 500..599 -> {
                             error = NetworkErrorException(e.code(), context.getString(R.string.server_error))
                         }
                         401 -> {
@@ -56,10 +56,11 @@ interface ResponseFetcher{
                         400 -> {
                             error = NetworkErrorException.parseException(e)
                         }
+                        in 402..499 -> {
+                            error = NetworkErrorException.parseException(e)
+                        }
                     }
                 }
-
-
                 ResponseState.Error(error)
             }
             emit(flow)

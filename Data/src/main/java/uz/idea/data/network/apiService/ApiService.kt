@@ -2,10 +2,7 @@ package uz.idea.data.network.apiService
 
 import com.google.gson.JsonElement
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.QueryMap
-import retrofit2.http.Url
+import retrofit2.http.*
 
 interface ApiService {
     @GET
@@ -14,21 +11,21 @@ interface ApiService {
         @QueryMap queryMap: HashMap<String,String>
     ):Response<JsonElement>
 
-    @GET
+    @POST
     suspend fun methodePOST(
         @Url url:String,
         @Body body:Any,
         @QueryMap queryMap: HashMap<String,String>
     ):Response<JsonElement>
 
-    @GET
+    @PUT
     suspend fun methodePUT(
         @Url url:String,
         @Body body:Any,
         @QueryMap queryMap: HashMap<String,String>
     ):Response<JsonElement>
 
-    @GET
+    @DELETE
     suspend fun methodeDELETE(
         @Url url:String,
         @Body body:Any,

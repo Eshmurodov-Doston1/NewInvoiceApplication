@@ -2,11 +2,17 @@ package uz.idea.newinvoiceapplication.interceptor
 
 import android.content.Context
 import android.util.Log
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.HttpHeaders
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.*
 import org.json.JSONObject
+import uz.idea.domain.models.authModel.resAuth.ResAuthModel
+import uz.idea.newinvoiceapplication.BuildConfig.BASE_URL
+import uz.idea.newinvoiceapplication.utils.AppConstant.APPLICATION_JSON
+import uz.idea.newinvoiceapplication.utils.extension.getLanguage
 import uz.idea.newinvoiceapplication.utils.myshared.MySharedPreferences
+import java.net.HttpURLConnection
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,46 +20,46 @@ import javax.inject.Singleton
 class TokenInterceptor @Inject constructor(
     private val preferenceHelper: MySharedPreferences,
     @ApplicationContext private val context: Context
-    ) : Interceptor {
+) : Interceptor {
     @Throws(Exception::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        val oldRequest = chain.request()
-
-        val oldResponse = chain.proceed(oldRequest)
-        val responseBody = oldResponse.body
-        if (oldResponse.code == 401) {
-            try {
-                var modifiedRequest: Request?
-                val client = OkHttpClient()
-                val params = JSONObject()
+        val oldRequest: Request = newRequestWithAccessToken(chain.request(), preferenceHelper.accessToken.toString())
+        var oldResponse = chain.proceed(oldRequest)
+        if (oldResponse.code == HttpURLConnection.HTTP_UNAUTHORIZED){
+            val client = OkHttpClient()
+            val params = JSONObject()
+            synchronized(this){
                 params.put("refresh_token", preferenceHelper.refreshToken ?: "")
-                val body: RequestBody = RequestBody.create(responseBody?.contentType(),params.toString())
+                val body: RequestBody = RequestBody.create(oldResponse.body?.contentType(),params.toString())
                 val nRequest = Request.Builder()
-                    .post(body)
-                    .url("${"preferenceHelper.urlData"}api/auth/refresh_token")
+                    .url("${BASE_URL}/api/${getLanguage(context)}/refresh/token")
+                    .put(body)
                     .build()
-                val response = client.newCall(nRequest).execute()
 
-                Log.e("Url",  "${"preferenceHelper.urlData"}api/auth/refresh_token")
-                if (response.code == 200) {
-                    // Get response
-                    val jsonData = response.body?.string() ?: ""
+                val responseRefresh = client.newCall(nRequest).execute()
+                if (responseRefresh.code == HttpURLConnection.HTTP_OK){
+                    val jsonData = responseRefresh.body?.string() ?: ""
                     val gson = Gson()
-//                    val resAuth: ResAuth = gson.fromJson(jsonData, ResAuth::class.java)
-//                    preferenceHelper.accessToken = resAuth.access_token
-//                    preferenceHelper.refreshToken = resAuth.refresh_token
-//                    preferenceHelper.tokenType = resAuth.token_type
+                    val resAuth: ResAuthModel = gson.fromJson(jsonData, ResAuthModel::class.java)
+                    preferenceHelper.accessToken = resAuth.access_token
+                    preferenceHelper.refreshToken = resAuth.refresh_token
+                    preferenceHelper.tokenType = resAuth.token_type
                     oldResponse.close()
-                    modifiedRequest = oldRequest.newBuilder()
-//                        .header(HttpHeaders.ACCEPT,JSON_DATA)
-//                        .header(HttpHeaders.AUTHORIZATION, "${preferenceHelper.tokenType} ${preferenceHelper.accessToken}")
-                        .build()
-                    return chain.proceed(modifiedRequest)
+                    return chain.proceed(newRequestWithAccessToken(oldRequest,preferenceHelper.accessToken.toString()))
+                } else {
+                    preferenceHelper.clearAll()
                 }
-            }catch (e:Exception){
-                e.printStackTrace()
             }
         }
         return oldResponse
+    }
+
+
+    private fun newRequestWithAccessToken(request: Request,accessToken: String): Request {
+        return request.newBuilder()
+            .header(HttpHeaders.AUTHORIZATION, "Bearer $accessToken")
+            .header(HttpHeaders.ACCEPT,APPLICATION_JSON)
+            .header(HttpHeaders.CONTENT_TYPE,APPLICATION_JSON)
+            .build()
     }
 }

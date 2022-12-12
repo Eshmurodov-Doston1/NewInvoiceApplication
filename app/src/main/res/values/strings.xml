@@ -9,4 +9,8 @@
     <string name="login_text">Тизимга кириш</string>
     <string name="no_internet">Интернет билан алоқа мавжуд эмас ёки яхши эмас</string>
     <string name="server_error">Сервер билан алоқа мавжуд эмас</string>
+    <string name="login_text_info">"Давом этиш" тугмасини босиш орқали сиз Фойдаланувчи шартномаси шартларини қабул қиласиз</string>
+    <string name="loading_text">Бажарилмоқда </string>
+    <string name="cancel">Бекор қилиш</string>
+    <string name="repeat">Қайта уруниш</string>
 </resources>

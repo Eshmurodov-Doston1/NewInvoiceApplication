@@ -31,6 +31,12 @@ class MySharedPreferences @Inject constructor(
         sharedPreferences.edit().clear().apply()
     }
 
+    fun clearAuth(){
+        sharedPreferences.edit().remove(ACCESS_TOKEN).apply()
+        sharedPreferences.edit().remove(REFRESH_TOKEN).apply()
+        sharedPreferences.edit().remove(TOKEN_TYPE).apply()
+    }
+
     // TODO: access_token
     var accessToken:String?
         get() = sharedPreferences.getString(ACCESS_TOKEN, EMPTY)

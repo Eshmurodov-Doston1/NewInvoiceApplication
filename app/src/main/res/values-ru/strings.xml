@@ -8,5 +8,8 @@
     <string name="login_text">Авторизоваться</string>
     <string name="no_internet">Интернет-соединение недоступно или плохое</string>
     <string name="server_error">Нет связи с сервером</string>
-
+    <string name="login_text_info">Нажимая “Продолжить” вы принимаете условия Пользовательского соглашения</string>
+    <string name="loading_text">Загрузка </string>
+    <string name="cancel">Отмена</string>
+    <string name="repeat">Попробуйте еще раз</string>
 </resources>

@@ -23,4 +23,5 @@ object AppConstant {
     const val API = "api"
     const val LOGIN = "login"
     const val NO_INTERNET = -2
+    const val APPLICATION_JSON = "application/json"
 }

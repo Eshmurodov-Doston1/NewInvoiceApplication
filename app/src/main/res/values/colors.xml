@@ -9,7 +9,8 @@
     <color name="white">#FFFFFFFF</color>
 <!--     Application colors-->
     <color name="text_color">#FF000000</color>
+    <color name="text_color_gray">#C6C6C6</color>
     <color name="primary_color">#027AFF</color>
     <color name="primary_color_hint">#72027AFF</color>
-    <color name="secondary_color">#AB027AFF</color>
+    <color name="secondary_color">#95027AFF</color>
 </resources>

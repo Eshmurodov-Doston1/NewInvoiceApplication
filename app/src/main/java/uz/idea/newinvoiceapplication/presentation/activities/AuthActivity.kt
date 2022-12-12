@@ -6,17 +6,27 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.viewbinding.library.activity.viewBinding
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
 import uz.idea.newinvoiceapplication.R
 import uz.idea.newinvoiceapplication.databinding.ActivityAuthBinding
+import uz.idea.newinvoiceapplication.utils.extension.isNotEmptyOrNull
+import uz.idea.newinvoiceapplication.utils.extension.startNewActivity
 import uz.idea.newinvoiceapplication.utils.language.LocaleManager
+import uz.idea.newinvoiceapplication.vm.authVm.AuthViewModel
+
 @AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
     private val binding:ActivityAuthBinding by viewBinding()
+    private val authViewModel:AuthViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        if (authViewModel.getMySharedPreferences().accessToken.isNotEmptyOrNull()){
+            startNewActivity(MainActivity::class.java)
+            finish()
+        }
     }
 
     override fun attachBaseContext(newBase: Context?) {
