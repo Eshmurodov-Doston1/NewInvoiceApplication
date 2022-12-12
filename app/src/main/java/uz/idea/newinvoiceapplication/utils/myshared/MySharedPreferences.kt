@@ -3,14 +3,14 @@ package uz.idea.newinvoiceapplication.utils.myshared
 import android.content.Context
 import android.content.SharedPreferences
 import dagger.hilt.android.qualifiers.ApplicationContext
-import uz.idea.newinvoiceapplication.utils.AppConstant.ACCESS_TOKEN
-import uz.idea.newinvoiceapplication.utils.AppConstant.COMPANY_NAME
-import uz.idea.newinvoiceapplication.utils.AppConstant.EMPTY
-import uz.idea.newinvoiceapplication.utils.AppConstant.LANG
-import uz.idea.newinvoiceapplication.utils.AppConstant.REFRESH_TOKEN
-import uz.idea.newinvoiceapplication.utils.AppConstant.RU
-import uz.idea.newinvoiceapplication.utils.AppConstant.THEME
-import uz.idea.newinvoiceapplication.utils.AppConstant.TOKEN_TYPE
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.ACCESS_TOKEN
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.COMPANY_NAME
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.EMPTY
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.LANG
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.REFRESH_TOKEN
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.RU
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.THEME
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.TOKEN_TYPE
 import javax.inject.Inject
 
 class MySharedPreferences @Inject constructor(

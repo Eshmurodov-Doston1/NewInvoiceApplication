@@ -58,4 +58,9 @@ class LanguageFragment : BaseFragment<FragmentLanguageBinding>() {
         super.onAttach(context)
         authActivity = activity as AuthActivity
     }
+
+    override fun inflateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentLanguageBinding.inflate(inflater,container,false)
 }

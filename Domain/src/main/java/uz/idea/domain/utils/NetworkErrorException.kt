@@ -2,6 +2,8 @@ package uz.idea.domain.utils
 
 import org.json.JSONObject
 import retrofit2.HttpException
+import www.sanju.motiontoast.MotionToastStyle
+import kotlin.coroutines.coroutineContext
 
 open class NetworkErrorException(
     val errorCode: Int = -1,
@@ -12,7 +14,7 @@ open class NetworkErrorException(
         get() = localizedMessage
 
     override fun getLocalizedMessage(): String {
-        return errorMessage
+       return errorMessage
     }
 
     companion object {

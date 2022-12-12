@@ -90,8 +90,12 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
                     }
                     is ResponseState.Error->{
                         loadingButton(false)
-                        val errorAuth = JsonParser.parseString(result.exception.localizedMessage).asJsonObject
-                       errorDialog(errorAuth,reqAuthModel)
+                        if (result.exception.localizedMessage.isNotEmptyOrNull()){
+                            val errorAuth = JsonParser.parseString(result.exception.localizedMessage).asJsonObject
+                            errorDialog(errorAuth,reqAuthModel)
+                        }else{
+                            noInternetDialog(reqAuthModel)
+                        }
                     }
                 }
             }
@@ -128,6 +132,29 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
         create.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
+    private fun noInternetDialog(reqAuthModel:ReqAuthModel){
+        val create = AlertDialog.Builder(requireContext()).create()
+        val dialogBinding = DialogBinding.inflate(LayoutInflater.from(context),null,false)
+        create.setView(dialogBinding.root)
+        dialogBinding.apply {
+            lottie.setAnimation(R.raw.no_internet)
+            message.text = getString(R.string.no_internet)
+        }
+        dialogBinding.okBtn.setOnClickListener {
+            loginApplication(reqAuthModel)
+            create.dismiss()
+        }
+        dialogBinding.cancel.setOnClickListener {
+            create.dismiss()
+        }
+
+
+        if (!create.isShowing){
+            create.show()
+        }
+        create.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+    }
+
     private fun buttonEnabled(isPhone:Boolean?,isPassword:Boolean?){
         if (isPhone == true && isPassword == true){
             authActivity.drawableColorUpdate(binding.loginBtn,R.color.primary_color)
@@ -158,4 +185,9 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
         super.onAttach(context)
         authActivity = activity as AuthActivity
     }
+
+    override fun inflateViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentAuthBinding.inflate(inflater,container,false)
 }

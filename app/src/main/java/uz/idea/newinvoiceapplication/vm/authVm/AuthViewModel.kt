@@ -10,10 +10,10 @@ import kotlinx.coroutines.launch
 import uz.idea.domain.models.authModel.reqAuth.ReqAuthModel
 import uz.idea.domain.models.authModel.resAuth.ResAuthModel
 import uz.idea.domain.usesCase.apiUsesCase.ApiUsesCase
-import uz.idea.newinvoiceapplication.utils.AppConstant.API
-import uz.idea.newinvoiceapplication.utils.AppConstant.EMPTY_MAP
-import uz.idea.newinvoiceapplication.utils.AppConstant.LOGIN
-import uz.idea.newinvoiceapplication.utils.AppConstant.NO_INTERNET
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.API
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.EMPTY_MAP
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.LOGIN
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.NO_INTERNET
 import uz.idea.domain.utils.NetworkErrorException
 import uz.idea.domain.utils.loadState.ResponseState
 import uz.idea.newinvoiceapplication.utils.extension.logData

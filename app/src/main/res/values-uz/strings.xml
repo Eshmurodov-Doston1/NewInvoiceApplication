@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">NewInvoiceApplication</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ru_lan">Русский</string>
     <string name="uz_lan">O\'zbekcha</string>
@@ -12,4 +13,8 @@
     <string name="loading_text">Bajarilmoqda </string>
     <string name="cancel">Bekor qilish</string>
     <string name="repeat">Qayta urunish</string>
+    <string name="filter">Qidiruv</string>
+    <string name="settings">Sozlamalar</string>
+    <string name="slow_internet">Internet juda sekin</string>
+    <string name="no_connect_internet">Internet bilan ulanish mavjud emas</string>
 </resources>

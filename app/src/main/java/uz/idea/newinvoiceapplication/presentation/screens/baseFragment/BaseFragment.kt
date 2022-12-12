@@ -6,18 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewbinding.ViewBinding
+import uz.idea.newinvoiceapplication.presentation.activities.MainActivity
 import java.lang.reflect.ParameterizedType
 
 abstract class BaseFragment<VB:ViewBinding>:Fragment() {
     private var _binding : VB? = null
     val binding :VB get() = _binding!!
 
+    abstract fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
+
+    val mainActivity:MainActivity get() = (activity as MainActivity)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val type = javaClass.genericSuperclass
-        val clazz = (type as ParameterizedType).actualTypeArguments[0] as Class<VB>
-        val method = clazz.getMethod("inflate", LayoutInflater::class.java, ViewGroup::class.java, Boolean::class.java)
-        _binding = method.invoke(null, layoutInflater, container, false) as VB
-        return _binding!!.root
+        return if (_binding == null){
+            _binding = inflateViewBinding(inflater,container)
+            _binding?.root
+        } else {
+            binding.root
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

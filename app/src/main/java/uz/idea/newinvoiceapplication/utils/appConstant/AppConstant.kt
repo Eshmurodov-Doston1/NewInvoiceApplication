@@ -1,4 +1,4 @@
-package uz.idea.newinvoiceapplication.utils
+package uz.idea.newinvoiceapplication.utils.appConstant
 
 object AppConstant {
     const val COMPANY_NAME = "NewInvoiceService"
@@ -22,6 +22,11 @@ object AppConstant {
     // TODO: Http methode
     const val API = "api"
     const val LOGIN = "login"
+    const val MENU = "settings/menu"
     const val NO_INTERNET = -2
+    const val MENU_ERROR = -3
     const val APPLICATION_JSON = "application/json"
+
+    // TODO: Click type
+    const val DEFAULT_CLICK_TYPE = 1
 }

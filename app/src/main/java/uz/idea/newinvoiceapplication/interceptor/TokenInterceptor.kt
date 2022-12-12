@@ -1,7 +1,6 @@
 package uz.idea.newinvoiceapplication.interceptor
 
 import android.content.Context
-import android.util.Log
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.HttpHeaders
 import com.google.gson.Gson
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -9,7 +8,7 @@ import okhttp3.*
 import org.json.JSONObject
 import uz.idea.domain.models.authModel.resAuth.ResAuthModel
 import uz.idea.newinvoiceapplication.BuildConfig.BASE_URL
-import uz.idea.newinvoiceapplication.utils.AppConstant.APPLICATION_JSON
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.APPLICATION_JSON
 import uz.idea.newinvoiceapplication.utils.extension.getLanguage
 import uz.idea.newinvoiceapplication.utils.myshared.MySharedPreferences
 import java.net.HttpURLConnection

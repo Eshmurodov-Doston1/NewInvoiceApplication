@@ -21,8 +21,8 @@
                app:lottie_autoPlay="true"
                android:layout_marginTop="@dimen/_15sdp"
                app:lottie_loop="true"
-               android:layout_width="@dimen/_100sdp"
-               android:layout_height="@dimen/_100sdp"/>
+               android:layout_width="@dimen/_80sdp"
+               android:layout_height="@dimen/_80sdp"/>
            <TextView
                android:id="@+id/message"
                android:textSize="@dimen/_11sdp"

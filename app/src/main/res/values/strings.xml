@@ -13,4 +13,8 @@
     <string name="loading_text">Бажарилмоқда </string>
     <string name="cancel">Бекор қилиш</string>
     <string name="repeat">Қайта уруниш</string>
+    <string name="filter">Қидирув</string>
+    <string name="settings">Созламалар</string>
+    <string name="slow_internet">Интернет жуда секин</string>
+    <string name="no_connect_internet">Интернет билан уланиш мавжуд емас</string>
 </resources>

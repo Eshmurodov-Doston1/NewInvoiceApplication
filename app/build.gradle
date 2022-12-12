@@ -64,4 +64,6 @@ dependencies {
     // glide
     implementation 'com.github.bumptech.glide:glide:4.14.2'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+    // bottom navigation
+    implementation 'com.github.qamarelsafadi:CurvedBottomNavigation:0.1.3'
 }
