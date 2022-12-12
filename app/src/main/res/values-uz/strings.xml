@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ru_lan">Русский</string>
+    <string name="uz_lan">O\'zbekcha</string>
+    <string name="uzc_lan">Ўзбекча</string>
+    <string name="password">Parol</string>
+    <string name="login_text">Tizimga kirish</string>
+    <string name="no_internet">Internet bilan aloqa mavjud emas yoki yaxshi emas</string>
+    <string name="server_error">Server bilan aloqa mavjud emas</string>
+</resources>

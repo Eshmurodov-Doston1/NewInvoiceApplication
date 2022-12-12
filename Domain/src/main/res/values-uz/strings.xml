@@ -1,0 +1,4 @@
+<resources>
+    <string name="no_internet">Internet bilan aloqa mavjud emas yoki yaxshi emas</string>
+    <string name="server_error">Server bilan aloqa mavjud emas</string>
+</resources>

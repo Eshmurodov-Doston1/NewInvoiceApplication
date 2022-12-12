@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">NewInvoiceApplication</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ru_lan">Русский</string>
+    <string name="uz_lan">O\'zbekcha</string>
+    <string name="uzc_lan">Ўзбекча</string>
+    <string name="password">Пароль</string>
+    <string name="login_text">Тизимга кириш</string>
+    <string name="no_internet">Интернет билан алоқа мавжуд эмас ёки яхши эмас</string>
+    <string name="server_error">Сервер билан алоқа мавжуд эмас</string>
 </resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="MaskedEditText">
+        <attr name="mask" format="string" />
+        <attr name="allowed_chars" format="string" />
+        <attr name="enable_ime_action" format="boolean" />
+        <attr name="denied_chars" format="string" />
+        <attr name="char_representation" format="string" />
+        <attr name="keep_hint" format="boolean" />
+
+        <attr name="show_drawable" format="integer"/>
+        <attr name="hide_drawable" format="integer"/>
+        <attr name="password_visible" format="boolean"/>
+        <attr name="show_as_text" format="boolean"/>
+        <attr name="hide_text" format="string"/>
+        <attr name="show_text" format="string"/>
+    </declare-styleable>
+</resources>

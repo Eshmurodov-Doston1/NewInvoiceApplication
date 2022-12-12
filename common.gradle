@@ -17,6 +17,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     //hilt
     implementation 'com.google.dagger:hilt-android:2.44'
+
     // room
     def room_version = "2.4.3"
     implementation "androidx.room:room-runtime:$room_version"
@@ -33,9 +34,7 @@ dependencies {
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
     // coil
     implementation "io.coil-kt:coil:2.2.1"
-    // glide
-    implementation 'com.github.bumptech.glide:glide:4.14.2'
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
+
     // internet connection
     implementation 'com.github.muddassir235:connection_checker:1.7'
     // motion toast
@@ -50,4 +49,11 @@ dependencies {
     implementation 'com.github.razir.progressbutton:progressbutton:2.1.0'
     // lottie
     implementation 'com.airbnb.android:lottie:5.2.0'
+    //chuckInterseptor
+    debugImplementation "com.github.chuckerteam.chucker:library:3.5.2"
+    releaseImplementation "com.github.chuckerteam.chucker:library-no-op:3.5.2"
+    //coroutunies
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation "androidx.fragment:fragment-ktx:1.5.5"
 }
