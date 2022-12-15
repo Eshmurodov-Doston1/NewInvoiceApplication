@@ -2,28 +2,52 @@ package uz.idea.newinvoiceapplication.presentation.screens.homeScreen
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import uz.idea.newinvoiceapplication.databinding.FragmentHomeBinding
+import uz.idea.newinvoiceapplication.presentation.controllers.actController.ActUiController
 import uz.idea.newinvoiceapplication.presentation.screens.baseFragment.BaseFragment
-import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.EN
-import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.RU
-import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.UZ
-import uz.idea.newinvoiceapplication.utils.language.LocaleManager
+import uz.idea.newinvoiceapplication.vm.actVm.ActViewModel
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
+    // act controller
+    private lateinit var actUIController: ActUiController
+
+    private val actViewModel:ActViewModel by viewModels()
     override fun init() {
         binding.apply {
-            mainActivity.clickMenu().observe(viewLifecycleOwner){ data->
-               mainActivity.supportActionBar?.title = when(LocaleManager.getLanguage(requireContext())){
-                   UZ->data.title_uz
-                   RU->data.title
-                   EN->data.title_uz
-                   else -> data.title
-               }
-            }
+
+             lifecycleScope.launch {
+                 mainActivity.containerViewModel.children.collect { children->
+                     when(children?.path){
+                         "/acts/add"->{
+                             actUiController()
+                         }
+                     }
+                 }
+             }
+
+
+
+
         }
     }
+
+    private fun actUiController(){
+        actUIController = ActUiController(
+            mainActivity,
+            binding.includeActCreate,
+            mainActivity.containerApplication,
+            mainActivity.containerViewModel,
+            actViewModel,
+            this)
+        actUIController.createAct()
+    }
+
+
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,

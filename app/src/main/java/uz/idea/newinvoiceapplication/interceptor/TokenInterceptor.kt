@@ -10,6 +10,7 @@ import uz.idea.domain.models.authModel.resAuth.ResAuthModel
 import uz.idea.newinvoiceapplication.BuildConfig.BASE_URL
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.APPLICATION_JSON
 import uz.idea.newinvoiceapplication.utils.extension.getLanguage
+import uz.idea.newinvoiceapplication.utils.extension.logData
 import uz.idea.newinvoiceapplication.utils.myshared.MySharedPreferences
 import java.net.HttpURLConnection
 import javax.inject.Inject
@@ -32,12 +33,15 @@ class TokenInterceptor @Inject constructor(
                 val body: RequestBody = RequestBody.create(oldResponse.body?.contentType(),params.toString())
                 val nRequest = Request.Builder()
                     .url("${BASE_URL}/api/${getLanguage(context)}/refresh/token")
-                    .put(body)
+                    .post(body)
                     .build()
 
                 val responseRefresh = client.newCall(nRequest).execute()
+                logData(responseRefresh.body?.string().toString())
+                logData(responseRefresh.code.toString())
                 if (responseRefresh.code == HttpURLConnection.HTTP_OK){
                     val jsonData = responseRefresh.body?.string() ?: ""
+                    logData(jsonData)
                     val gson = Gson()
                     val resAuth: ResAuthModel = gson.fromJson(jsonData, ResAuthModel::class.java)
                     preferenceHelper.accessToken = resAuth.access_token

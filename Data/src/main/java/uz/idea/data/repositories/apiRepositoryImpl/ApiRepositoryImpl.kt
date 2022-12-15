@@ -9,6 +9,7 @@ class ApiRepositoryImpl @Inject constructor(
 ):ApiRepository {
     override suspend fun methodeGet(url: String, queryMap: HashMap<String, String>)
     = apiService.methodeGET(url,queryMap)
+
     override suspend fun methodePost(url: String, body: Any, queryMap: HashMap<String, String>)
     = apiService.methodePOST(url,body,queryMap)
 

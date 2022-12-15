@@ -11,6 +11,7 @@ import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.REFRESH_TOKEN
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.RU
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.THEME
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.TOKEN_TYPE
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.USER_DATA
 import javax.inject.Inject
 
 class MySharedPreferences @Inject constructor(
@@ -56,6 +57,12 @@ class MySharedPreferences @Inject constructor(
             if (value!=null && value!="") it.putString(TOKEN_TYPE,value)
         }
 
+    // TODO: user data
+    var userData:String?
+        get() = sharedPreferences.getString(USER_DATA, EMPTY)
+        set(value) = sharedPreferences.edit{
+            if (value!=null && value!="") it.putString(USER_DATA,value)
+        }
 
     // TODO: language
     var lang:String?

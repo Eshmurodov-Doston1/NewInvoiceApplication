@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">NewInvoiceApplication</string>
+    <string name="app_name">E-Invoice</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ru_lan">Русский</string>
     <string name="uz_lan">O\'zbekcha</string>
@@ -17,4 +17,35 @@
     <string name="settings">Настройки</string>
     <string name="slow_internet">Интернет очень медленный</string>
     <string name="no_connect_internet">Интернет-соединение недоступно</string>
+    <string name="act">Акт</string>
+    <string name="act_number">Номер акта</string>
+    <string name="act_date">Дата акта</string>
+    <string name="seller">Исполнитель</string>
+    <string name="seller_tin">ИНН поставщика</string>
+    <string name="name_1">Название</string>
+    <string name="branches">Филиалы</string>
+    <string name="no_data">Информация недоступна</string>
+    <string name="contract">Договор</string>
+    <string name="contract_number">Контактный номер</string>
+    <string name="contract_date">Дата контракта</string>
+    <string name="buyer_1">Покупатель</string>
+    <string name="tin_or_pinfl">ИНН/ПИНФЛ</string>
+    <string name="description">Описание</string>
+    <string name="products">Продукты</string>
+    <string name="count">Количество</string>
+    <string name="save">Сохранять</string>
+    <string name="search">Поиск...</string>
+    <string name="branch_name">Название филиала</string>
+    <string name="address">Адрес</string>
+
+<!--    Act description-->
+    <string name="act_description1">Мы, нижеподписавшиеся,</string>
+    <string name="act_description2">именуемый в дальнейшем Исполнитель, с одной стороны, и</string>
+    <string name="act_description3">именуемый в дальнейшем Заказчик, с другой стороны, составили настоящий Акт о том, что работы выполнены в соответствии с условиями Заказчика в полном объёме.</string>
+    <string name="ikpu_and_name">ИКПУ и наименование товаров(работа услуг)</string>
+    <string name="product_note">Примечание к товарам (работам,услуг)</string>
+    <string name="unit_of_measurement">Единица измерения</string>
+    <string name="cost">Цена</string>
+    <string name="total_cost_of_work">Обшая стоимость работ:</string>
+
 </resources>

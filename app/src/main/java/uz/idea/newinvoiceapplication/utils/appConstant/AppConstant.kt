@@ -10,6 +10,7 @@ object AppConstant {
     const val EMPTY = ""
     const val REFRESH_TOKEN = "refresh_token"
     const val TOKEN_TYPE = "token_type"
+    const val USER_DATA = "userData"
     const val REGISTER_DATA = "registerData"
     const val CODE_CONFIRM = "code_confirm"
     const val REGISTER_DATA_V = "REGISTER_DATA_V"

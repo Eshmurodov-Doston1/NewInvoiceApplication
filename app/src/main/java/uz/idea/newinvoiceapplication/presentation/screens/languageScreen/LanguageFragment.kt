@@ -19,7 +19,6 @@ import uz.idea.newinvoiceapplication.utils.language.LocaleManager
 import java.util.Locale
 
 class LanguageFragment : BaseFragment<FragmentLanguageBinding>() {
-    private lateinit var authActivity:AuthActivity
     override fun init() {
      binding.apply {
          // status bar color
@@ -52,11 +51,6 @@ class LanguageFragment : BaseFragment<FragmentLanguageBinding>() {
         findNavController().navigate(R.id.action_languageFragment_to_authFragment,
             Bundle(),
             animationViewCreateRight())
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        authActivity = activity as AuthActivity
     }
 
     override fun inflateViewBinding(

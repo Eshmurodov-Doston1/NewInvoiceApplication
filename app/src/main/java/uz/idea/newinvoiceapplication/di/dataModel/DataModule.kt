@@ -5,7 +5,9 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import uz.idea.data.repositories.apiRepositoryImpl.ApiRepositoryImpl
+import uz.idea.data.repositories.databaseRepository.measureRepoIml.MeasureRepoImpl
 import uz.idea.domain.repositories.apiRepository.ApiRepository
+import uz.idea.domain.repositories.dataBaseRepository.measureRepo.MeasureRepo
 
 @Module(includes = [DataModule.BindModule::class])
 @InstallIn(SingletonComponent::class)
@@ -15,5 +17,8 @@ class DataModule {
     abstract class BindModule {
         @Binds
         abstract fun bindsApiRepository(apiRepositoryImpl: ApiRepositoryImpl): ApiRepository
+
+        @Binds
+        abstract fun bindsMeasureRepository(measureRepoImpl: MeasureRepoImpl): MeasureRepo
     }
 }

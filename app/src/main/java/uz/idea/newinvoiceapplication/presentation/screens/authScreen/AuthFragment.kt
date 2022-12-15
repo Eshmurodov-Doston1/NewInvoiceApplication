@@ -41,7 +41,6 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
     private val authViewModel:AuthViewModel by viewModels()
     private var isPhone:Boolean?=false
     private var isPassword:Boolean?=false
-    private lateinit var authActivity: AuthActivity
     override fun init() {
       binding.apply {
           // status bar color
@@ -181,10 +180,6 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        authActivity = activity as AuthActivity
-    }
 
     override fun inflateViewBinding(
         inflater: LayoutInflater,

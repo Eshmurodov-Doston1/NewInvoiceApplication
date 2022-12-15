@@ -51,7 +51,7 @@ interface ResponseFetcher{
                             error = NetworkErrorException(e.code(), context.getString(R.string.server_error))
                         }
                         401 -> {
-                            throw AuthenticationException("authentication error!")
+                            throw AuthenticationException("authentication error!",e.code())
                         }
                         400 -> {
                             error = NetworkErrorException.parseException(e)

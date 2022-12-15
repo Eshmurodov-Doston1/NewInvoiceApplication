@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NewInvoiceApplication</string>
+    <string name="app_name">E-Invoice</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ru_lan">Русский</string>
@@ -17,4 +17,33 @@
     <string name="settings">Созламалар</string>
     <string name="slow_internet">Интернет жуда секин</string>
     <string name="no_connect_internet">Интернет билан уланиш мавжуд емас</string>
+    <string name="act">Акт</string>
+    <string name="act_number">Номер акта</string>
+    <string name="act_date">Дата акта</string>
+    <string name="seller">Ижрочи</string>
+    <string name="seller_tin">ИНН поставщика</string>
+    <string name="name_1">Название</string>
+    <string name="branches">Филиалы</string>
+    <string name="no_data">Малумот мавжуд эмас</string>
+    <string name="contract">Шартнома</string>
+    <string name="contract_number">Шартнома рақами</string>
+    <string name="contract_date">Шартнома санаси</string>
+    <string name="buyer_1">Мижоз</string>
+    <string name="tin_or_pinfl">ИНН/ПИНФЛ</string>
+    <string name="description">Тавсиф</string>
+    <string name="products">Маҳсулотлар</string>
+    <string name="count">Миқдори</string>
+    <string name="save">Сақлаш</string>
+    <string name="search">Қидирув...</string>
+    <string name="branch_name">Филиал номи</string>
+    <string name="address">Манзил</string>
+<!--    Act Description-->
+    <string name="act_description1">Биз, қуйида имзо чекувчилар,</string>
+    <string name="act_description2">бундан кейин Пудратчи деб юритилади, бир томондан, ва</string>
+    <string name="act_description3">бундан кейин Буюртмачи деб юритилади, бошқа томондан, иш Буюртмачининг шартларига мувофиқ тўлиқ бажарилганлиги тўғрисида ушбу Сертификатни туздилар.</string>
+    <string name="ikpu_and_name">ИКПУ ва товарлар номи (хизматлар иши)</string>
+    <string name="product_note">Товарларга (ишларга, хизматларга) эслатма</string>
+    <string name="unit_of_measurement">Ўлчов бирлиги</string>
+    <string name="cost">Нархи</string>
+    <string name="total_cost_of_work">Ишнинг умумий қиймати:</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">NewInvoiceApplication</string>
+    <string name="app_name">E-Invoice</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ru_lan">Русский</string>
     <string name="uz_lan">O\'zbekcha</string>
@@ -17,4 +17,34 @@
     <string name="settings">Sozlamalar</string>
     <string name="slow_internet">Internet juda sekin</string>
     <string name="no_connect_internet">Internet bilan ulanish mavjud emas</string>
+    <string name="act">Акт</string>
+    <string name="act_number">Akt raqami</string>
+    <string name="act_date">Akt sanasi</string>
+    <string name="seller">Ijrochi</string>
+    <string name="seller_tin">Yetkazib beruvchining STIR</string>
+    <string name="name_1">Ism</string>
+    <string name="branches">Filiallar</string>
+    <string name="no_data">Malumot mavjud emas</string>
+    <string name="contract">Shartnoma</string>
+    <string name="contract_number">Shartnoma raqami</string>
+    <string name="contract_date">Shartnoma sanasi</string>
+    <string name="buyer_1">Mijoz</string>
+    <string name="tin_or_pinfl">STIR/JSHSHIR</string>
+    <string name="description">Tavsif</string>
+    <string name="products">Mahsulotlar</string>
+    <string name="count">Miqdori</string>
+    <string name="save">Saqlash</string>
+    <string name="search">Qidiruv...</string>
+    <string name="branch_name">Filial nomi</string>
+    <string name="address">Manzil</string>
+<!--    Act description-->
+    <string name="act_description1">Biz, quyida imzo chekuvchilar,</string>
+    <string name="act_description2">bundan keyin Pudratchi deb yuritiladi, bir tomondan, va</string>
+    <string name="act_description3">bundan keyin Buyurtmachi deb yuritiladi, boshqa tomondan, ish Buyurtmachining shartlariga muvofiq to\'liq bajarilganligi to\'g\'risida ushbu Sertifikatni tuzdilar.</string>
+    <string name="ikpu_and_name">IKPU va tovarlar nomi (xizmatlar ishi)</string>
+    <string name="product_note">Tovarlarga (ishlarga, xizmatlarga) eslatma</string>
+    <string name="unit_of_measurement">O\'lchov birligi</string>
+    <string name="cost">Narxi</string>
+    <string name="total_cost_of_work">Ishning umumiy qiymati:</string>
+
 </resources>

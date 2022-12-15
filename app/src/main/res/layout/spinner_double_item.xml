@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
+
+  <LinearLayout
+    android:id="@+id/item_back"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/_4sdp"
+    android:orientation="vertical">
+
+    <TextView
+      android:id="@+id/tv_first"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:ellipsize="end"
+      android:maxLines="1"
+      android:paddingHorizontal="@dimen/_5sdp"
+      android:textColor="@color/text_color"
+      android:textSize="@dimen/_13sdp"
+      tools:text="E-Invoice data" />
+
+    <TextView
+      android:id="@+id/tv_second"
+        android:layout_marginTop="@dimen/_5sdp"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingHorizontal="@dimen/_5sdp"
+      android:paddingTop="@dimen/_2sdp"
+      android:textColor="@color/text_color"
+      android:textSize="@dimen/_13sdp"
+      tools:text="736546353453457" />
+
+  </LinearLayout>
+
+  <View
+    android:id="@+id/item_decor"
+    android:layout_width="match_parent"
+    android:layout_height="0.8dp"
+    android:background="@color/line_color"  />
+
+</LinearLayout>
