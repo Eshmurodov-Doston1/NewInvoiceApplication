@@ -14,4 +14,5 @@
     <color name="primary_color_hint">#72027AFF</color>
     <color name="secondary_color">#95027AFF</color>
     <color name="line_color">#DFDEDE</color>
+    <color name="shimmer_color">#D3BDBBBB</color>
 </resources>

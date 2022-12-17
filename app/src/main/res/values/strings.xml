@@ -46,4 +46,11 @@
     <string name="unit_of_measurement">Ўлчов бирлиги</string>
     <string name="cost">Нархи</string>
     <string name="total_cost_of_work">Ишнинг умумий қиймати:</string>
+    <string name="add_product">Продуст қўшиш</string>
+<!--    Act product-->
+    <string name="no_act_product_name">Товарларга (ишларга, хизматларга) эслатма мавжуд эмас</string>
+    <string name="no_act_product_count">Товар сони мавжуд эмас</string>
+    <string name="no_act_product_summa">Сумма мавжуд эмас</string>
+    <string name="no_act_product_total_summa">Умумий Сумма мавжуд эмас</string>
+    <string name="success_add_product">Продуст сақланди</string>
 </resources>

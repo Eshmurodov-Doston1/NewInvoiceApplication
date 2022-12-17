@@ -70,4 +70,8 @@ dependencies {
     implementation 'com.github.florent37:expansionpanel:1.2.4'
     //toasty
     implementation 'com.github.GrenderG:Toasty:1.5.2'
+    // money editeText
+    implementation 'com.cottacush:CurrencyEditText:0.0.10'
+    // motion toasr
+    implementation 'com.github.Spikeysanju:MotionToast:1.4'
 }

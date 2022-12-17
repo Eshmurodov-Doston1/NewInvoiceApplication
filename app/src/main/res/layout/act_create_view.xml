@@ -848,7 +848,7 @@
                                             android:ellipsize="end"
                                             android:fontFamily="@font/inter_regular"
                                             android:lines="1"
-                                            android:text="Добавит продукт"
+                                            android:text="@string/add_product"
                                             android:textColor="@color/white"
                                             android:textSize="@dimen/_10sdp"
                                             android:textStyle="bold" />
@@ -863,7 +863,7 @@
                                 android:overScrollMode="never"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical"
-                                tools:itemCount="0"
+                                tools:itemCount="2"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                                 tools:listitem="@layout/recycler_act_product_item" />
                         </LinearLayout>

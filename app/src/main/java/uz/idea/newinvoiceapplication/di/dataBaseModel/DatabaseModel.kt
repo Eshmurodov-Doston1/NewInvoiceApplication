@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import uz.idea.data.database.AppDatabase
+import uz.idea.domain.database.actProductEntity.ActProductDao
 import uz.idea.domain.database.errorModel.ErrorDao
 import uz.idea.domain.database.measure.MeasureDao
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.COMPANY_NAME
@@ -31,4 +32,8 @@ class DatabaseModel {
     @Provides
     @Singleton
     fun providesMeasureDao(appDatabase: AppDatabase): MeasureDao = appDatabase.measureDao()
+
+    @Provides
+    @Singleton
+    fun providesActProductDao(appDatabase: AppDatabase): ActProductDao = appDatabase.actProductDao()
 }

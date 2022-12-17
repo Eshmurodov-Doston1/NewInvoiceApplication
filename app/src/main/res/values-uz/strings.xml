@@ -46,5 +46,15 @@
     <string name="unit_of_measurement">O\'lchov birligi</string>
     <string name="cost">Narxi</string>
     <string name="total_cost_of_work">Ishning umumiy qiymati:</string>
+    <string name="add_product">Product qo\'shish</string>
+
+<!--    Act error-->
+    <string name="no_act_product_name">Tovarlarga (ishlarga, xizmatlarga) eslatma mavjud emas</string>
+    <string name="no_act_product_count">Tovar soni mavjud emas</string>
+    <string name="no_act_product_summa">Summa mavjud emas</string>
+    <string name="no_act_product_total_summa">Umumiy Summa mavjud emas</string>
+    <string name="success_add_product">Product saqlandi</string>
+
+
 
 </resources>

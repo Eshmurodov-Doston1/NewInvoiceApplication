@@ -47,5 +47,12 @@
     <string name="unit_of_measurement">Единица измерения</string>
     <string name="cost">Цена</string>
     <string name="total_cost_of_work">Обшая стоимость работ:</string>
+    <string name="add_product">Добавить продукт</string>
 
+<!--    Act producrt -->
+    <string name="no_act_product_name">Товары (работы, услуги) не упоминаются.</string>
+    <string name="no_act_product_count">Номер продукта недоступен</string>
+    <string name="no_act_product_summa">Нет доступной суммы</string>
+    <string name="no_act_product_total_summa">Общая сумма недоступна</string>
+    <string name="success_add_product">Продукт сохранен</string>
 </resources>

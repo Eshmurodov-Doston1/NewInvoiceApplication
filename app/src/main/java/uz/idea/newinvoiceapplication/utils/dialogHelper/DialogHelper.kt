@@ -8,6 +8,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import com.google.gson.JsonElement
+import uz.idea.domain.database.measure.MeasureEntity
 import uz.idea.domain.models.branchModel.Data
 import uz.idea.newinvoiceapplication.R
 import uz.idea.newinvoiceapplication.adapters.genericRvAdapter.GenericRvAdapter
@@ -63,7 +64,7 @@ class DialogHelper(
         val alertDialog = AlertDialog.Builder(activity)
         val create1 = alertDialog.create()
        when(statusDialog){
-           0->{
+           in 0..2->{
                val binding = DialogSpinnerBinding.inflate(activity.layoutInflater)
                create1.setView(binding.root)
                binding.apply {
@@ -74,7 +75,6 @@ class DialogHelper(
                    spinnerAdapter.submitList(listData)
                    binding.recyclerForSpinner.adapter = spinnerAdapter
                    spinnerAdapter.submitList(listData)
-
                    search.doAfterTextChanged { textSearch ->
                      spinnerAdapter.submitList(isSearch(textSearch.toString(), textSearch.toString().isNotEmptyOrNull(),listData))
                    }
@@ -93,7 +93,17 @@ class DialogHelper(
         if (isSearch){
             listData.forEach { data->
                 if (data is Data){
-                    if (data.branchName.lowercase().contains(textSearch?.toString()?.trim()?.lowercase().toString())){
+                    if (data.branchName.lowercase().contains(textSearch?.trim()?.lowercase().toString()) ||
+                        data.branchNum.lowercase().contains(textSearch?.trim()?.lowercase().toString())){
+                        listBranchFilter.add(data)
+                    }
+                } else if (data is uz.idea.domain.models.tasNifProduct.Data){
+                    if (data.mxikFullName.lowercase().contains(textSearch?.lowercase() ?: "") ||
+                        data.mxikCode.lowercase().contains(textSearch?.lowercase().toString())){
+                        listBranchFilter.add(data)
+                    }
+                } else if (data is MeasureEntity){
+                    if (data.name.lowercase().contains(textSearch.toString())) {
                         listBranchFilter.add(data)
                     }
                 }

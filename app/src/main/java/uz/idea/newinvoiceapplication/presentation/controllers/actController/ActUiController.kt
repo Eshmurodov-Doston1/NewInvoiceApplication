@@ -11,15 +11,19 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.flow.collect
+import uz.idea.domain.database.actProductEntity.ActProductEntity
+import uz.idea.domain.database.measure.MeasureEntity
 import uz.idea.domain.models.branchModel.BranchModel
 import uz.idea.domain.models.branchModel.Data
 import uz.idea.domain.models.companyInfo.CompanyInfo
+import uz.idea.domain.models.tasNifProduct.TasnifProduct
 import uz.idea.domain.models.tinOrPinfl.pinfl.PinflModel
 import uz.idea.domain.models.tinOrPinfl.tin456.Physical
 import uz.idea.domain.models.tinOrPinfl.tinJuridic.LegalModel
 import uz.idea.domain.usesCase.apiUsesCase.parseClass
 import uz.idea.domain.utils.loadState.ResponseState
 import uz.idea.newinvoiceapplication.R
+import uz.idea.newinvoiceapplication.adapters.genericRvAdapter.GenericRvAdapter
 import uz.idea.newinvoiceapplication.databinding.ActCreateViewBinding
 import uz.idea.newinvoiceapplication.databinding.AddProductActBinding
 import uz.idea.newinvoiceapplication.presentation.activities.MainActivity
@@ -28,7 +32,8 @@ import uz.idea.newinvoiceapplication.utils.container.ContainerApplication
 import uz.idea.newinvoiceapplication.utils.extension.*
 import uz.idea.newinvoiceapplication.vm.actVm.ActViewModel
 import uz.idea.newinvoiceapplication.vm.containerVm.ContainerViewModel
-import java.util.LinkedList
+import java.math.BigDecimal
+import java.util.*
 import kotlin.math.abs
 
 class ActUiController(
@@ -45,6 +50,9 @@ class ActUiController(
     var companyInfoMain:CompanyInfo?=null
 
 
+    var tasnifProduct:uz.idea.domain.models.tasNifProduct.Data?=null
+    var orderNumber:Long = 0
+    var measureData:MeasureEntity?=null
     // save act data
 
     override fun createAct() {
@@ -134,10 +142,22 @@ class ActUiController(
                 }
             }
 
-
+            // product add button
             btnAddProduct.setOnClickListener {
                 addProduct()
             }
+
+            // product rv
+            val productAdapter:GenericRvAdapter<ActProductEntity> by lazy {
+                GenericRvAdapter(R.layout.recycler_act_product_item){ data, position, clickType ->
+
+                }
+            }
+            actViewModel.getAllActProduct().observe(homeFragment.viewLifecycleOwner){ listActProduct->
+                productAdapter.submitList(listActProduct)
+                actCreateViewBinding.recyclerViewProducts.adapter = productAdapter
+            }
+
         }
     }
 
@@ -209,10 +229,115 @@ class ActUiController(
 
 
 
+    @SuppressLint("SetTextI18n")
     private fun addProduct(){
         val bottomSheetDialog = BottomSheetDialog(mainActivity)
         val addProductBinding = AddProductActBinding.inflate(mainActivity.layoutInflater)
         addProductBinding.apply {
+            actViewModel.productData(getLanguage(mainActivity))
+            homeFragment.lifecycleScope.launchWhenCreated {
+                actViewModel.productData.collect { result->
+                    when(result){
+                        is ResponseState.Loading->{
+                            addProductBinding.shimmer.visible()
+                            addProductBinding.addProductView.gone()
+                        }
+                        is ResponseState.Success->{
+                            addProductBinding.shimmer.gone()
+                            addProductBinding.addProductView.visible()
+                            val tasnifProduct = result.data?.parseClass(TasnifProduct::class.java)
+                            if (tasnifProduct?.data?.isNotEmpty() == true){
+                                addProductBinding.listCatalogCode.text = "${tasnifProduct.data[0].mxikCode} ${tasnifProduct.data[0].mxikFullName}"
+                                this@ActUiController.tasnifProduct = tasnifProduct.data[0]
+                                if (tasnifProduct.data.size > 1){
+                                    addProductBinding.listCatalogCode.setOnClickListener {
+                                        containerApplication.applicationDialog(1, tasnifProduct.data){ data ->
+                                            addProductBinding.listCatalogCode.text = "${data.mxikCode} ${data.mxikFullName}"
+                                            this@ActUiController.tasnifProduct = data
+                                        }
+                                    }
+                                }
+                            } else {
+                                addProductBinding.listCatalogCode.text = mainActivity.getString(R.string.no_data)
+                            }
+                            if (actViewModel.getMeasure().isNotEmpty()){
+                                addProductBinding.listMeasureId.text = actViewModel.getMeasure()[0].name
+                                this@ActUiController.measureData = actViewModel.getMeasure()[0]
+                            }
+                            addProductBinding.listMeasureId.setOnClickListener {
+                                containerApplication.applicationDialog(2,  actViewModel.getMeasure()){ data ->
+                                    addProductBinding.listMeasureId.text = data.name
+                                    this@ActUiController.measureData = data
+                                }
+                            }
+
+                            addProductBinding.editCount.doAfterTextChanged { countApp->
+                                val priceOne = addProductBinding.editSumma.text.toString()
+                                if (countApp.toString().isNotEmptyOrNull() && priceOne.isNotEmptyOrNull()){
+                                    val price = addProductBinding.editSumma.getNumericValue()
+                                    val countSingle = countApp.toString().toDouble()
+                                    val priceAll = BigDecimal(countSingle*price)
+                                    addProductBinding.editTotalSum.setText(priceAll.toPlainString())
+                                }
+                            }
+
+                            addProductBinding.editSumma.doAfterTextChanged { price->
+                                val countApp = addProductBinding.editCount.text.toString()
+                                if (price.toString().isNotEmptyOrNull() && countApp.isNotEmptyOrNull()){
+                                    val price = addProductBinding.editSumma.getNumericValue()
+                                    val count = countApp.toDouble()
+                                    val priceAll = BigDecimal(count*price)
+                                    addProductBinding.editTotalSum.setText(priceAll.toPlainString())
+                                }
+                            }
+
+                            actViewModel.getAllActProduct().observe(homeFragment.viewLifecycleOwner){ listActProduct->
+                                  if (listActProduct.isNotEmpty()){
+                                    addProductBinding.textCount.visible()
+                                      orderNumber = listActProduct.size.toLong()
+                                } else {
+                                      orderNumber = 0
+                                      addProductBinding.textCount.gone()
+                                }
+                                addProductBinding.textCount.text = if (listActProduct.size>100) "99+" else listActProduct.size.toString()
+                            }
+
+                            // save product
+                            addProductBinding.btnSaveProduct.setOnClickListener {
+                                val name = addProductBinding.editName.text.toString()
+                                val count = addProductBinding.editCount.text.toString()
+                                val summa = addProductBinding.editSumma.text.toString()
+                                val totalSumma = addProductBinding.editTotalSum.text.toString()
+                                if (!name.isNotEmptyOrNull()){
+                                    mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_product_name))
+                                } else if (!count.isNotEmptyOrNull() || count.toLong()==0L){
+                                    mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_product_count))
+                                } else if (!summa.isNotEmptyOrNull()){
+                                    mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_product_summa))
+                                } else if (!totalSumma.isNotEmptyOrNull()){
+                                    mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_product_total_summa))
+                                } else {
+                                    if (orderNumber != 0L && measureData!=null) {
+                                        val orderNumberProduct = orderNumber
+                                        val catalogCode = this@ActUiController.tasnifProduct?.mxikCode
+                                        val catalogName = this@ActUiController.tasnifProduct?.mxikFullName
+                                        val measureId = measureData?.measureId
+                                        val actProductEntity = ActProductEntity(ordno = orderNumberProduct.toInt(), catalogcode = catalogCode.toString(),
+                                        catalogname = catalogName.toString(), name = name, measureid = measureId?:0, count = count.toLong(), summa = summa, totalSumma = totalSumma)
+                                        actViewModel.saveActProduct(actProductEntity)
+                                        mainActivity.motionAnimation("success",mainActivity.getString(R.string.success_add_product))
+                                    }
+                                }
+                            }
+
+                        }
+                        is ResponseState.Error->{
+                            addProductBinding.shimmer.gone()
+                            addProductBinding.addProductView.visible()
+                        }
+                    }
+                }
+            }
             this.btnClose.setOnClickListener {
                 bottomSheetDialog.dismiss()
             }
@@ -220,6 +345,7 @@ class ActUiController(
         bottomSheetDialog.setContentView(addProductBinding.root)
         bottomSheetDialog.show()
     }
+
 
 
     private fun datePicker(textView:TextView){
@@ -245,3 +371,4 @@ class ActUiController(
     }
 
 }
+

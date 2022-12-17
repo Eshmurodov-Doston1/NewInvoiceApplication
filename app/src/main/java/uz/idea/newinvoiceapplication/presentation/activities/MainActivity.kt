@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
 import androidx.core.view.isVisible
 import androidx.drawerlayout.widget.DrawerLayout
@@ -24,6 +25,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonParser
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
@@ -48,6 +50,8 @@ import uz.idea.newinvoiceapplication.utils.language.LocaleManager
 import uz.idea.newinvoiceapplication.utils.uiStates.UIController
 import uz.idea.newinvoiceapplication.vm.containerVm.ContainerViewModel
 import uz.idea.newinvoiceapplication.vm.mainVM.MainViewModel
+import www.sanju.motiontoast.MotionToast
+import www.sanju.motiontoast.MotionToastStyle
 import java.util.*
 
 
@@ -286,6 +290,16 @@ class MainActivity : AppCompatActivity(),UIController{
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+
+
+    fun motionAnimation(status:String?,message:String?){
+        MotionToast.createColorToast(this, message = message.toString(),
+            style = if (status != "error") MotionToastStyle.SUCCESS else MotionToastStyle.ERROR,
+            position = MotionToast.GRAVITY_TOP,
+            duration = MotionToast.LONG_DURATION,
+            font =  ResourcesCompat.getFont(this,R.font.inter_medium)
+        )
+    }
 
     override fun bottomBarView(isVisible: Boolean) {
         binding.appBarMain.apply {
