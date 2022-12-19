@@ -25,8 +25,8 @@ class ContainerViewModel @Inject constructor(
     private val networkHelper: NetworkHelper,
     private val apiUsesCase: ApiUsesCase
 ):ViewModel() {
-    val children:SharedFlow<Children?> get() = _children
-    private val _children = MutableSharedFlow<Children?>(0)
+    val children:StateFlow<Children?> get() = _children
+    private val _children = MutableStateFlow<Children?>(null)
 
     fun setData(children: Children?) = viewModelScope.launch {
         _children.emit(children)

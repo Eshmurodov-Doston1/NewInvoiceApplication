@@ -71,5 +71,32 @@
     <string name="copy">Дублировать</string>
     <string name="update_status">Обнавит статус</string>
     <string name="view">Пасмотреть</string>
+    <string name="from">От</string>
 
+    <string name="act_table_two_text">Идентификационный код и название по Единому электронному национальному каталогу товаров (услуг</string>
+    <string name="name_works">Наименование работ (услуг)</string>
+    <string name="measure_table">Единица измерения</string>
+    <string name="count_table">Количество</string>
+    <string name="summa_product_table">Цена</string>
+    <string name="summa_total_table">Сумма</string>
+
+    <string name="text_act">АКТ СДАЧИ-ПРИЁМА ВЫПОЛНЕННЫХ РАБОТ (ОКАЗАННЫХ УСЛУГ)</string>
+    <string name="january">Январь</string>
+    <string name="february">Февраль</string>
+    <string name="march">Март</string>
+    <string name="april">Апрель</string>
+    <string name="may">Май</string>
+    <string name="june">Июнь</string>
+    <string name="july">Июль</string>
+    <string name="august">Август</string>
+    <string name="september">Сентябрь</string>
+    <string name="october">Октябрь</string>
+    <string name="november">Ноябрь</string>
+    <string name="december">Декабрь</string>
+    <string name="total">Итого:</string>
+
+    <string name="no_cure">Стороны претензий друг к другу не имеют.</string>
+    <string name="act_summa">Стоимость принятой работы по акту составляет:</string>
+    <string name="executor">Исполнитель</string>
+    <string name="customer">Заказчик</string>
 </resources>

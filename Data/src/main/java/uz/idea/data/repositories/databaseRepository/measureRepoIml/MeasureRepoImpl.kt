@@ -15,4 +15,5 @@ class MeasureRepoImpl @Inject constructor(
     }
 
     override fun getAllMeasureEntity() = measureDao.getAllMeasure()
+    override fun getMeasureEntity(id: Int) = measureDao.getMeasure(id)
 }

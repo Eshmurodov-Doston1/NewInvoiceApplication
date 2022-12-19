@@ -2,6 +2,7 @@ package uz.idea.newinvoiceapplication.presentation.screens.homeScreen
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
@@ -10,8 +11,10 @@ import uz.idea.newinvoiceapplication.databinding.FragmentHomeBinding
 import uz.idea.newinvoiceapplication.presentation.controllers.actController.ActUiController
 import uz.idea.newinvoiceapplication.presentation.screens.baseFragment.BaseFragment
 import uz.idea.newinvoiceapplication.utils.extension.getLanguage
+import uz.idea.newinvoiceapplication.utils.extension.logData
 import uz.idea.newinvoiceapplication.vm.actVm.ActViewModel
 import uz.idea.newinvoiceapplication.vm.mainVM.MainViewModel
+import kotlin.math.abs
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -28,9 +31,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
              lifecycleScope.launchWhenCreated {
                  mainActivity.containerViewModel.children.collect { children->
+                     logData("ActAdd->${children?.path}")
                      when(children?.path){
                          "/acts/add"->{
                              actUiController()
+                             binding.includeActCreate.nested.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                                 if (scrollY < oldScrollY) {
+                                     mainActivity.bottomBarView(true)
+                                 }
+                                 if (scrollY == abs( v.measuredHeight - v.getChildAt(0).measuredHeight)) {
+                                     mainActivity.bottomBarView(false)
+                                 }
+                             })
                          }
                      }
                  }
@@ -39,14 +51,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun actUiController(){
-        actUIController = ActUiController(
-            mainActivity,
-            binding.includeActCreate,
-            mainActivity.containerApplication,
-            mainActivity.containerViewModel,
-            actViewModel,
-            this)
-        actUIController.createAct()
+      try {
+          actUIController = ActUiController(
+              mainActivity,
+              binding.includeActCreate,
+              actViewModel,
+              this)
+          actUIController.createAct()
+      }catch (e:Exception){
+          e.printStackTrace()
+      }
     }
 
 

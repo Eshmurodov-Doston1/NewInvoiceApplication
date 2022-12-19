@@ -20,6 +20,10 @@ import uz.idea.domain.usesCase.actUsesCase.ActUsesCase
 import uz.idea.domain.usesCase.apiUsesCase.ApiUsesCase
 import uz.idea.domain.utils.NetworkErrorException
 import uz.idea.domain.utils.loadState.ResponseState
+import uz.idea.newinvoiceapplication.databinding.FragmentHomeBinding
+import uz.idea.newinvoiceapplication.presentation.activities.MainActivity
+import uz.idea.newinvoiceapplication.presentation.controllers.actController.ActUiController
+import uz.idea.newinvoiceapplication.presentation.screens.homeScreen.HomeFragment
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.API
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.EMPTY_MAP
@@ -44,6 +48,9 @@ class ActViewModel @Inject constructor(
     private val actProductRepo: ActProductRepo
 ):ViewModel() {
     fun getUserData() = mySharedPreferences.userData?.parseClass(UserInfoModel::class.java)
+
+
+
 
 
     // company info

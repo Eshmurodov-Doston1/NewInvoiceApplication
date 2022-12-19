@@ -17,10 +17,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/button"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_50sdp"/>
                 <!--act-->
                 <View
                     android:layout_width="match_parent"

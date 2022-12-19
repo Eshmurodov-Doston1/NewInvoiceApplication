@@ -9,7 +9,11 @@
         android:id="@+id/home"
         android:label="Home"
         android:name="uz.idea.newinvoiceapplication.presentation.screens.homeScreen.HomeFragment"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_home_to_documentFragment"
+            app:destination="@id/documentFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settings"
         android:name="uz.idea.newinvoiceapplication.presentation.screens.settingsScreen.SettingsFragment"

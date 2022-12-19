@@ -10,10 +10,12 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import uz.idea.domain.database.actProductEntity.ActProductEntity
 import uz.idea.domain.database.measure.MeasureEntity
+import uz.idea.domain.models.localeClass.table.ActCreateTable
 import uz.idea.domain.models.menuModel.Children
 import uz.idea.domain.models.menuModel.Data
 import uz.idea.newinvoiceapplication.BuildConfig.BASE_URL
 import uz.idea.newinvoiceapplication.R
+import uz.idea.newinvoiceapplication.databinding.ItemActDocBinding
 import uz.idea.newinvoiceapplication.databinding.ItemBottomsheetDataBinding
 import uz.idea.newinvoiceapplication.databinding.ItemMenuBinding
 import uz.idea.newinvoiceapplication.databinding.RecyclerActProductItemBinding
@@ -47,6 +49,23 @@ class GenericViewHolder<T>(private val itemView:View):RecyclerView.ViewHolder(it
             R.layout.recycler_act_product_item->{
                 recyclerActProductItem(itemView,data,position,onClick)
             }
+            R.layout.item_act_doc->{
+                itemActDoc(itemView,data,position,onClick)
+            }
+        }
+    }
+
+    // item_act_doc
+    private fun itemActDoc(itemView:View, data: T, position: Int, onClick: (data: T, position: Int, clickType: Int) -> Unit){
+        val binding = ItemActDocBinding.bind(itemView)
+        if (data is ActCreateTable){
+            binding.idTv.text = data.actNumber
+            binding.tvService.text = data.actService
+            binding.tvName.text = data.name
+            binding.tvMeasurement.text = data.measure
+            binding.tvCount.text = data.count
+            binding.tvSumma.text = data.productSumma
+            binding.tvTotalSumma.text = data.totalSumma
         }
     }
 

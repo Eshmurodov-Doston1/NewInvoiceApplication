@@ -15,7 +15,7 @@ class ScreenNavigate(
         val bundle = Bundle()
         bundle.putString(DOCUMENT_ID,actId)
         bundle.putInt(DOC_STATUS,docStatus)
-        navController.navigate(R.id.documentFragment,bundle,animationViewCreateRight())
+        navController.navigate(R.id.action_home_to_documentFragment,bundle,animationViewCreateRight())
     }
 
     private fun animationViewCreateRight(): NavOptions {

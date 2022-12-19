@@ -57,8 +57,6 @@ import kotlin.math.abs
 class ActUiController(
     private val mainActivity: MainActivity,
     private val actCreateViewBinding: ActCreateViewBinding,
-    private val containerApplication:ContainerApplication,
-    private val containerViewModel: ContainerViewModel,
     private val actViewModel: ActViewModel,
     private val homeFragment: HomeFragment
 ):ActController{
@@ -77,14 +75,7 @@ class ActUiController(
     private var actDate:String?=null
     private var actDateContract:String?=null
     override fun createAct() {
-        actCreateViewBinding.nested.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (scrollY < oldScrollY) {
-                mainActivity.bottomBarView(true)
-            }
-            if (scrollY == abs( v.measuredHeight - v.getChildAt(0).measuredHeight)) {
-                mainActivity.bottomBarView(false)
-            }
-        })
+
 
         // date picker
         actCreateViewBinding.apply {
@@ -98,9 +89,7 @@ class ActUiController(
                 datePicker(tvContractDate,1)
             }
 
-            actCreateViewBinding.button.setOnClickListener {
-                containerApplication.screenNavigate.createDocument("",1)
-            }
+
 
             // seller data
             val userData = actViewModel.getUserData()
@@ -135,7 +124,7 @@ class ActUiController(
                                             layoutSellerBranches.visible()
                                             listSellerBranches.setOnClickListener {
                                                 if (listBranch.isNotEmpty() && listBranch.size > 1){
-                                                    containerApplication.applicationDialog(0, branchModel.data){ data ->
+                                                    mainActivity.containerApplication.applicationDialog(0, branchModel.data){ data ->
                                                         branchDataMainSeller =  data
                                                         listSellerBranches.text = data.branchName
                                                         cancelBranchSeller.visible()
@@ -154,7 +143,7 @@ class ActUiController(
                                         layoutSellerBranches.visible()
                                         listSellerBranches.setOnClickListener {
                                             if (branchModel.data.isNotEmpty() && branchModel.data.size > 1){
-                                                containerApplication.applicationDialog(0, branchModel.data){ data ->
+                                                mainActivity.containerApplication.applicationDialog(0, branchModel.data){ data ->
                                                     branchDataMainSeller =  data
                                                     listSellerBranches.text = data.branchName
                                                     cancelBranchSeller.visible()
@@ -182,13 +171,24 @@ class ActUiController(
             }
 
             // buyer data
-            editBuyerTinOrPinfl.addTextChangedListener { tinOrPinfl->
+            editBuyerTinOrPinfl.doAfterTextChanged { tinOrPinfl->
                 if(tinOrPinfl.toString().trim().isNotEmptyOrNull()){
-                    if (editBuyerTinOrPinfl.text.toString().trim().length == 9 || editBuyerTinOrPinfl.text.toString().trim().length == 14) {
+                    if (editBuyerTinOrPinfl.text.toString().trim().length == 9) {
                        Handler(Looper.getMainLooper()).postDelayed({
-                           actViewModel.buyerData(getLanguage(mainActivity), tinOrPinfl.toString().trim())
-                           buyerData(tinOrPinfl.toString())
+                           if(editBuyerTinOrPinfl.text.toString().trim().length == 9) {
+                               actViewModel.buyerData(
+                                   getLanguage(mainActivity),
+                                   tinOrPinfl.toString().trim()
+                               )
+                               buyerData(tinOrPinfl.toString())
+                           }
                        },1000)
+                    } else if (editBuyerTinOrPinfl.text.toString().trim().length == 14){
+                        actViewModel.buyerData(
+                            getLanguage(mainActivity),
+                            tinOrPinfl.toString().trim()
+                        )
+                        buyerData(tinOrPinfl.toString())
                     }
                 }
             }
@@ -292,6 +292,7 @@ class ActUiController(
                             buyerBranchName.toString(),buyerNameData.toString(),
                             buyerTinOrPinfl.toString(),contractDoc, productList,sellerBranchCode.toString(),
                             sellerBranchName.toString(),sellerName.toString(),sellerTin.toString())
+
                         actViewModel.saveAct(getLanguage(mainActivity),createActModel)
                         actViewModel.saveAct.collect { result->
                             when(result){
@@ -313,11 +314,11 @@ class ActUiController(
                                     actCreateViewBinding.btnSave.enabled()
                                     if (result.exception.localizedMessage.isNotEmptyOrNull()){
                                         val errorAuth = JsonParser.parseString(result.exception.localizedMessage).asJsonObject
-                                        containerApplication.dialogData(AppConstant.MENU_ERROR,errorAuth){ clickType->
+                                        mainActivity.containerApplication.dialogData(AppConstant.MENU_ERROR,errorAuth){ clickType->
                                             if(clickType==1) saveActData(uniqueId,uniqueIdProduct)
                                         }
                                     } else {
-                                        containerApplication.dialogData(AppConstant.NO_INTERNET,null){ clickType ->
+                                        mainActivity.containerApplication.dialogData(AppConstant.NO_INTERNET,null){ clickType ->
                                             if(clickType==1) saveActData(uniqueId,uniqueIdProduct)
                                         }
                                     }
@@ -341,7 +342,7 @@ class ActUiController(
             editBuyerName.clear()
             editActText.text.clear()
             val responseSaveAct = jsonElement?.parseClass(ResponseSaveAct::class.java)
-            containerApplication.screenNavigate.createDocument(responseSaveAct?.data?.actid.toString(),1)
+            mainActivity.containerApplication.screenNavigate.createDocument(responseSaveAct?.data?.actid.toString(),1)
         }
     }
 
@@ -399,7 +400,7 @@ class ActUiController(
                             if(branchModel.data.isNotEmpty()){
                                 actCreateViewBinding.layoutBuyerBranches.visible()
                                 actCreateViewBinding.listBuyerBranches.setOnClickListener {
-                                    containerApplication.applicationDialog(0, branchModel.data){ data ->
+                                    mainActivity.containerApplication.applicationDialog(0, branchModel.data){ data ->
                                         branchDataMainBuyer =  data
                                         actCreateViewBinding.listBuyerBranches.text = data.branchName
                                         actCreateViewBinding.cancelBuyerBranch.visible()
@@ -449,7 +450,7 @@ class ActUiController(
                                 this@ActUiController.tasnifProduct = tasnifProduct.data[0]
                                 if (tasnifProduct.data.size > 1){
                                     addProductBinding.listCatalogCode.setOnClickListener {
-                                        containerApplication.applicationDialog(1, tasnifProduct.data){ data ->
+                                        mainActivity.containerApplication.applicationDialog(1, tasnifProduct.data){ data ->
                                             addProductBinding.listCatalogCode.text = "${data.mxikCode} ${data.mxikFullName}"
                                             this@ActUiController.tasnifProduct = data
                                         }
@@ -472,7 +473,7 @@ class ActUiController(
                                 }
                             }
                             addProductBinding.listMeasureId.setOnClickListener {
-                                containerApplication.applicationDialog(2,  actViewModel.getMeasure()){ data ->
+                                mainActivity.containerApplication.applicationDialog(2,  actViewModel.getMeasure()){ data ->
                                     addProductBinding.listMeasureId.text = data.name
                                     this@ActUiController.measureData = data
                                 }
@@ -572,7 +573,7 @@ class ActUiController(
     }
 
     private fun datePicker(textView:TextView,type:Int){
-        containerApplication.datePicker { time,timeFormat->
+        mainActivity.containerApplication.datePicker { time,timeFormat->
             textView.text = time
             when(type) {
                 0 -> {
@@ -605,11 +606,11 @@ class ActUiController(
                         loadingButton(false)
                         if (result.exception.localizedMessage.isNotEmptyOrNull()){
                             val errorAuth = JsonParser.parseString(result.exception.localizedMessage).asJsonObject
-                            containerApplication.dialogData(AppConstant.MENU_ERROR,errorAuth){ clickType->
+                            mainActivity.containerApplication.dialogData(AppConstant.MENU_ERROR,errorAuth){ clickType->
                                 if(clickType==1) getUniqueId()
                             }
                         } else {
-                            containerApplication.dialogData(AppConstant.NO_INTERNET,null){ clickType ->
+                            mainActivity.containerApplication.dialogData(AppConstant.NO_INTERNET,null){ clickType ->
                                 if(clickType==1) getUniqueId()
                             }
                         }

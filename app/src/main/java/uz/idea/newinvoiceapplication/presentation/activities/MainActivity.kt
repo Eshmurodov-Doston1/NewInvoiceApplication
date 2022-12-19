@@ -88,6 +88,12 @@ class MainActivity : AppCompatActivity(),UIController{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
+        // container appplication object
+        containerApplication = ContainerApplication(this@MainActivity,this@MainActivity,navHostFragment.navController)
+
+
         saveMeasureData()
         binding.apply {
             binding.appBarMain.bottomNavigationView.background = null
@@ -95,11 +101,6 @@ class MainActivity : AppCompatActivity(),UIController{
             statusBarColor(R.color.white)
             setSupportActionBar(binding.appBarMain.toolbar)
             // save measure database
-
-
-            navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_content_main) as NavHostFragment
-            // container appplication object
-            containerApplication = ContainerApplication(this@MainActivity,this@MainActivity,navHostFragment.navController)
 
             // fab icon tint
             binding.appBarMain.fab.setColorFilter(ContextCompat.getColor(this@MainActivity,R.color.primary_color))

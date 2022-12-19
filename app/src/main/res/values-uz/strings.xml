@@ -70,11 +70,33 @@
     <string name="copy">Ko\'chirish</string>
     <string name="update_status">Statusni yangilash</string>
     <string name="view">Ko\'rinish</string>
+    <string name="from">dagi</string>
 
+    <string name="act_table_two_text">Tovarlarning (xizmatlarning) yagona elektron milliy katalogiga muvofiq identifikatsiya kodi va nomi</string>
+    <string name="name_works">Ishlar va xizmatlar nomi</string>
+    <string name="measure_table">O\'lchov birligi</string>
 
-
-
-
+    <string name="count_table">Soni</string>
+    <string name="summa_product_table">Narxi</string>
+    <string name="summa_total_table">Umumiy summa</string>
+    <string name="text_act">TUGARILGAN ISHLARNI QABUL QILISH AKTI (ko\'rsatilgan xizmatlar)</string>
+    <string name="january">Yanvar</string>
+    <string name="february">Fevral</string>
+    <string name="march">Mart</string>
+    <string name="april">Aprel</string>
+    <string name="may">May</string>
+    <string name="june">Iyun</string>
+    <string name="july">Iyul</string>
+    <string name="august">Avgust</string>
+    <string name="september">Sentabr</string>
+    <string name="october">Oktyabr</string>
+    <string name="november">Noyabr</string>
+    <string name="december">Dekabr</string>
+    <string name="total">Jami:</string>
+    <string name="no_cure">Tomonlarning bir-biriga qarshi da\'volari yo\'q.</string>
+    <string name="act_summa">Akt bo\'yicha qabul qilingan ishning qiymati:</string>
+    <string name="executor">Ijrochi</string>
+    <string name="customer">Mijoz</string>
 
 
 

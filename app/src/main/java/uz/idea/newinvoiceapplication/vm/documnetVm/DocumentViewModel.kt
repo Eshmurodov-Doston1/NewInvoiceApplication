@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import uz.idea.domain.repositories.dataBaseRepository.measureRepo.MeasureRepo
 import uz.idea.domain.usesCase.apiUsesCase.ApiUsesCase
 import uz.idea.domain.utils.NetworkErrorException
 import uz.idea.domain.utils.loadState.ResponseState
@@ -23,7 +24,7 @@ const val URL_VIEW = "documents/act/view"
 class DocumentViewModel @Inject constructor(
     private val networkHelper: NetworkHelper,
     private val apiUsesCase: ApiUsesCase,
-    private val mySharedPreferences: MySharedPreferences
+    private val measureRepo: MeasureRepo
 ):ViewModel() {
     // get document with id
     val document:StateFlow<ResponseState<JsonElement?>> get() = _document
@@ -40,4 +41,6 @@ class DocumentViewModel @Inject constructor(
             _document.emit(ResponseState.Error(NetworkErrorException(NO_INTERNET,"")))
         }
     }
+
+    fun getMeasure(id:Int) = measureRepo.getMeasureEntity(id)
 }

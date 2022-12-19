@@ -13,4 +13,7 @@ interface MeasureDao {
 
     @Query("SELECT*FROM measureentity")
     fun getAllMeasure():List<MeasureEntity>
+
+    @Query("SELECT*FROM measureentity WHERE measureId= :id")
+    fun getMeasure(id:Int):MeasureEntity
 }

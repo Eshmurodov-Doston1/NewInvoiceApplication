@@ -26,6 +26,8 @@ import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.UZ
 import uz.idea.newinvoiceapplication.utils.language.LocaleManager
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun logData(message:String) =  Log.e("E_Invoice_Log->", message)
 
@@ -139,6 +141,29 @@ fun slideDown(view: View) {
             }
         })
 }
+
+fun getDateFormat(str:String,context: Context):String{
+    var monthTv = context.getString(R.string.january)
+    val month = str.substring(5, 7).toInt()
+    when(month){
+        1-> monthTv = context.getString(R.string.january)
+        2-> monthTv = context.getString(R.string.february)
+        3-> monthTv = context.getString(R.string.march)
+        4-> monthTv = context.getString(R.string.april)
+        5-> monthTv = context.getString(R.string.may)
+        6-> monthTv = context.getString(R.string.june)
+        7-> monthTv = context.getString(R.string.july)
+        8-> monthTv = context.getString(R.string.august)
+        9-> monthTv = context.getString(R.string.september)
+        10-> monthTv = context.getString(R.string.october)
+        11-> monthTv = context.getString(R.string.november)
+        12-> monthTv = context.getString(R.string.december)
+    }
+    val year = str.substring(0, 4)
+    val day = str.substring(8)
+    return "$day $monthTv $year"
+}
+
 
 fun <T> TextView.textData(lang:String,data:T){
     if (data is Children){

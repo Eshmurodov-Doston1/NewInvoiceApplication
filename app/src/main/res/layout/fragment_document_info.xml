@@ -6,6 +6,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".presentation.screens.docDataScreen.DocumentInfoFragment">
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <include
+        android:id="@+id/include_act_create_doc"
+        layout="@layout/act_document"/>
+
     <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/menu_view_act"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -14,6 +28,7 @@
         app:layout_constraintVertical_bias="0.95"
         app:menu_colorNormal="@color/primary_color"
         app:menu_fab_size="normal"
+        app:menu_shadowColor="@color/secondary_color"
         app:layout_constraintRight_toRightOf="parent"
         app:menu_colorRipple="@color/secondary_color"
         app:menu_colorPressed="@color/secondary_color"

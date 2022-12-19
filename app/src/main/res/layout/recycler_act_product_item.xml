@@ -138,8 +138,10 @@
         <ImageView
             android:src="@drawable/ic_baseline_edit_24"
             android:padding="@dimen/_4sdp"
+            android:tint="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            tools:ignore="UseAppTint" />
       </androidx.cardview.widget.CardView>
       <androidx.cardview.widget.CardView
           android:id="@+id/delete_card"
@@ -155,9 +157,11 @@
           android:layout_height="@dimen/_20sdp">
         <ImageView
             android:src="@drawable/ic_delete"
+            android:tint="@color/white"
             android:padding="@dimen/_4sdp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            tools:ignore="UseAppTint" />
       </androidx.cardview.widget.CardView>
     </LinearLayout>
 

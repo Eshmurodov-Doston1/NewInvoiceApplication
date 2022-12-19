@@ -69,5 +69,30 @@
     <string name="copy">Кўчириш</string>
     <string name="update_status">Статусни янгилаш</string>
     <string name="view">Кўриниш</string>
+    <string name="from">даги</string>
+    <string name="act_table_two_text">Товарларнинг (хизматларнинг) ягона электрон миллий каталогига мувофиқ идентификация коди ва номи</string>
+    <string name="name_works">Ишлар ва хизматлар номи</string>
+    <string name="measure_table">Ўлчов бирлиги</string>
+    <string name="count_table">Сони</string>
+    <string name="summa_product_table">Нархи</string>
+    <string name="summa_total_table">Умумий сумма</string>
+    <string name="text_act">ТУГАРИЛГАН ИШЛАРНИ ҚАБУЛ ҚИЛИШ АКТИ (кўрсатилган хизматлар)</string>
+    <string name="january">Январь</string>
+    <string name="february">Февраль</string>
+    <string name="march">Март</string>
+    <string name="april">Апрель</string>
+    <string name="may">Май</string>
+    <string name="june">Июнь</string>
+    <string name="july">Июль</string>
+    <string name="august">Август</string>
+    <string name="september">Сентябрь</string>
+    <string name="october">Октябрь</string>
+    <string name="november">Ноябрь</string>
+    <string name="december">Декабрь</string>
+    <string name="total">Жами:</string>
+    <string name="no_cure">Томонларнинг бир-бирига қарши даъволари йўқ.</string>
+    <string name="act_summa">Акт бўйича қабул қилинган ишнинг қиймати:</string>
+    <string name="executor">Ижрочи</string>
+    <string name="customer">Мижоз</string>
 
 </resources>
