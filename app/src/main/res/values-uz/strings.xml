@@ -54,6 +54,28 @@
     <string name="no_act_product_summa">Summa mavjud emas</string>
     <string name="no_act_product_total_summa">Umumiy Summa mavjud emas</string>
     <string name="success_add_product">Product saqlandi</string>
+    <string name="success_update_product">Product o\'zgartirildi</string>
+    <string name="update">O\'zgartish</string>
+    <string name="choose">Tanlash</string>
+    <string name="no_act_number">Akt raqami mavjud emas</string>
+    <string name="no_act_data">Akt sanasi mavjud emas</string>
+    <string name="no_act_description">Akt tavsifi mavjud emas</string>
+    <string name="no_contract_number">Shartnoma raqami mavjud emas</string>
+    <string name="no_contract_date">Shartnoma sanasi mavjud emas</string>
+    <string name="no_buyer_name">Xaridor nomi mavjud emas</string>
+    <string name="no_buyer_tin_or_pinfl">Xaridor STIR/PIFL mavjud emas</string>
+    <string name="date_picker">Sanani tanlang</string>
+    <string name="send">Yuborish</string>
+    <string name="delete">O\'chirish</string>
+    <string name="copy">Ko\'chirish</string>
+    <string name="update_status">Statusni yangilash</string>
+    <string name="view">Ko\'rinish</string>
+
+
+
+
+
+
 
 
 

@@ -15,4 +15,10 @@
     <color name="secondary_color">#95027AFF</color>
     <color name="line_color">#DFDEDE</color>
     <color name="shimmer_color">#D3BDBBBB</color>
+    <color name="send_color">#42AE46</color>
+    <color name="edit_color">#009688</color>
+    <color name="delete_color">#FF0000</color>
+    <color name="copy_color">#FF5722</color>
+    <color name="update_status">#8BC34A</color>
+    <color name="preview_color">#009688</color>
 </resources>

@@ -12,6 +12,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 import androidx.navigation.NavOptions
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -23,8 +24,10 @@ import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.EN
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.RU
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.UZ
 import uz.idea.newinvoiceapplication.utils.language.LocaleManager
+import java.math.BigDecimal
+import java.math.RoundingMode
 
-fun logData(message:String) =  Log.e("E-Invoice Log->", message)
+fun logData(message:String) =  Log.e("E_Invoice_Log->", message)
 
 fun <A: Activity> Activity.startNewActivity(activity: Class<A>){
     Intent(this,activity).also {
@@ -44,6 +47,33 @@ fun ImageView.imageData(url:String, context:Context){
         .placeholder(circularProgressDrawable)
         .into(this)
 }
+
+
+fun <T> EditText.fetchTextChanges(
+    dataField: T?,
+    changed: (T?) -> Unit
+) {
+    if (dataField != null) {
+        setText(dataField.toString()) //if data is not empty
+    } else {
+        clear()
+    }
+    addTextChangedListener { editableText ->
+        if (editableText != null || editableText.toString() != "") {
+            changed.invoke(editableText.toString() as T)
+        } else {
+            changed.invoke(null)
+        }
+    }
+}
+fun EditText.clear() {
+    this.setText("")
+}
+
+fun formatterApp(a: String?): BigDecimal {
+    return BigDecimal(a).setScale(2, RoundingMode.DOWN)
+}
+
 
 
 fun String?.isNotEmptyOrNull():Boolean{

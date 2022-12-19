@@ -7,11 +7,11 @@ data class ActProductEntity(
     @PrimaryKey(autoGenerate = true)
     val id:Long?=null,
     val ordno:Int,
-    val catalogcode:String,
-    val catalogname:String,
-    val name:String,
-    val measureid:Int,
-    val count:Long,
-    val summa:String,
-    val totalSumma:String
+    var catalogcode:String,
+    var catalogname:String,
+    var name:String,
+    var measureid:Int,
+    var count:String,
+    var summa:String,
+    var totalSumma:String
 )

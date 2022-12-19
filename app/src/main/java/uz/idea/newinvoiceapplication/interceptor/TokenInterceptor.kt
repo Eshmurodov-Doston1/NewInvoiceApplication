@@ -3,10 +3,12 @@ package uz.idea.newinvoiceapplication.interceptor
 import android.content.Context
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.HttpHeaders
 import com.google.gson.Gson
+import com.google.gson.JsonParser
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.*
 import org.json.JSONObject
 import uz.idea.domain.models.authModel.resAuth.ResAuthModel
+import uz.idea.domain.repositories.dataBaseRepository.actProductRepo.ActProductRepo
 import uz.idea.newinvoiceapplication.BuildConfig.BASE_URL
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.APPLICATION_JSON
 import uz.idea.newinvoiceapplication.utils.extension.getLanguage
@@ -15,11 +17,13 @@ import uz.idea.newinvoiceapplication.utils.myshared.MySharedPreferences
 import java.net.HttpURLConnection
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.math.acos
 
 @Singleton
 class TokenInterceptor @Inject constructor(
     private val preferenceHelper: MySharedPreferences,
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val productRepo: ActProductRepo
 ) : Interceptor {
     @Throws(Exception::class)
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -40,10 +44,9 @@ class TokenInterceptor @Inject constructor(
                 logData(responseRefresh.body?.string().toString())
                 logData(responseRefresh.code.toString())
                 if (responseRefresh.code == HttpURLConnection.HTTP_OK){
-                    val jsonData = responseRefresh.body?.string() ?: ""
-                    logData(jsonData)
+                    val asJsonObject = JsonParser.parseString(responseRefresh.body?.string().toString()).asJsonObject
                     val gson = Gson()
-                    val resAuth: ResAuthModel = gson.fromJson(jsonData, ResAuthModel::class.java)
+                    val resAuth: ResAuthModel = gson.fromJson(asJsonObject, ResAuthModel::class.java)
                     preferenceHelper.accessToken = resAuth.access_token
                     preferenceHelper.refreshToken = resAuth.refresh_token
                     preferenceHelper.tokenType = resAuth.token_type
@@ -51,6 +54,7 @@ class TokenInterceptor @Inject constructor(
                     return chain.proceed(newRequestWithAccessToken(oldRequest,preferenceHelper.accessToken.toString()))
                 } else {
                     preferenceHelper.clearAll()
+                    productRepo.deleteTableActProduct()
                 }
             }
         }

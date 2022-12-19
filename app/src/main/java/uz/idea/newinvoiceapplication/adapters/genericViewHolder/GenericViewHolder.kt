@@ -19,6 +19,8 @@ import uz.idea.newinvoiceapplication.databinding.ItemMenuBinding
 import uz.idea.newinvoiceapplication.databinding.RecyclerActProductItemBinding
 import uz.idea.newinvoiceapplication.databinding.SpinnerDoubleItemBinding
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.DEFAULT_CLICK_TYPE
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.DELETE_CLICK
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.EDITE_CLICK
 import uz.idea.newinvoiceapplication.utils.extension.getLanguage
 import uz.idea.newinvoiceapplication.utils.extension.gone
 import uz.idea.newinvoiceapplication.utils.extension.logData
@@ -55,6 +57,12 @@ class GenericViewHolder<T>(private val itemView:View):RecyclerView.ViewHolder(it
             binding.tvName.text = data.name
             binding.tvCount.text = data.count.toString()
             binding.tvCost.text = data.totalSumma
+            binding.editCard.setOnClickListener {
+                onClick.invoke(data,position, EDITE_CLICK)
+            }
+            binding.deleteCard.setOnClickListener {
+                onClick.invoke(data,position, DELETE_CLICK)
+            }
         }
     }
 
@@ -63,8 +71,8 @@ class GenericViewHolder<T>(private val itemView:View):RecyclerView.ViewHolder(it
     private fun <T> spinnerDouble(itemView:View, data: T, position: Int, onClick: (data: T, position: Int, clickType: Int) -> Unit){
         val binding = SpinnerDoubleItemBinding.bind(itemView)
         if (data is uz.idea.domain.models.branchModel.Data){
-            binding.tvFirst.text = "${itemView.context.getString(R.string.branch_name)}:  ${data.branchName}"
-            binding.tvSecond.text = "${itemView.context.getString(R.string.address)}:  ${data.address}"
+            binding.tvFirst.text = data.branchName
+            binding.tvSecond.text = data.branchNum
         } else if (data is uz.idea.domain.models.tasNifProduct.Data){
             binding.tvFirst.text = data.mxikFullName
             binding.tvSecond.text = data.mxikCode

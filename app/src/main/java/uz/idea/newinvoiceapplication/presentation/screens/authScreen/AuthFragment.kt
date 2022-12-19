@@ -107,15 +107,19 @@ class AuthFragment : BaseFragment<FragmentAuthBinding>() {
         create.setView(dialogBinding.root)
         var errorMessage = ""
         if (errorAuth.asJsonObject.has("errors")){
-            val authError = errorAuth.parseClass(AuthError::class.java)
-            if (authError.errors!=null){
-                if (authError.errors?.phone!=null){
-                    errorMessage +=  authError.errors?.phone!![0] + "\n"
+            if (errorAuth.asJsonObject.has("message")){
+                dialogBinding.message.text = errorAuth.asJsonObject.get("message").toString()
+            } else {
+                val authError = errorAuth.parseClass(AuthError::class.java)
+                if (authError.errors!=null){
+                    if (authError.errors?.phone!=null){
+                        errorMessage +=  authError.errors?.phone!![0] + "\n"
+                    }
+                    if (authError.errors?.password!=null){
+                        errorMessage += authError.errors?.password!![0]
+                    }
+                    dialogBinding.message.text = errorMessage
                 }
-                if (authError.errors?.password!=null){
-                    errorMessage += authError.errors?.password!![0]
-                }
-                dialogBinding.message.text = errorMessage
             }
         }
         dialogBinding.okBtn.setOnClickListener {

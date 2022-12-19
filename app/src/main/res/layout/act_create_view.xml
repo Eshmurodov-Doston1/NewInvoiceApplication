@@ -17,6 +17,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"/>
                 <!--act-->
                 <View
                     android:layout_width="match_parent"
@@ -319,23 +323,39 @@
                                     android:text="@string/branches"
                                     android:textColor="@color/text_color_gray" />
 
-                                <TextView
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:orientation="horizontal"
                                     android:layout_marginTop="@dimen/_3sdp"
-                                    android:id="@+id/list_seller_branches"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
+                                    android:gravity="center"
+                                    android:id="@+id/list_seller_branches1"
                                     android:background="@drawable/filter_components_back"
-                                    android:drawableEnd="@drawable/ic_arrow_bottom"
-                                    android:ellipsize="end"
-                                    android:textSize="@dimen/_11sdp"
-                                    android:textStyle="normal"
-                                    android:fontFamily="@font/inter_regular"
-                                    android:gravity="center_vertical"
-                                    android:maxLines="1"
-                                    android:paddingHorizontal="@dimen/_6sdp"
-                                    android:paddingVertical="@dimen/_7sdp"
-                                    android:text="@string/branches"
-                                    android:textColor="@color/text_color" />
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content">
+                                    <TextView
+                                        android:drawableEnd="@drawable/ic_arrow_bottom"
+                                        android:ellipsize="end"
+                                        android:textSize="@dimen/_11sdp"
+                                        android:textStyle="normal"
+                                        android:fontFamily="@font/inter_regular"
+                                        android:gravity="center_vertical"
+                                        android:maxLines="1"
+                                        android:paddingHorizontal="@dimen/_6sdp"
+                                        android:paddingVertical="@dimen/_7sdp"
+                                        android:text="@string/choose"
+                                        android:textColor="@color/text_color"
+                                        android:id="@+id/list_seller_branches"
+                                        android:layout_weight="1"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+                                    <ImageView
+                                        android:visibility="gone"
+                                        android:id="@+id/cancel_branch_seller"
+                                        android:src="@drawable/ic_baseline_cancel_24"
+                                        android:layout_marginHorizontal="@dimen/_5sdp"
+                                        android:padding="@dimen/_2sdp"
+                                        android:layout_width="@dimen/_20sdp"
+                                        android:layout_height="@dimen/_20sdp"/>
+                                </androidx.appcompat.widget.LinearLayoutCompat>
 
                             </LinearLayout>
 
@@ -643,21 +663,37 @@
                                     android:textStyle="normal"
                                     android:textColor="@color/text_color_gray" />
 
-                                <TextView
-                                    android:id="@+id/list_buyer_branches"
+                                <androidx.appcompat.widget.LinearLayoutCompat
+                                    android:orientation="horizontal"
+                                    android:gravity="center"
+                                    android:id="@+id/list_buyer_branches1"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:background="@drawable/filter_components_back"
-                                    android:ellipsize="end"
-                                    android:fontFamily="@font/inter_regular"
-                                    android:gravity="center_vertical"
-                                    android:maxLines="1"
-                                    android:paddingHorizontal="@dimen/_6sdp"
-                                    android:paddingVertical="@dimen/_7sdp"
-                                    android:textSize="@dimen/_11sdp"
-                                    android:text="@string/branches"
-                                    android:textColor="@color/text_color"
-                                    app:drawableEndCompat="@drawable/ic_arrow_bottom" />
+                                    android:background="@drawable/filter_components_back">
+                                    <TextView
+                                        android:ellipsize="end"
+                                        android:fontFamily="@font/inter_regular"
+                                        android:gravity="center_vertical"
+                                        android:maxLines="1"
+                                        android:paddingHorizontal="@dimen/_6sdp"
+                                        android:paddingVertical="@dimen/_7sdp"
+                                        android:textSize="@dimen/_11sdp"
+                                        android:text="@string/branches"
+                                        android:layout_weight="1"
+                                        android:textColor="@color/text_color"
+                                        app:drawableEndCompat="@drawable/ic_arrow_bottom"
+                                        android:id="@+id/list_buyer_branches"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"/>
+                                    <ImageView
+                                        android:id="@+id/cancel_buyer_branch"
+                                        android:padding="@dimen/_2sdp"
+                                        android:visibility="gone"
+                                        android:layout_marginHorizontal="@dimen/_5sdp"
+                                        android:src="@drawable/ic_baseline_cancel_24"
+                                        android:layout_width="@dimen/_20sdp"
+                                        android:layout_height="@dimen/_20sdp"/>
+                                </androidx.appcompat.widget.LinearLayoutCompat>
 
                             </LinearLayout>
 
@@ -871,8 +907,9 @@
                     </com.github.florent37.expansionpanel.ExpansionLayout>
                 </androidx.appcompat.widget.LinearLayoutCompat>
 
-                <androidx.cardview.widget.CardView
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_save"
+                    android:textAllCaps="false"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_33sdp"
                     android:layout_marginHorizontal="10dp"
@@ -880,40 +917,15 @@
                     android:layout_marginTop="@dimen/_12sdp"
                     android:clickable="true"
                     android:focusable="true"
-                    app:cardCornerRadius="6dp"
-                    app:cardElevation="0dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/include3">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/primary_color">
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="?attr/selectableItemBackground">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerHorizontal="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginLeft="15dp"
-                                android:layout_marginRight="15dp"
-                                android:ellipsize="end"
-                                android:fontFamily="@font/inter_regular"
-                                android:lines="1"
-                                android:text="@string/save"
-                                android:textColor="@color/white"
-                                android:textSize="@dimen/_10sdp"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
-                    </FrameLayout>
-                </androidx.cardview.widget.CardView>
+                    android:ellipsize="end"
+                    android:fontFamily="@font/inter_regular"
+                    android:lines="1"
+                    android:text="@string/save"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/_10sdp"
+                    android:background="@drawable/button_bac"
+                    android:textStyle="bold"
+                    android:gravity="center" />
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

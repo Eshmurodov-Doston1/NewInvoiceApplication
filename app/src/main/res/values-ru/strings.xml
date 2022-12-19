@@ -55,4 +55,21 @@
     <string name="no_act_product_summa">Нет доступной суммы</string>
     <string name="no_act_product_total_summa">Общая сумма недоступна</string>
     <string name="success_add_product">Продукт сохранен</string>
+    <string name="success_update_product">Продукт был изменен</string>
+    <string name="update">Изменять</string>
+    <string name="choose">Выберите</string>
+    <string name="no_act_number">Номер акта недоступен</string>
+    <string name="no_act_data">Дата акта недоступна</string>
+    <string name="no_act_description">Описание действия отсутствует</string>
+    <string name="no_contract_number">Нет номера договора</string>
+    <string name="no_contract_date">Дата контракта не указана</string>
+    <string name="no_buyer_name">Имя клиента недоступно</string>
+    <string name="no_buyer_tin_or_pinfl">Покупатель STIR/PIFL недоступен</string>
+    <string name="date_picker">Санани танланг</string>
+    <string name="send">Отправить</string>
+    <string name="delete">Удалить</string>
+    <string name="copy">Дублировать</string>
+    <string name="update_status">Обнавит статус</string>
+    <string name="view">Пасмотреть</string>
+
 </resources>

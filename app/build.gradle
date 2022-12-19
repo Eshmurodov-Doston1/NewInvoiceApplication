@@ -74,4 +74,9 @@ dependencies {
     implementation 'com.cottacush:CurrencyEditText:0.0.10'
     // motion toasr
     implementation 'com.github.Spikeysanju:MotionToast:1.4'
+    implementation 'com.github.BlacKCaT27:CurrencyEditText:2.0.2'
+
+    implementation 'com.google.android.material:material:1.8.0-beta01'
+    implementation 'com.github.clans:fab:1.6.4'
+
 }

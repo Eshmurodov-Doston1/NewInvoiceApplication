@@ -86,7 +86,6 @@ class ApiUsesCase @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
 
-
 }
 
 fun <T> JsonElement.parseClass(classData:Class<T>):T{

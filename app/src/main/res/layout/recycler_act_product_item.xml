@@ -124,26 +124,40 @@
           tools:text="1284759834759485794375894" />
 
       <androidx.cardview.widget.CardView
+          android:id="@+id/edit_card"
           android:layout_marginVertical="@dimen/_3sdp"
           android:layout_marginHorizontal="@dimen/_2sdp"
           android:clickable="true"
           android:focusable="true"
+          app:cardBackgroundColor="#B987F30B"
+          app:cardElevation="0dp"
           android:foreground="?attr/selectableItemBackgroundBorderless"
           app:cardCornerRadius="@dimen/_10sdp"
           android:layout_width="@dimen/_20sdp"
           android:layout_height="@dimen/_20sdp">
-
+        <ImageView
+            android:src="@drawable/ic_baseline_edit_24"
+            android:padding="@dimen/_4sdp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
       </androidx.cardview.widget.CardView>
       <androidx.cardview.widget.CardView
+          android:id="@+id/delete_card"
           android:clickable="true"
           android:focusable="true"
+          app:cardElevation="0dp"
           android:foreground="?attr/selectableItemBackgroundBorderless"
           android:layout_marginVertical="@dimen/_3sdp"
           android:layout_marginStart="@dimen/_3sdp"
           app:cardCornerRadius="@dimen/_10sdp"
+          app:cardBackgroundColor="#B2FF0000"
           android:layout_width="@dimen/_20sdp"
           android:layout_height="@dimen/_20sdp">
-
+        <ImageView
+            android:src="@drawable/ic_delete"
+            android:padding="@dimen/_4sdp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
       </androidx.cardview.widget.CardView>
     </LinearLayout>
 

@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import uz.idea.domain.database.actProductEntity.ActProductEntity
+import uz.idea.domain.models.createActModel.CreateActModel
+import uz.idea.domain.models.uniqId.UniqId
 import uz.idea.domain.models.userInfo.ActiveCompanyInfo
 import uz.idea.domain.models.userInfo.UserInfoModel
 import uz.idea.domain.repositories.apiRepository.ApiRepository
@@ -22,6 +24,7 @@ import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.API
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.EMPTY_MAP
 import uz.idea.newinvoiceapplication.utils.extension.isNotEmptyOrNull
+import uz.idea.newinvoiceapplication.utils.extension.logData
 import uz.idea.newinvoiceapplication.utils.extension.parseClass
 import uz.idea.newinvoiceapplication.utils.myshared.MySharedPreferences
 import uz.idea.newinvoiceapplication.utils.networkHelper.NetworkHelper
@@ -29,6 +32,8 @@ import javax.inject.Inject
 const val COMPANY_INFO = "rouming/company/info"
 const val BRANCHES = "rouming/branch/info"
 const val PRODUCT_PATH = "provider/tasnif"
+const val UNIQUE_PATH = "utils/get/id"
+const val ACT_PATH = "documents/act/save"
 @HiltViewModel
 class ActViewModel @Inject constructor(
     private val networkHelper: NetworkHelper,
@@ -109,16 +114,56 @@ class ActViewModel @Inject constructor(
         }
     }
 
+
+
+    // unique id
+    val uniqueId:StateFlow<ResponseState<List<JsonElement?>>> get() = _uniqueId
+    private val _uniqueId = MutableStateFlow<ResponseState<List<JsonElement?>>>(ResponseState.Loading)
+    fun getUniqueId(lang:String){
+        viewModelScope.launch {
+            if (networkHelper.isNetworkConnected()){
+                val url = "/$API/$lang/$UNIQUE_PATH"
+                _uniqueId.emit(ResponseState.Loading)
+                actUsesCase.getDoubleUniqueId(url, EMPTY_MAP).collect { response->
+                    _uniqueId.emit(response)
+                }
+            }else{
+                _uniqueId.emit(ResponseState.Error(NetworkErrorException(AppConstant.NO_INTERNET,"")))
+            }
+        }
+    }
+
+
+
+    // save act
+    val saveAct:StateFlow<ResponseState<JsonElement?>> get() = _saveAct
+    private val _saveAct = MutableStateFlow<ResponseState<JsonElement?>>(ResponseState.Loading)
+
+    fun saveAct(lang:String,createActModel: CreateActModel) = viewModelScope.launch {
+        if (networkHelper.isNetworkConnected()){
+            val url = "/$API/$lang/$ACT_PATH"
+            _saveAct.emit(ResponseState.Loading)
+                apiUsesCase.methodePOST(url,createActModel, EMPTY_MAP).collect { response->
+                    _saveAct.emit(response)
+                }
+        }else {
+            _saveAct.emit(ResponseState.Error(NetworkErrorException(AppConstant.NO_INTERNET,"")))
+        }
+    }
+
     // measure
     fun getMeasure() = measureRepo.getAllMeasureEntity()
 
     // save act product
     fun saveActProduct(actProductEntity: ActProductEntity) = actProductRepo.saveProduct(actProductEntity)
+    // update act product
+    fun updateActProduct(actProductEntity: ActProductEntity) = actProductRepo.updateProduct(actProductEntity)
     // delete product
     fun deleteActProduct(actProductEntity: ActProductEntity) = actProductRepo.deleteProduct(actProductEntity)
     // get all product
     fun getAllActProduct() = actProductRepo.getAllProductEntity()
+
     // delete table
-    fun getDeleteTable() = actProductRepo.deleteTableActProduct()
+    fun deleteTableActProduct() = actProductRepo.deleteTableActProduct()
 
 }

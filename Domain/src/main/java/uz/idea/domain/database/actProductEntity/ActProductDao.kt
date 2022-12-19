@@ -6,6 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface ActProductDao {
@@ -14,6 +15,10 @@ interface ActProductDao {
 
    @Delete
     fun deleteProduct(productEntity: ActProductEntity)
+
+    @Update
+    fun updateProduct(productEntity: ActProductEntity)
+
 
     @Query("SELECT*FROM ActProductEntity")
     fun getAllActProductEntity():LiveData<List<ActProductEntity>>

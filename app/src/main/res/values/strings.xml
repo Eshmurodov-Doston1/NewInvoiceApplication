@@ -37,7 +37,7 @@
     <string name="search">Қидирув...</string>
     <string name="branch_name">Филиал номи</string>
     <string name="address">Манзил</string>
-<!--    Act Description-->
+    <!--    Act Description-->
     <string name="act_description1">Биз, қуйида имзо чекувчилар,</string>
     <string name="act_description2">бундан кейин Пудратчи деб юритилади, бир томондан, ва</string>
     <string name="act_description3">бундан кейин Буюртмачи деб юритилади, бошқа томондан, иш Буюртмачининг шартларига мувофиқ тўлиқ бажарилганлиги тўғрисида ушбу Сертификатни туздилар.</string>
@@ -47,10 +47,27 @@
     <string name="cost">Нархи</string>
     <string name="total_cost_of_work">Ишнинг умумий қиймати:</string>
     <string name="add_product">Продуст қўшиш</string>
-<!--    Act product-->
+    <!--    Act product-->
     <string name="no_act_product_name">Товарларга (ишларга, хизматларга) эслатма мавжуд эмас</string>
     <string name="no_act_product_count">Товар сони мавжуд эмас</string>
     <string name="no_act_product_summa">Сумма мавжуд эмас</string>
     <string name="no_act_product_total_summa">Умумий Сумма мавжуд эмас</string>
     <string name="success_add_product">Продуст сақланди</string>
+    <string name="update">Ўзгартиш</string>
+    <string name="success_update_product">Продуст ўзгартирилди</string>
+    <string name="choose">Танлаш</string>
+    <string name="no_act_number">Акт рақами мавжуд эмас</string>
+    <string name="no_act_data">Акт санаси мавжуд эмас</string>
+    <string name="no_act_description">Акт тавсифи мавжуд эмас</string>
+    <string name="no_contract_number">Шартнома рақами мавжуд эмас</string>
+    <string name="no_contract_date">Шартнома санаси мавжуд эмас</string>
+    <string name="no_buyer_name">Харидор номи мавжуд эмас</string>
+    <string name="no_buyer_tin_or_pinfl">Харидор СТИР/ПИФЛ мавжуд эмас</string>
+    <string name="date_picker">Санани танланг</string>
+    <string name="send">Юбориш</string>
+    <string name="delete">Ўчириш</string>
+    <string name="copy">Кўчириш</string>
+    <string name="update_status">Статусни янгилаш</string>
+    <string name="view">Кўриниш</string>
+
 </resources>

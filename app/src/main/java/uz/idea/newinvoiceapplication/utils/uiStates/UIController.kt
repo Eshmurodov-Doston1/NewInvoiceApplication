@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import uz.idea.domain.models.menuModel.Data
 
 interface UIController {
+    fun loadingSave(isLoading:Boolean)
     fun clickMenu():LiveData<Data>
     fun bottomBarView(isVisible:Boolean)
 }

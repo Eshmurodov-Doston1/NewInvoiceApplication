@@ -83,16 +83,12 @@ class MainActivity : AppCompatActivity(),UIController{
     }
 
 
-    override fun onStart() {
-        super.onStart()
-        saveMeasureData()
-    }
-
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var navHostFragment: NavHostFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        saveMeasureData()
         binding.apply {
             binding.appBarMain.bottomNavigationView.background = null
             binding.appBarMain.bottomNavigationView.menu.findItem(R.id.home).isChecked = true
@@ -156,7 +152,6 @@ class MainActivity : AppCompatActivity(),UIController{
 
 
     fun saveMeasureData(){
-        mainViewModel.getUserData(getLanguage(this@MainActivity))
         containerViewModel.getMeasure(getLanguage(this@MainActivity))
     }
 
@@ -225,6 +220,8 @@ class MainActivity : AppCompatActivity(),UIController{
                         slideUp(fab)
                     }
                 }else{
+                    bottomAppBar.gone()
+                    fab.gone()
                     if (bottomAppBar.isVisible && fab.isVisible){
                         slideDown(bottomAppBar)
                         slideDown(fab)
@@ -285,6 +282,8 @@ class MainActivity : AppCompatActivity(),UIController{
         }
     }
 
+
+
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
@@ -320,6 +319,8 @@ class MainActivity : AppCompatActivity(),UIController{
     private fun statusBarColor(color:Int){
         window.statusBarColor = ContextCompat.getColor(this,color)
     }
+
+    override fun loadingSave(isLoading: Boolean) = containerApplication.loadingSaved(isLoading)
 
     override fun clickMenu():LiveData<Data> = liveData
 

@@ -20,4 +20,9 @@
         android:label="Filter"
         android:name="uz.idea.newinvoiceapplication.presentation.screens.filterScreen.FilterFragment"
         tools:layout="@layout/fragment_filter" />
+    <fragment
+        android:id="@+id/documentFragment"
+        android:name="uz.idea.newinvoiceapplication.presentation.screens.docDataScreen.DocumentInfoFragment"
+        android:label="Document"
+        tools:layout="@layout/fragment_document_info" />
 </navigation>

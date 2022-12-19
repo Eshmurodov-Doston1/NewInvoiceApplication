@@ -9,18 +9,24 @@ import kotlinx.coroutines.launch
 import uz.idea.newinvoiceapplication.databinding.FragmentHomeBinding
 import uz.idea.newinvoiceapplication.presentation.controllers.actController.ActUiController
 import uz.idea.newinvoiceapplication.presentation.screens.baseFragment.BaseFragment
+import uz.idea.newinvoiceapplication.utils.extension.getLanguage
 import uz.idea.newinvoiceapplication.vm.actVm.ActViewModel
+import uz.idea.newinvoiceapplication.vm.mainVM.MainViewModel
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     // act controller
     private lateinit var actUIController: ActUiController
-
+    // act view Model
     private val actViewModel:ActViewModel by viewModels()
+    // main view model
+    private val mainViewModel:MainViewModel by viewModels()
+
     override fun init() {
         binding.apply {
+            mainViewModel.getUserData(getLanguage(requireContext()))
 
-             lifecycleScope.launch {
+             lifecycleScope.launchWhenCreated {
                  mainActivity.containerViewModel.children.collect { children->
                      when(children?.path){
                          "/acts/add"->{
@@ -29,10 +35,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                      }
                  }
              }
-
-
-
-
         }
     }
 

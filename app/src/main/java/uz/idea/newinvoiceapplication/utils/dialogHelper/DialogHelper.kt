@@ -87,7 +87,6 @@ class DialogHelper(
         }
     }
 
-
     fun <T> isSearch(textSearch:String?,isSearch:Boolean,listData:List<T>):List<T>{
         val listBranchFilter = LinkedList<T>()
         if (isSearch){

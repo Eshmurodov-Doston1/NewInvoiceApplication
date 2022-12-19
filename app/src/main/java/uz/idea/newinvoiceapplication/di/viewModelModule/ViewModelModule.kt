@@ -12,6 +12,7 @@ import uz.idea.newinvoiceapplication.vm.actVm.ActViewModel
 import uz.idea.newinvoiceapplication.vm.authVm.AuthViewModel
 import uz.idea.newinvoiceapplication.vm.containerVm.ContainerViewModel
 import uz.idea.newinvoiceapplication.vm.mainVM.MainViewModel
+import uz.idea.newinvoiceapplication.vm.settingsViewModel.SettingsViewModel
 import uz.idea.newinvoiceapplication.vm.vmFactory.ViewModelFactory
 
 @Module
@@ -36,6 +37,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ContainerViewModel::class)
     abstract fun bindsActViewModel(actViewModel: ActViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SettingsViewModel::class)
+    abstract fun bindsSettingsViewModel(settingsViewModel: SettingsViewModel): ViewModel
 
     @Binds
     abstract fun bindsViewModelFactory(viewModelFactory: ViewModelFactory): ViewModelProvider.Factory
