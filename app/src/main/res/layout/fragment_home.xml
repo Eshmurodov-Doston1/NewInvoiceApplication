@@ -9,4 +9,17 @@
         android:id="@+id/include_act_create"
         layout="@layout/act_create_view"/>
 
+    <include
+        android:id="@+id/include_act_draft"
+        layout="@layout/act_draft"/>
+
+    <include
+        android:id="@+id/include_act_incoming"
+        layout="@layout/act_incoming"/>
+
+    <include
+        android:id="@+id/include_act_sent"
+        layout="@layout/act_send"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

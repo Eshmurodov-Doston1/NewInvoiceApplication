@@ -32,6 +32,7 @@ object AppConstant {
     const val DEFAULT_CLICK_TYPE = 1
     const val EDITE_CLICK = 2
     const val DELETE_CLICK = 3
+    const val CLICK_TYPE_SIGNED = 4
 
     const val DOCUMENT_ID = "document_id"
     const val DOC_STATUS = "document_status"

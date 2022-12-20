@@ -8,7 +8,11 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import retrofit2.http.Body
 import uz.idea.domain.database.actProductEntity.ActProductEntity
+import uz.idea.domain.models.act.actDraftModel.actDraftFilter.ActDraftFilter
+import uz.idea.domain.models.act.actIncoming.incomingFilterModule.IncomingFilterModel
+import uz.idea.domain.models.act.actSend.actSendFilter.ActSendFilter
 import uz.idea.domain.models.createActModel.CreateActModel
 import uz.idea.domain.models.uniqId.UniqId
 import uz.idea.domain.models.userInfo.ActiveCompanyInfo
@@ -18,6 +22,7 @@ import uz.idea.domain.repositories.dataBaseRepository.actProductRepo.ActProductR
 import uz.idea.domain.repositories.dataBaseRepository.measureRepo.MeasureRepo
 import uz.idea.domain.usesCase.actUsesCase.ActUsesCase
 import uz.idea.domain.usesCase.apiUsesCase.ApiUsesCase
+import uz.idea.domain.usesCase.pagingUsesCase.actPaging.DraftPagingUsesCase
 import uz.idea.domain.utils.NetworkErrorException
 import uz.idea.domain.utils.loadState.ResponseState
 import uz.idea.newinvoiceapplication.databinding.FragmentHomeBinding
@@ -45,7 +50,8 @@ class ActViewModel @Inject constructor(
     private val actUsesCase: ActUsesCase,
     private val mySharedPreferences: MySharedPreferences,
     private val measureRepo: MeasureRepo,
-    private val actProductRepo: ActProductRepo
+    private val actProductRepo: ActProductRepo,
+    private val draftPagingUsesCase: DraftPagingUsesCase
 ):ViewModel() {
     fun getUserData() = mySharedPreferences.userData?.parseClass(UserInfoModel::class.java)
 
@@ -157,6 +163,17 @@ class ActViewModel @Inject constructor(
             _saveAct.emit(ResponseState.Error(NetworkErrorException(AppConstant.NO_INTERNET,"")))
         }
     }
+
+
+    // act draft
+    fun actDraftData(lang:String,body: ActDraftFilter)
+    = draftPagingUsesCase.getDraftData("/$API/$lang/documents/act/draft",body, EMPTY_MAP)
+ // act Incoming
+    fun actIncomingData(lang:String,body: IncomingFilterModel)
+    = draftPagingUsesCase.getIncomingData("/$API/$lang/documents/act/receive",body, EMPTY_MAP)
+    // act send
+    fun actSendData(lang:String,body: ActSendFilter)
+    = draftPagingUsesCase.getActSendData("/$API/$lang/documents/act/send",body, EMPTY_MAP)
 
     // measure
     fun getMeasure() = measureRepo.getAllMeasureEntity()

@@ -94,5 +94,15 @@
     <string name="act_summa">Акт бўйича қабул қилинган ишнинг қиймати:</string>
     <string name="executor">Ижрочи</string>
     <string name="customer">Мижоз</string>
+    <string name="signing">Имзолаш</string>
+    <string name="created">Яратилган</string>
+    <string name="inn">INN</string>
+    <string name="money_type">сўм</string>
+    <string name="retry">Қайта уруниш</string>
+    <string name="partner_signature">шерикнинг имзосини кутинг</string>
+    <string name="cancelled_by_send">жўнатувчи томонидан бекор қилинган</string>
+    <string name="rejected_by_partner">шерик томонидан рад этилган</string>
+    <string name="accepted_by_partner">ҳамкор томонидан қабул қилинади</string>
+
 
 </resources>

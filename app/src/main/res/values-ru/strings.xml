@@ -99,4 +99,13 @@
     <string name="act_summa">Стоимость принятой работы по акту составляет:</string>
     <string name="executor">Исполнитель</string>
     <string name="customer">Заказчик</string>
+    <string name="signing">Подписание</string>
+    <string name="created">Создано</string>
+    <string name="inn">INN</string>
+    <string name="money_type">сўм</string>
+    <string name="retry">Попробуй снова</string>
+    <string name="partner_signature">ожидать подпись партнеру</string>
+    <string name="cancelled_by_send">отменено отправителем</string>
+    <string name="rejected_by_partner">отклонено партнёром</string>
+    <string name="accepted_by_partner">принято партнёром</string>
 </resources>

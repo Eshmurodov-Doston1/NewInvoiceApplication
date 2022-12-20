@@ -13,7 +13,7 @@ data class Data(
     val filter: Filter,
     val isdraft: Int,
     val notes: Any,
-    val payabletotal: Int,
+    val payabletotal: String,
     val productlist: Productlist,
     val sellerbranchcode: String,
     val sellerbranchname: String?=null,

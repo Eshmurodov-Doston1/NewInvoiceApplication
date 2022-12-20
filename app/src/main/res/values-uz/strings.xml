@@ -97,8 +97,15 @@
     <string name="act_summa">Akt bo\'yicha qabul qilingan ishning qiymati:</string>
     <string name="executor">Ijrochi</string>
     <string name="customer">Mijoz</string>
-
-
+    <string name="signing">Imzolash</string>
+    <string name="created">Yaratilgan</string>
+    <string name="inn">INN</string>
+    <string name="money_type">so\'m</string>
+    <string name="retry">Qayta urunish</string>
+    <string name="partner_signature">sherikning imzosini kuting</string>
+    <string name="cancelled_by_send">jo\'natuvchi tomonidan bekor qilingan</string>
+    <string name="rejected_by_partner">sherik tomonidan rad etilgan</string>
+    <string name="accepted_by_partner">hamkor tomonidan qabul qilinadi</string>
 
 
 </resources>
