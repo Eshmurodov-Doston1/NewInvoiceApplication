@@ -78,5 +78,9 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.8.0-beta01'
     implementation 'com.github.clans:fab:1.6.4'
+    // shimmerLayout
+    implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    // zoom view
+    implementation 'com.github.shopgun:zoomlayout:3.0.0'
 
 }

@@ -2,14 +2,11 @@ package uz.idea.newinvoiceapplication.presentation.screens.docDataScreen
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import uz.idea.domain.models.documents.actDocument.ActDocument
 import uz.idea.domain.models.localeClass.table.ActCreateTable
 import uz.idea.domain.utils.loadState.ResponseState
@@ -22,8 +19,7 @@ import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.DOC_STATUS
 import uz.idea.newinvoiceapplication.utils.extension.*
 import uz.idea.newinvoiceapplication.vm.documnetVm.DocumentViewModel
 import java.math.BigDecimal
-import java.math.BigInteger
-import java.util.LinkedList
+import java.util.*
 
 @AndroidEntryPoint
 class DocumentInfoFragment : BaseFragment<FragmentDocumentInfoBinding>() {
@@ -61,7 +57,8 @@ class DocumentInfoFragment : BaseFragment<FragmentDocumentInfoBinding>() {
                                 }
                                 is ResponseState.Success->{
                                     progress.gone()
-                                    val actDocument = result.data?.parseClass(ActDocument::class.java)
+                                    logData(result.data.toString())
+                                     val actDocument = result.data?.parseClass(ActDocument::class.java)
                                     includeActCreateDoc.idDoc.text = "ID: ${actDocument?.data?._id}"
                                     includeActCreateDoc.actNumber.text = "${getString(R.string.act)} № ${actDocument?.data?.actdoc?.actno} \n ${getString(R.string.from)} ${getDateFormat(actDocument?.data?.actdoc?.actdate.toString(),requireContext())}"
                                     includeActCreateDoc.contractNumber.text = "${getString(R.string.contract)} № ${actDocument?.data?.contractdoc?.contractno} \n ${getString(R.string.from)} ${getDateFormat(actDocument?.data?.contractdoc?.contractdate.toString(),requireContext())}"
@@ -88,11 +85,11 @@ class DocumentInfoFragment : BaseFragment<FragmentDocumentInfoBinding>() {
         getString(R.string.count_table),getString(R.string.summa_product_table),getString(R.string.summa_total_table)))
         var allSumma = BigDecimal(0)
         actDocument?.data?.productlist?.products?.onEach {  product->
-            actCreateTableList.add(ActCreateTable(product.ordno,"${product.catalogcode} - ${product.catalogname}",product.name,documentViewModel.getMeasure(product.measureid).name, product.count, product.summa, product.totalsum))
+            actCreateTableList.add(ActCreateTable(product.ordno,"${product.catalogcode?:""} - ${product.catalogname?:""}",product.name,documentViewModel.getMeasure(product.measureid).name, product.count.toDouble().toString(), product.summa.toDouble().numberFormatter(), product.totalsum.toDouble().numberFormatter()))
             allSumma +=  BigDecimal(product.totalsum.toDouble())
         }
         binding.includeActCreateDoc.totalSumma.text = allSumma.toPlainString()
-        binding.includeActCreateDoc.textActSumma.text = "${getString(R.string.act_summa)} $allSumma"
+        binding.includeActCreateDoc.textActSumma.text = "${getString(R.string.act_summa)} ${actDocument?.data?.payabletotal?.toDouble()?.numberFormatter()}"
         var sellerBranch =""
         var buyerBranch =""
         if (actDocument?.data?.sellerbranchname.toString() != "null"){
@@ -106,4 +103,7 @@ class DocumentInfoFragment : BaseFragment<FragmentDocumentInfoBinding>() {
         tableAdapter.submitList(actCreateTableList)
         return actCreateTableList
     }
+
+
+
 }

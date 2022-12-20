@@ -52,8 +52,10 @@
             android:textStyle="normal"
             android:gravity="center"
             android:textSize="@dimen/_10sdp"
+            android:minWidth="@dimen/_100sdp"
+            android:maxWidth="@dimen/_500sdp"
             android:text="Наименование работ (услуг)"
-            android:layout_width="@dimen/_100sdp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <View
             android:background="@color/line_color"

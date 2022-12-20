@@ -8,224 +8,224 @@
         android:id="@+id/nested"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_marginHorizontal="@dimen/_6sdp"
-                android:id="@+id/id_doc"
-                app:layout_constraintTop_toTopOf="parent"
-                android:padding="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:textColor="@color/text_color"
-                android:textStyle="normal"
-                android:textSize="@dimen/_13sdp"
-                android:fontFamily="@font/inter_medium"
-                android:text="ID: 63a0b30a0cb9a032e80d2182 "
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/name_doc"
-                android:layout_marginHorizontal="@dimen/_6sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:gravity="center"
-                android:fontFamily="@font/inter_medium"
-                android:text="@string/text_act"
-                android:textSize="@dimen/_12sdp"
-                android:textStyle="bold"
-                android:textColor="@color/text_color"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
             <androidx.appcompat.widget.LinearLayoutCompat
-                android:id="@+id/linear"
-                android:gravity="center"
-                android:layout_marginHorizontal="@dimen/_6sdp"
-                android:orientation="horizontal"
-                android:layout_marginTop="@dimen/_8sdp"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
                 <TextView
-                    android:id="@+id/act_number"
-                    android:layout_weight="1"
-                    android:layout_marginEnd="@dimen/_3sdp"
+                    android:layout_marginHorizontal="@dimen/_6sdp"
+                    android:id="@+id/id_doc"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:padding="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:textColor="@color/text_color"
                     android:textStyle="normal"
-                    android:textSize="@dimen/_9sdp"
-                    android:textIsSelectable="true"
-                    android:focusable="true"
-                    android:longClickable="true"
+                    android:textSize="@dimen/_13sdp"
                     android:fontFamily="@font/inter_medium"
+                    android:text="ID: 63a0b30a0cb9a032e80d2182 "
                     android:gravity="center"
-                    android:text="Akt № 12 \n ot 10 mart 2020"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <TextView
-                    android:id="@+id/contract_number"
-                    android:textSize="@dimen/_9sdp"
+                    android:id="@+id/name_doc"
+                    android:layout_marginHorizontal="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:gravity="center"
-                    android:layout_marginStart="@dimen/_3sdp"
-                    android:textStyle="normal"
-                    android:textColor="@color/text_color"
                     android:fontFamily="@font/inter_medium"
-                    android:text="Договор № 45 \n от 10 марта 2020"
-                    android:layout_weight="1"
+                    android:text="@string/text_act"
+                    android:textSize="@dimen/_12sdp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text_color"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <TextView
-                android:id="@+id/text_act"
-                android:textSize="@dimen/_11sdp"
-                android:gravity="center"
-                android:textStyle="normal"
-                android:textColor="@color/text_color"
-                android:text="@string/text_act"
-                android:paddingHorizontal="@dimen/_10sdp"
-                android:layout_marginHorizontal="@dimen/_6sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <HorizontalScrollView
-                android:scrollbars="none"
-                android:overScrollMode="never"
-                android:id="@+id/horizontal_scroll"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:orientation="vertical"
+                    android:id="@+id/linear"
+                    android:gravity="center"
+                    android:layout_marginHorizontal="@dimen/_6sdp"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/_8sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_data"
-                        android:background="@drawable/bac_doc"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        tools:listitem="@layout/item_act_doc"
-                        android:nestedScrollingEnabled="false"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        tools:itemCount="3"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/act_number"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="@dimen/_3sdp"
+                        android:textColor="@color/text_color"
+                        android:textStyle="normal"
+                        android:textSize="@dimen/_9sdp"
+                        android:textIsSelectable="true"
+                        android:focusable="true"
+                        android:longClickable="true"
+                        android:fontFamily="@font/inter_medium"
+                        android:gravity="center"
+                        android:text="Akt № 12 \n ot 10 mart 2020"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"/>
-                    <androidx.appcompat.widget.LinearLayoutCompat
-                        android:orientation="horizontal"
+                    <TextView
+                        android:id="@+id/contract_number"
+                        android:textSize="@dimen/_9sdp"
+                        android:gravity="center"
+                        android:layout_marginStart="@dimen/_3sdp"
+                        android:textStyle="normal"
+                        android:textColor="@color/text_color"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="Договор № 45 \n от 10 марта 2020"
+                        android:layout_weight="1"
                         android:layout_width="match_parent"
-                        android:layout_marginHorizontal="@dimen/_10sdp"
-                        android:background="@drawable/bac_doc"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/all"
-                            android:textColor="@color/text_color"
-                            android:textStyle="bold"
-                            android:paddingVertical="@dimen/_3sdp"
-                            android:textSize="@dimen/_10sdp"
-                            android:text="@string/total"
-                            android:gravity="end"
-                            android:fontFamily="@font/inter_medium"
-                            android:layout_weight="1"
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-                        <View
-                            android:background="@color/line_color"
-                            android:layout_width="1dp"
-                            android:layout_height="match_parent"/>
-                        <TextView
-                            android:id="@+id/total_summa"
-                            android:textColor="@color/text_color"
-                            android:textStyle="normal"
-                            android:paddingVertical="@dimen/_3sdp"
-                            android:textSize="@dimen/_10sdp"
-                            android:text="1 500 000"
-                            android:gravity="center"
-                            android:fontFamily="@font/inter_medium"
-                            android:layout_weight="3"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
-                    </androidx.appcompat.widget.LinearLayoutCompat>
+                        android:layout_height="wrap_content"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
-            </HorizontalScrollView>
-            <TextView
-                android:id="@+id/text_doc"
-                android:textSize="@dimen/_10sdp"
-                android:gravity="start"
-                android:fontFamily="@font/inter_medium"
-                android:textStyle="normal"
-                android:textColor="@color/text_color"
-                android:text="@string/no_cure"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:id="@+id/text_act_summa"
-                android:textSize="@dimen/_10sdp"
-                android:gravity="start"
-                android:textStyle="normal"
-                android:textColor="@color/text_color"
-                android:text="@string/act_summa"
-                android:fontFamily="@font/inter_medium"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginBottom="@dimen/_5sdp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
                 <TextView
+                    android:id="@+id/text_act"
                     android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold"
-                    android:fontFamily="@font/inter_medium"
-                    android:text="@string/executor"
-                    android:layout_marginEnd="@dimen/_2sdp"
-                    android:textColor="@color/text_color"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:textSize="@dimen/_11sdp"
-                    android:textStyle="bold"
-                    android:layout_marginStart="@dimen/_2sdp"
-                    android:fontFamily="@font/inter_medium"
-                    android:text="@string/customer"
-                    android:textColor="@color/text_color"
-                    android:layout_weight="1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            </androidx.appcompat.widget.LinearLayoutCompat>
-            <androidx.appcompat.widget.LinearLayoutCompat
-                android:orientation="horizontal"
-                android:layout_marginVertical="@dimen/_5sdp"
-                android:layout_marginHorizontal="@dimen/_8sdp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/executor_name"
-                    android:textSize="@dimen/_9sdp"
+                    android:gravity="center"
                     android:textStyle="normal"
-                    android:fontFamily="@font/inter_medium"
-                    android:text="@string/executor"
-                    android:layout_marginEnd="@dimen/_2sdp"
                     android:textColor="@color/text_color"
-                    android:layout_weight="1"
+                    android:text="@string/text_act"
+                    android:paddingHorizontal="@dimen/_10sdp"
+                    android:layout_marginHorizontal="@dimen/_6sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <HorizontalScrollView
+                    android:scrollbars="none"
+                    android:overScrollMode="never"
+                    android:id="@+id/horizontal_scroll"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_data"
+                            android:background="@drawable/bac_doc"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            tools:listitem="@layout/item_act_doc"
+                            android:nestedScrollingEnabled="false"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            tools:itemCount="3"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_marginHorizontal="@dimen/_10sdp"
+                            android:background="@drawable/bac_doc"
+                            android:layout_height="wrap_content">
+                            <TextView
+                                android:id="@+id/all"
+                                android:textColor="@color/text_color"
+                                android:textStyle="bold"
+                                android:paddingVertical="@dimen/_3sdp"
+                                android:textSize="@dimen/_10sdp"
+                                android:text="@string/total"
+                                android:gravity="end"
+                                android:fontFamily="@font/inter_medium"
+                                android:layout_weight="1"
+                                android:layout_marginEnd="@dimen/_5sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                            <View
+                                android:background="@color/line_color"
+                                android:layout_width="1dp"
+                                android:layout_height="match_parent"/>
+                            <TextView
+                                android:id="@+id/total_summa"
+                                android:textColor="@color/text_color"
+                                android:textStyle="normal"
+                                android:paddingVertical="@dimen/_3sdp"
+                                android:textSize="@dimen/_10sdp"
+                                android:text="1 500 000"
+                                android:gravity="center"
+                                android:fontFamily="@font/inter_medium"
+                                android:layout_weight="3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"/>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+                </HorizontalScrollView>
+                <TextView
+                    android:id="@+id/text_doc"
+                    android:textSize="@dimen/_10sdp"
+                    android:gravity="start"
+                    android:fontFamily="@font/inter_medium"
+                    android:textStyle="normal"
+                    android:textColor="@color/text_color"
+                    android:text="@string/no_cure"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
                 <TextView
-                    android:id="@+id/customer_name"
-                    android:textSize="@dimen/_9sdp"
+                    android:id="@+id/text_act_summa"
+                    android:textSize="@dimen/_10sdp"
+                    android:gravity="start"
                     android:textStyle="normal"
-                    android:layout_marginStart="@dimen/_2sdp"
-                    android:fontFamily="@font/inter_medium"
-                    android:text="@string/customer"
                     android:textColor="@color/text_color"
-                    android:layout_weight="1"
+                    android:text="@string/act_summa"
+                    android:fontFamily="@font/inter_medium"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:textSize="@dimen/_11sdp"
+                        android:textStyle="bold"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="@string/executor"
+                        android:layout_marginEnd="@dimen/_2sdp"
+                        android:textColor="@color/text_color"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:textSize="@dimen/_11sdp"
+                        android:textStyle="bold"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="@string/customer"
+                        android:textColor="@color/text_color"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="horizontal"
+                    android:layout_marginVertical="@dimen/_5sdp"
+                    android:layout_marginHorizontal="@dimen/_8sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/executor_name"
+                        android:textSize="@dimen/_9sdp"
+                        android:textStyle="normal"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="@string/executor"
+                        android:layout_marginEnd="@dimen/_2sdp"
+                        android:textColor="@color/text_color"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/customer_name"
+                        android:textSize="@dimen/_9sdp"
+                        android:textStyle="normal"
+                        android:layout_marginStart="@dimen/_2sdp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="@string/customer"
+                        android:textColor="@color/text_color"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
             </androidx.appcompat.widget.LinearLayoutCompat>
-        </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

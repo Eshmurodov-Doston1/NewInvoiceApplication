@@ -26,6 +26,8 @@ import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.UZ
 import uz.idea.newinvoiceapplication.utils.language.LocaleManager
 import java.math.BigDecimal
 import java.math.RoundingMode
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -140,6 +142,56 @@ fun slideDown(view: View) {
                 view.translationY = 0f
             }
         })
+}
+
+/**
+ *
+ * const list = {
+draft: [
+{
+stateid: 0,
+label: 'Создано'
+}
+],
+send_receive: [
+{
+stateid: 15,
+label: 'ожидает подписи партнёра'
+},
+{
+stateid: 17,
+label: 'отменено отправителем'
+},
+{
+stateid: 20,
+label: 'отклонено партнёром'
+},
+{
+stateid: 30,
+label: 'принято партнёром'
+}
+],
+queue: [
+{
+stateid: 1,
+label: 'в процесс отправки'
+},
+{
+stateid: 2,
+label: 'ошибка при отправки'
+}
+]
+}
+
+ * */
+
+
+fun Double.numberFormatter():String{
+    val fmt = DecimalFormat()
+    val fmts = DecimalFormatSymbols()
+    fmts.groupingSeparator = ' '
+    fmt.decimalFormatSymbols = fmts
+    return fmt.format(this)
 }
 
 fun getDateFormat(str:String,context: Context):String{

@@ -1,17 +1,23 @@
 package uz.idea.newinvoiceapplication.presentation.controllers.actController
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
 import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.github.razir.progressbutton.attachTextChangeAnimator
 import com.github.razir.progressbutton.bindProgressButton
 import com.github.razir.progressbutton.hideProgress
@@ -20,11 +26,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.launch
 import okhttp3.internal.format
 import okhttp3.internal.wait
 import uz.idea.domain.database.actProductEntity.ActProductEntity
 import uz.idea.domain.database.measure.MeasureEntity
+import uz.idea.domain.models.act.actDraftModel.actDraftFilter.ActDraftFilter
+import uz.idea.domain.models.act.actIncoming.incomingFilterModule.IncomingFilterModel
+import uz.idea.domain.models.act.actSend.actSendFilter.ActSendFilter
 import uz.idea.domain.models.branchModel.BranchModel
 import uz.idea.domain.models.branchModel.Data
 import uz.idea.domain.models.companyInfo.CompanyInfo
@@ -38,9 +49,12 @@ import uz.idea.domain.models.uniqId.UniqId
 import uz.idea.domain.usesCase.apiUsesCase.parseClass
 import uz.idea.domain.utils.loadState.ResponseState
 import uz.idea.newinvoiceapplication.R
+import uz.idea.newinvoiceapplication.adapters.genericPagingAdapter.GenericPagingAdapter
 import uz.idea.newinvoiceapplication.adapters.genericRvAdapter.GenericRvAdapter
+import uz.idea.newinvoiceapplication.adapters.loadState.ExampleLoadStateAdapter
 import uz.idea.newinvoiceapplication.databinding.ActCreateViewBinding
 import uz.idea.newinvoiceapplication.databinding.AddProductActBinding
+import uz.idea.newinvoiceapplication.databinding.FragmentHomeBinding
 import uz.idea.newinvoiceapplication.presentation.activities.MainActivity
 import uz.idea.newinvoiceapplication.presentation.screens.homeScreen.HomeFragment
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant
@@ -56,7 +70,7 @@ import kotlin.math.abs
 
 class ActUiController(
     private val mainActivity: MainActivity,
-    private val actCreateViewBinding: ActCreateViewBinding,
+    private val binding:FragmentHomeBinding,
     private val actViewModel: ActViewModel,
     private val homeFragment: HomeFragment
 ):ActController{
@@ -76,9 +90,9 @@ class ActUiController(
     private var actDateContract:String?=null
     override fun createAct() {
 
-
         // date picker
-        actCreateViewBinding.apply {
+        binding.includeActCreate.apply {
+            consActCreate.visible()
             // act date
             tvActDate.setOnClickListener {
                datePicker(tvActDate,0)
@@ -214,7 +228,7 @@ class ActUiController(
            homeFragment.lifecycleScope.launchWhenCreated {
                actViewModel.getAllActProduct().collect { listActProduct->
                    productAdapter.submitList(listActProduct)
-                   actCreateViewBinding.recyclerViewProducts.adapter = productAdapter
+                   binding.includeActCreate.recyclerViewProducts.adapter = productAdapter
                }
            }
 
@@ -228,7 +242,7 @@ class ActUiController(
 
     // save act
     private fun saveActData(uniqueId:String,uniqueIdProduct:String){
-        actCreateViewBinding.apply {
+         binding.includeActCreate.apply {
             val actNumber = editActno.text.toString().trim()
             val actDate = tvActDate.text.toString().trim()
             val actText = editActText.text.toString().trim()
@@ -259,16 +273,16 @@ class ActUiController(
                 val sellerBranchName = branchDataMainSeller?.branchName
                 // buyer data Act
                 var buyerNameData:String?=null
-                if (!actCreateViewBinding.editBuyerName.text.toString().isNotEmptyOrNull()) {
+                if (! binding.includeActCreate.editBuyerName.text.toString().isNotEmptyOrNull()) {
                     mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_buyer_name))
                 } else {
-                   buyerNameData = actCreateViewBinding.editBuyerName.text.toString()
+                   buyerNameData =  binding.includeActCreate.editBuyerName.text.toString()
                 }
                 var buyerTinOrPinfl:String?=null
-                    if (!actCreateViewBinding.editBuyerTinOrPinfl.text.toString().isNotEmptyOrNull()) {
+                if (! binding.includeActCreate.editBuyerTinOrPinfl.text.toString().isNotEmptyOrNull()) {
                     mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_buyer_tin_or_pinfl))
                 }else{
-                    buyerTinOrPinfl = actCreateViewBinding.editBuyerTinOrPinfl.text.toString()
+                    buyerTinOrPinfl =  binding.includeActCreate.editBuyerTinOrPinfl.text.toString()
                 }
                 val buyerBranchCode = branchDataMainBuyer?.branchNum
                 val buyerBranchName = branchDataMainBuyer?.branchName
@@ -297,13 +311,13 @@ class ActUiController(
                         actViewModel.saveAct.collect { result->
                             when(result){
                                 is ResponseState.Loading->{
-                                    actCreateViewBinding.btnSave.enabledFalse()
+                                     binding.includeActCreate.btnSave.enabledFalse()
                                     mainActivity.loadingSave(true)
                                 }
                                 is ResponseState.Success->{
                                     loadingButton(false)
                                     mainActivity.loadingSave(false)
-                                    actCreateViewBinding.btnSave.enabled()
+                                     binding.includeActCreate.btnSave.enabled()
                                     actViewModel.deleteTableActProduct()
                                     clearUiActCreate(result.data)
                                     logData("SaveActData->${result.data.toString()}")
@@ -311,7 +325,7 @@ class ActUiController(
                                 is ResponseState.Error->{
                                     loadingButton(false)
                                     mainActivity.loadingSave(false)
-                                    actCreateViewBinding.btnSave.enabled()
+                                     binding.includeActCreate.btnSave.enabled()
                                     if (result.exception.localizedMessage.isNotEmptyOrNull()){
                                         val errorAuth = JsonParser.parseString(result.exception.localizedMessage).asJsonObject
                                         mainActivity.containerApplication.dialogData(AppConstant.MENU_ERROR,errorAuth){ clickType->
@@ -333,7 +347,7 @@ class ActUiController(
 
 
     private fun clearUiActCreate(jsonElement: JsonElement?){
-        actCreateViewBinding.apply {
+         binding.includeActCreate.apply {
             editActno.text.clear()
             tvActDate.text = ""
             editContractno.text.clear()
@@ -349,9 +363,9 @@ class ActUiController(
     @SuppressLint("SetTextI18n")
     private fun descriptionText(){
         if(companyInfoMain?.data?.shortName.isNotEmptyOrNull() && buyerName.isNotEmptyOrNull()){
-            actCreateViewBinding.editActText.setText("${mainActivity.getText(R.string.act_description1)} ${companyInfoMain?.data?.shortName} ${if (branchDataMainSeller!=null) "-"+branchDataMainSeller?.branchName else ""}${mainActivity.getText(R.string.act_description2)} $buyerName  ${if (branchDataMainBuyer != null) "-"+ branchDataMainBuyer?.branchName else ""}, ${mainActivity.getText(R.string.act_description3)}")
+             binding.includeActCreate.editActText.setText("${mainActivity.getText(R.string.act_description1)} ${companyInfoMain?.data?.shortName} ${if (branchDataMainSeller!=null) "-"+branchDataMainSeller?.branchName else ""}${mainActivity.getText(R.string.act_description2)} $buyerName  ${if (branchDataMainBuyer != null) "-"+ branchDataMainBuyer?.branchName else ""}, ${mainActivity.getText(R.string.act_description3)}")
         } else {
-            actCreateViewBinding.editActText.text.clear()
+             binding.includeActCreate.editActText.text.clear()
         }
     }
 
@@ -360,12 +374,12 @@ class ActUiController(
             actViewModel.buyerData.collect { result->
                 when(result){
                     is ResponseState.Loading->{
-                        actCreateViewBinding.progressBuyerName.visible()
-                        actCreateViewBinding.progressBuyerTin.visible()
+                         binding.includeActCreate.progressBuyerName.visible()
+                         binding.includeActCreate.progressBuyerTin.visible()
                     }
                     is ResponseState.Success->{
-                        actCreateViewBinding.progressBuyerName.gone()
-                        actCreateViewBinding.progressBuyerTin.gone()
+                         binding.includeActCreate.progressBuyerName.gone()
+                         binding.includeActCreate.progressBuyerTin.gone()
 
                         if (tinOrPinfl.toString().trim().length == 9){
                             val juridicOrPhysical = tinOrPinfl.toString().getJuridicOrPhysical()
@@ -373,23 +387,23 @@ class ActUiController(
                             if (juridicOrPhysical){
                                 // agar 4,5,6 bulsa Jismoniy Physical
                                 val physical = result.data[0]?.parseClass(Physical::class.java)
-                                actCreateViewBinding.editBuyerName.setText(physical?.data?.fullName)
+                                 binding.includeActCreate.editBuyerName.setText(physical?.data?.fullName)
                                 if (physical?.data?.personalNum.isNotEmptyOrNull()){
-                                    actCreateViewBinding.editBuyerTinOrPinfl.setText(physical?.data?.personalNum)
+                                     binding.includeActCreate.editBuyerTinOrPinfl.setText(physical?.data?.personalNum)
                                 }
                                 buyerName = physical?.data?.fullName
                                 descriptionText()
                             } else {
                                 // agar text 4,5,6 dan boshqalarida bulsa yuridic legal
                                 val legal = result.data[0]?.parseClass(LegalModel::class.java)
-                                actCreateViewBinding.editBuyerName.setText(legal?.data?.shortName)
+                                 binding.includeActCreate.editBuyerName.setText(legal?.data?.shortName)
                                 buyerName = legal?.data?.shortName
                                 descriptionText()
                             }
                         } else if (tinOrPinfl.toString().trim().length == 14){
                             // agar pinfl bulsa
                             val pinflModel = result.data[0]?.parseClass(PinflModel::class.java)
-                            actCreateViewBinding.editBuyerName.setText(pinflModel?.data?.fullName)
+                             binding.includeActCreate.editBuyerName.setText(pinflModel?.data?.fullName)
                             buyerName = pinflModel?.data?.fullName
                             descriptionText()
                         }
@@ -398,16 +412,16 @@ class ActUiController(
                         if (branches!=null){
                             val branchModel = branches.parseClass(BranchModel::class.java)
                             if(branchModel.data.isNotEmpty()){
-                                actCreateViewBinding.layoutBuyerBranches.visible()
-                                actCreateViewBinding.listBuyerBranches.setOnClickListener {
+                                 binding.includeActCreate.layoutBuyerBranches.visible()
+                                 binding.includeActCreate.listBuyerBranches.setOnClickListener {
                                     mainActivity.containerApplication.applicationDialog(0, branchModel.data){ data ->
                                         branchDataMainBuyer =  data
-                                        actCreateViewBinding.listBuyerBranches.text = data.branchName
-                                        actCreateViewBinding.cancelBuyerBranch.visible()
+                                         binding.includeActCreate.listBuyerBranches.text = data.branchName
+                                         binding.includeActCreate.cancelBuyerBranch.visible()
                                         descriptionText()
-                                        actCreateViewBinding.cancelBuyerBranch.setOnClickListener {
-                                            actCreateViewBinding.cancelBuyerBranch.gone()
-                                            actCreateViewBinding.listBuyerBranches.text = mainActivity.getString(R.string.choose)
+                                         binding.includeActCreate.cancelBuyerBranch.setOnClickListener {
+                                             binding.includeActCreate.cancelBuyerBranch.gone()
+                                             binding.includeActCreate.listBuyerBranches.text = mainActivity.getString(R.string.choose)
                                             branchDataMainBuyer =  null
                                             descriptionText()
                                         }
@@ -419,8 +433,8 @@ class ActUiController(
 
 
                     is ResponseState.Error->{
-                        actCreateViewBinding.progressBuyerName.gone()
-                        actCreateViewBinding.progressBuyerTin.gone()
+                         binding.includeActCreate.progressBuyerName.gone()
+                         binding.includeActCreate.progressBuyerTin.gone()
                     }
                 }
             }
@@ -586,8 +600,6 @@ class ActUiController(
         }
     }
 
-
-
     private fun getUniqueId(){
         actViewModel.getUniqueId(getLanguage(mainActivity))
         homeFragment.lifecycleScope.launchWhenCreated {
@@ -621,27 +633,209 @@ class ActUiController(
     }
 
 
-
+    // Incoming act
+    private val genericPagingAdapterIncoming:GenericPagingAdapter<uz.idea.domain.models.act.actIncoming.actIn.Data> by lazy {
+        GenericPagingAdapter(R.layout.item_draft){ data, position, clickType, viewBinding ->
+            mainActivity.containerApplication.screenNavigate.createDocument(data?._id.toString(),1)
+        }
+    }
     override fun incomingAct() {
+        binding.includeActIncoming.apply {
+            val layoutManager = LinearLayoutManager(mainActivity)
+            rvIncoming.layoutManager = layoutManager
 
+            rvIncoming.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (genericPagingAdapter.itemCount>5){
+                        if (layoutManager.findLastCompletelyVisibleItemPosition() == genericPagingAdapterIncoming.itemCount-1){
+                            mainActivity.bottomBarView(false)
+                        }
+                    }
+                }
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy < 0) {
+                        mainActivity.bottomBarView(true)
+                    }
+                }
+            })
+            val incomingFilter = IncomingFilterModel()
+            pagingDataIncoming(incomingFilter)
+            swipeRefresh.setOnRefreshListener {
+                pagingDataIncoming(incomingFilter)
+            }
+            rvIncoming.adapter = genericPagingAdapterIncoming
+            swipeRefresh.setColorSchemeColors(ContextCompat.getColor(mainActivity,R.color.primary_color))
+        }
+        incomingLoadState()
     }
+    private fun pagingDataIncoming(incomingFilterModel: IncomingFilterModel) {
+        binding.includeActIncoming.apply {
+            homeFragment.lifecycleScope.launchWhenCreated {
+                actViewModel.actIncomingData(lang = getLanguage(mainActivity),incomingFilterModel).collect { pagingData->
+                    genericPagingAdapterIncoming.submitData(pagingData)
+                    swipeRefresh.isRefreshing = false
+                }
+            }
+        }
+    }
+    private fun incomingLoadState(){
+        genericPagingAdapterIncoming
+            .withLoadStateHeaderAndFooter(
+                header = ExampleLoadStateAdapter(R.layout.load_state_draft,genericPagingAdapterIncoming::retry),
+                footer = ExampleLoadStateAdapter(R.layout.load_state_draft,genericPagingAdapterIncoming::retry)
+            )
+        homeFragment.lifecycleScope.launch {
+            genericPagingAdapterIncoming.loadStateFlow.collectLatest {  loadStates ->
+                binding.includeActIncoming.shimmerInclude.shimmer.isVisible = loadStates.refresh is LoadState.Loading
+                binding.includeActIncoming.rvIncoming.isVisible = loadStates.refresh !is LoadState.Loading
+                binding.includeActIncoming.swipeRefresh.isRefreshing = loadStates.refresh is LoadState.Error
+            }
+        }
+    }
+    // Incoming act
 
+
+    // send act
+    private val genericPagingAdapterActSend:GenericPagingAdapter<uz.idea.domain.models.act.actSend.actSendData.Data> by lazy {
+        GenericPagingAdapter(R.layout.item_draft){ data, position, clickType, viewBinding ->
+            mainActivity.containerApplication.screenNavigate.createDocument(data?._id.toString(),1)
+        }
+    }
     override fun outgoingAct() {
+        binding.includeActSent.apply {
+            val layoutManager = LinearLayoutManager(mainActivity)
+            rvActSend.layoutManager = layoutManager
 
+            rvActSend.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (genericPagingAdapter.itemCount>5){
+                        if (layoutManager.findLastCompletelyVisibleItemPosition() == genericPagingAdapterActSend.itemCount-1){
+                            mainActivity.bottomBarView(false)
+                        }
+                    }
+                }
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy < 0) {
+                        mainActivity.bottomBarView(true)
+                    }
+                }
+            })
+
+            val actSendFilter = ActSendFilter()
+            pagingDataActSend(actSendFilter)
+            swipeRefresh.setOnRefreshListener {
+                pagingDataActSend(actSendFilter)
+            }
+            rvActSend.adapter = genericPagingAdapterActSend
+            swipeRefresh.setColorSchemeColors(ContextCompat.getColor(mainActivity,R.color.primary_color))
+        }
+        actSendLoadState()
     }
+    private fun pagingDataActSend(actSendFilter: ActSendFilter){
+        binding.includeActDraft.apply {
+            homeFragment.lifecycleScope.launchWhenCreated {
+                actViewModel.actSendData(lang = getLanguage(mainActivity),actSendFilter).collect { pagingData->
+                    genericPagingAdapterActSend.submitData(pagingData)
+                    swipeRefresh.isRefreshing = false
+                }
+            }
+        }
+    }
+    private fun actSendLoadState(){
+        genericPagingAdapterActSend
+            .withLoadStateHeaderAndFooter(
+                header = ExampleLoadStateAdapter(R.layout.load_state_draft,genericPagingAdapter::retry),
+                footer = ExampleLoadStateAdapter(R.layout.load_state_draft,genericPagingAdapter::retry)
+            )
+        homeFragment.lifecycleScope.launch {
+            genericPagingAdapterActSend.loadStateFlow.collectLatest {  loadStates ->
+                binding.includeActSent.shimmerInclude.shimmer.isVisible = loadStates.refresh is LoadState.Loading
+                binding.includeActSent.rvActSend.isVisible = loadStates.refresh !is LoadState.Loading
+                binding.includeActSent.swipeRefresh.isRefreshing = loadStates.refresh is LoadState.Error
+            }
+        }
+    }
+   // send act
 
+    // draft act
+    private val genericPagingAdapter:GenericPagingAdapter<uz.idea.domain.models.act.actDraftModel.actDraft.Data> by lazy {
+        GenericPagingAdapter(R.layout.item_draft){ data, position, clickType, viewBinding ->
+            mainActivity.containerApplication.screenNavigate.createDocument(data?._id.toString(),1)
+        }
+    }
     override fun draftAct() {
+        binding.includeActDraft.apply {
+            val layoutManager = LinearLayoutManager(mainActivity)
+            rvDraft.layoutManager = layoutManager
 
+            rvDraft.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    if (genericPagingAdapter.itemCount>5){
+                        if (layoutManager.findLastCompletelyVisibleItemPosition() == genericPagingAdapter.itemCount-1){
+                            mainActivity.bottomBarView(false)
+                        }
+                    }
+                }
+
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (dy < 0) {
+                        mainActivity.bottomBarView(true)
+                    }
+                }
+            })
+
+            val actFilter = ActDraftFilter()
+            pagingData(actFilter)
+            swipeRefresh.setOnRefreshListener {
+                pagingData(actFilter)
+            }
+            rvDraft.adapter = genericPagingAdapter
+            swipeRefresh.setColorSchemeColors(ContextCompat.getColor(mainActivity,R.color.primary_color))
+        }
+        draftLoadState()
     }
+    private fun pagingData(actFilter: ActDraftFilter){
+        binding.includeActDraft.apply {
+            homeFragment.lifecycleScope.launchWhenCreated {
+                actViewModel.actDraftData(lang = getLanguage(mainActivity),actFilter).collect { pagingData->
+                    genericPagingAdapter.submitData(pagingData)
+                    swipeRefresh.isRefreshing = false
+                }
+            }
+        }
+    }
+    private fun draftLoadState(){
+        genericPagingAdapter
+            .withLoadStateHeaderAndFooter(
+                header = ExampleLoadStateAdapter(R.layout.load_state_draft,genericPagingAdapter::retry),
+                footer = ExampleLoadStateAdapter(R.layout.load_state_draft,genericPagingAdapter::retry)
+            )
+        homeFragment.lifecycleScope.launch {
+            genericPagingAdapter.loadStateFlow.collectLatest {  loadStates ->
+                binding.includeActDraft.shimmerInclude.shimmer.isVisible = loadStates.refresh is LoadState.Loading
+                binding.includeActDraft.rvDraft.isVisible = loadStates.refresh !is LoadState.Loading
+                binding.includeActDraft.swipeRefresh.isRefreshing = loadStates.refresh is LoadState.Error
+            }
+        }
+    }
+    // draft act
 
     override fun processSendingAct() {
-
+        binding.includeActCreate
     }
 
 
 
     private fun loadingButton(isLoading:Boolean){
-        actCreateViewBinding.apply {
+         binding.includeActCreate.apply {
             if (isLoading){
                 homeFragment.bindProgressButton(btnSave)
                 // (Optional) Enable fade In / Fade out animations
