@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import uz.idea.domain.database.measure.MeasureEntity
+import uz.idea.domain.models.act.actDraftModel.actDraftFilter.ActDraftFilter
 import uz.idea.domain.models.menuModel.Children
 import uz.idea.domain.models.menuModel.Data
 import uz.idea.domain.usesCase.apiUsesCase.ApiUsesCase
@@ -31,6 +32,8 @@ class ContainerViewModel @Inject constructor(
     fun setData(children: Children?) = viewModelScope.launch {
         _children.emit(children)
     }
+
+    val actFilter = MutableStateFlow<ActDraftFilter?>(null)
 
 
     // measure list

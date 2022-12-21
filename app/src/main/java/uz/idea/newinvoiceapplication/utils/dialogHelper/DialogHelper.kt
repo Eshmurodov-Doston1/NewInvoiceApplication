@@ -14,6 +14,7 @@ import uz.idea.newinvoiceapplication.R
 import uz.idea.newinvoiceapplication.adapters.genericRvAdapter.GenericRvAdapter
 import uz.idea.newinvoiceapplication.databinding.DialogBinding
 import uz.idea.newinvoiceapplication.databinding.DialogSpinnerBinding
+import uz.idea.newinvoiceapplication.databinding.SpinnerDialogBinding
 import uz.idea.newinvoiceapplication.presentation.activities.MainActivity
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.NO_INTERNET
 import uz.idea.newinvoiceapplication.utils.extension.isNotEmptyOrNull
@@ -74,10 +75,21 @@ class DialogHelper(
                    }
                    spinnerAdapter.submitList(listData)
                    binding.recyclerForSpinner.adapter = spinnerAdapter
-                   spinnerAdapter.submitList(listData)
                    search.doAfterTextChanged { textSearch ->
                      spinnerAdapter.submitList(isSearch(textSearch.toString(), textSearch.toString().isNotEmptyOrNull(),listData))
                    }
+               }
+           }
+           3->{
+               val binding = SpinnerDialogBinding.inflate(activity.layoutInflater)
+               create1.setView(binding.root)
+               binding.apply {
+                   val spinnerAdapter = GenericRvAdapter<T>(R.layout.spinner_item){ data, position, clickType ->
+                       onClick.invoke(data)
+                       create1.dismiss()
+                   }
+                   spinnerAdapter.submitList(listData)
+                   binding.recyclerForSpinner.adapter = spinnerAdapter
                }
            }
        }

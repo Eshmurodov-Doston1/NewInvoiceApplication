@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(),UIController{
     // container application
     lateinit var containerApplication: ContainerApplication
     //click menu data
-    private val liveData = MutableLiveData<Data>()
+    val liveData = MutableLiveData<Data>()
     // childrenList
     private val childrenList:LinkedList<Data> = LinkedList()
 
@@ -84,7 +84,7 @@ class MainActivity : AppCompatActivity(),UIController{
 
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var navHostFragment: NavHostFragment
+    lateinit var navHostFragment: NavHostFragment
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)

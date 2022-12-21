@@ -43,6 +43,7 @@ const val BRANCHES = "rouming/branch/info"
 const val PRODUCT_PATH = "provider/tasnif"
 const val UNIQUE_PATH = "utils/get/id"
 const val ACT_PATH = "documents/act/save"
+const val ACT_QUEUE_PATH = "/documents/act/queue"
 @HiltViewModel
 class ActViewModel @Inject constructor(
     private val networkHelper: NetworkHelper,
@@ -147,7 +148,6 @@ class ActViewModel @Inject constructor(
     }
 
 
-
     // save act
     val saveAct:StateFlow<ResponseState<JsonElement?>> get() = _saveAct
     private val _saveAct = MutableStateFlow<ResponseState<JsonElement?>>(ResponseState.Loading)
@@ -174,6 +174,10 @@ class ActViewModel @Inject constructor(
     // act send
     fun actSendData(lang:String,body: ActSendFilter)
     = draftPagingUsesCase.getActSendData("/$API/$lang/documents/act/send",body, EMPTY_MAP)
+
+    // act queue
+    fun actProcess(lang:String,body: ActSendFilter)
+    = draftPagingUsesCase.getActSendData("/$API/$lang/documents/act/queue",body, EMPTY_MAP)
 
     // measure
     fun getMeasure() = measureRepo.getAllMeasureEntity()

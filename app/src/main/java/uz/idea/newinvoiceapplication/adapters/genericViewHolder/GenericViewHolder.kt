@@ -20,6 +20,7 @@ import uz.idea.newinvoiceapplication.databinding.ItemBottomsheetDataBinding
 import uz.idea.newinvoiceapplication.databinding.ItemMenuBinding
 import uz.idea.newinvoiceapplication.databinding.RecyclerActProductItemBinding
 import uz.idea.newinvoiceapplication.databinding.SpinnerDoubleItemBinding
+import uz.idea.newinvoiceapplication.databinding.SpinnerItemBinding
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.DEFAULT_CLICK_TYPE
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.DELETE_CLICK
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.EDITE_CLICK
@@ -52,6 +53,20 @@ class GenericViewHolder<T>(private val itemView:View):RecyclerView.ViewHolder(it
             R.layout.item_act_doc->{
                 itemActDoc(itemView,data,position,onClick)
             }
+            R.layout.spinner_item->{
+                spinnerItem(itemView,data,position,onClick)
+            }
+        }
+    }
+
+    // spinner_item
+    private fun spinnerItem(itemView:View, data: T, position: Int, onClick: (data: T, position: Int, clickType: Int) -> Unit){
+        val binding = SpinnerItemBinding.bind(itemView)
+        if (data is String){
+            binding.textItem.text = data
+        }
+        itemView.setOnClickListener {
+            onClick.invoke(data,position, DEFAULT_CLICK_TYPE)
         }
     }
 

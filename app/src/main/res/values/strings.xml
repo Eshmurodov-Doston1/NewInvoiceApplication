@@ -103,6 +103,17 @@
     <string name="cancelled_by_send">жўнатувчи томонидан бекор қилинган</string>
     <string name="rejected_by_partner">шерик томонидан рад этилган</string>
     <string name="accepted_by_partner">ҳамкор томонидан қабул қилинади</string>
+    <string name="number">Рақам</string>
+    <string name="from_date">Санасидан Бошлаб</string>
+    <string name="date_by">Сана томонидан</string>
+    <string name="status">Статус</string>
+    <string name="other">Бошқа</string>
+    <string name="counterparty">Контрагентнинг СТИР бўйича</string>
+    <string name="subdivisions">Бўлимлар</string>
 
-
+    <string name="all_status">Ҳаммаси</string>
+    <string name="confirmed_status">Тасдиқланган</string>
+    <string name="denied_status">Рад этилган</string>
+    <string name="signature_status">Имзо кутилмоқда</string>
+    <string name="send_status">Юборилди</string>
 </resources>

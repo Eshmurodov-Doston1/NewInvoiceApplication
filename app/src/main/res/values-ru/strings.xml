@@ -108,4 +108,17 @@
     <string name="cancelled_by_send">отменено отправителем</string>
     <string name="rejected_by_partner">отклонено партнёром</string>
     <string name="accepted_by_partner">принято партнёром</string>
+    <string name="number">Нумбер</string>
+    <string name="from_date">Дата  с</string>
+    <string name="date_by">Дата по</string>
+    <string name="status">Статус</string>
+    <string name="other">Прочее</string>
+    <string name="counterparty">По ИНН контрагента</string>
+    <string name="subdivisions">Подразделения</string>
+
+    <string name="all_status">Все</string>
+    <string name="confirmed_status">Подтверждён</string>
+    <string name="denied_status">Отказан</string>
+    <string name="signature_status">Ожидает подписи</string>
+    <string name="send_status">Отправлен</string>
 </resources>

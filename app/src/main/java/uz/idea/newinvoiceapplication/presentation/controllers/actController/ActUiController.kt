@@ -1,19 +1,13 @@
 package uz.idea.newinvoiceapplication.presentation.controllers.actController
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
-import androidx.core.widget.NestedScrollView
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,10 +21,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonParser
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.count
 import kotlinx.coroutines.launch
-import okhttp3.internal.format
-import okhttp3.internal.wait
 import uz.idea.domain.database.actProductEntity.ActProductEntity
 import uz.idea.domain.database.measure.MeasureEntity
 import uz.idea.domain.models.act.actDraftModel.actDraftFilter.ActDraftFilter
@@ -52,7 +43,6 @@ import uz.idea.newinvoiceapplication.R
 import uz.idea.newinvoiceapplication.adapters.genericPagingAdapter.GenericPagingAdapter
 import uz.idea.newinvoiceapplication.adapters.genericRvAdapter.GenericRvAdapter
 import uz.idea.newinvoiceapplication.adapters.loadState.ExampleLoadStateAdapter
-import uz.idea.newinvoiceapplication.databinding.ActCreateViewBinding
 import uz.idea.newinvoiceapplication.databinding.AddProductActBinding
 import uz.idea.newinvoiceapplication.databinding.FragmentHomeBinding
 import uz.idea.newinvoiceapplication.presentation.activities.MainActivity
@@ -60,13 +50,10 @@ import uz.idea.newinvoiceapplication.presentation.screens.homeScreen.HomeFragmen
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.DELETE_CLICK
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.EDITE_CLICK
-import uz.idea.newinvoiceapplication.utils.container.ContainerApplication
 import uz.idea.newinvoiceapplication.utils.extension.*
 import uz.idea.newinvoiceapplication.vm.actVm.ActViewModel
-import uz.idea.newinvoiceapplication.vm.containerVm.ContainerViewModel
 import java.math.BigDecimal
 import java.util.*
-import kotlin.math.abs
 
 class ActUiController(
     private val mainActivity: MainActivity,
@@ -791,10 +778,15 @@ class ActUiController(
                     }
                 }
             })
-
-            val actFilter = ActDraftFilter()
+            var actFilter = ActDraftFilter()
+            homeFragment.lifecycleScope.launchWhenCreated {
+                mainActivity.containerViewModel.actFilter.collect {
+                    actFilter = it?:ActDraftFilter()
+                }
+            }
             pagingData(actFilter)
             swipeRefresh.setOnRefreshListener {
+                actFilter = ActDraftFilter()
                 pagingData(actFilter)
             }
             rvDraft.adapter = genericPagingAdapter

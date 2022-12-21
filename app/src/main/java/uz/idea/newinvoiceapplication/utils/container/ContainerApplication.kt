@@ -3,6 +3,7 @@ package uz.idea.newinvoiceapplication.utils.container
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AlertDialog
+import androidx.core.util.Pair
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import androidx.paging.LoadState
@@ -60,6 +61,29 @@ class ContainerApplication(
             val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
             val simpleDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
             onClick.invoke(simpleDateFormat.format(calendar.time),simpleDate.format(calendar.time))
+        }
+    }
+
+    fun datePickerRange(onClick: (time:String,tome2:String,timeFormat1:String,timeFormat2:String) -> Unit){
+        val calendar = Calendar.getInstance(TimeZone.getDefault())
+        calendar.clear()
+
+        val calendar2 = Calendar.getInstance(TimeZone.getDefault())
+        calendar2.clear()
+        val datePicker = MaterialDatePicker.Builder.dateRangePicker()
+        datePicker.setTitleText(activityMain.getString(R.string.date_picker))
+        datePicker.setSelection(Pair( MaterialDatePicker.thisMonthInUtcMilliseconds(),
+            MaterialDatePicker.todayInUtcMilliseconds()))
+        val materialDatePicker = datePicker.build()
+        materialDatePicker.show(activityMain.supportFragmentManager,"DATE_PICKER")
+        materialDatePicker.addOnPositiveButtonClickListener {
+            calendar.timeInMillis = it.first
+            calendar2.timeInMillis = it.second
+            val simpleDateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+            val simpleDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+
+
+            onClick.invoke(simpleDateFormat.format(calendar.time),simpleDateFormat.format(calendar2.time),simpleDate.format(calendar.time),simpleDate.format(calendar2.time))
         }
     }
 

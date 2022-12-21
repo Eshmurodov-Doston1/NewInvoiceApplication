@@ -8,5 +8,5 @@ data class Data(
     val full_name: String,
     val phone: String,
     val tariff: Tariff,
-    val tin: Int
+    val tin: Long
 )

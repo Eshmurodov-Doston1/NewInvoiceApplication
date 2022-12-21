@@ -1,6 +1,8 @@
 package uz.idea.newinvoiceapplication.presentation.screens.homeScreen
 
+import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.NestedScrollView
@@ -11,10 +13,12 @@ import kotlinx.coroutines.launch
 import uz.idea.newinvoiceapplication.databinding.FragmentHomeBinding
 import uz.idea.newinvoiceapplication.presentation.controllers.actController.ActUiController
 import uz.idea.newinvoiceapplication.presentation.screens.baseFragment.BaseFragment
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant
 import uz.idea.newinvoiceapplication.utils.extension.getLanguage
 import uz.idea.newinvoiceapplication.utils.extension.gone
 import uz.idea.newinvoiceapplication.utils.extension.logData
 import uz.idea.newinvoiceapplication.utils.extension.visible
+import uz.idea.newinvoiceapplication.utils.language.LocaleManager
 import uz.idea.newinvoiceapplication.vm.actVm.ActViewModel
 import uz.idea.newinvoiceapplication.vm.mainVM.MainViewModel
 import kotlin.math.abs
@@ -28,8 +32,32 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     // main view model
     private val mainViewModel:MainViewModel by viewModels()
     private var isCreate = false
+
+
     override fun init() {
         binding.apply {
+
+            lifecycleScope.launchWhenCreated {
+                mainActivity.containerViewModel.children.collect { children->
+                    mainActivity.liveData.observe(viewLifecycleOwner) { data ->
+                        when(LocaleManager.getLanguage(requireContext())){
+                            AppConstant.UZ -> {
+                                mainActivity.supportActionBar?.title = data.title_uz + " | ${children?.title_uz}"
+                            }
+                            AppConstant.RU ->{
+                                mainActivity.supportActionBar?.title = data.title + " | ${children?.title}"
+                            }
+                            AppConstant.EN ->{
+                                mainActivity.supportActionBar?.title = data.title_uz + " | ${children?.title_uz}"
+                            }
+                            else->{
+                                mainActivity.supportActionBar?.title = data.title + " | ${children?.title}"
+                            }
+                        }
+                    }
+                }
+            }
+
             mainViewModel.getUserData(getLanguage(requireContext()))
             lifecycleScope.launchWhenResumed {
                 mainActivity.containerViewModel.children.collect { children->
