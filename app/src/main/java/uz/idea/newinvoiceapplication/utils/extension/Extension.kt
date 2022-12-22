@@ -144,6 +144,40 @@ fun slideDown(view: View) {
         })
 }
 
+
+fun getStatus(status:String,context: Context):Int{
+    logData(status)
+    return when(status.trim().lowercase()){
+        context.getString(R.string.all_status).trim().lowercase() ->{
+            -1
+        }
+        context.getString(R.string.created).trim().lowercase() ->{
+            0
+        }
+        context.getString(R.string.partner_signature).trim().lowercase() ->{
+            15
+        }
+        context.getString(R.string.cancelled_by_send).trim().lowercase()->{
+            17
+        }
+        context.getString(R.string.rejected_by_partner).trim().lowercase() ->{
+            20
+        }
+        context.getString(R.string.accepted_by_partner).trim().lowercase()->{
+            30
+        }
+        context.getString(R.string.process_of_sending).trim().lowercase()->{
+            1
+        }
+        context.getString(R.string.error_while_settings).trim().lowercase()->{
+            2
+        }
+        else ->{
+            -1
+        }
+    }
+}
+
 /**
  *
  * const list = {

@@ -6,14 +6,12 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.util.Pair
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
-import androidx.paging.LoadState
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.gson.JsonElement
 import uz.idea.newinvoiceapplication.R
 import uz.idea.newinvoiceapplication.databinding.LoadingApplicationBinding
 import uz.idea.newinvoiceapplication.presentation.activities.MainActivity
 import uz.idea.newinvoiceapplication.utils.dialogHelper.DialogHelper
-import uz.idea.newinvoiceapplication.utils.extension.logData
 import uz.idea.newinvoiceapplication.utils.screenNavigate.ScreenNavigate
 import java.text.SimpleDateFormat
 import java.util.*

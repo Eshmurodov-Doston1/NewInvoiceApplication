@@ -12,5 +12,6 @@ data class CreateActModel(
     val sellerbranchcode: String,
     val sellerbranchname: String,
     val sellername: String,
-    val sellertin: String
+    val sellertin: String,
+    val stateid:Int?=null
 )

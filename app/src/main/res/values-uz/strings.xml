@@ -106,6 +106,8 @@
     <string name="cancelled_by_send">jo\'natuvchi tomonidan bekor qilingan</string>
     <string name="rejected_by_partner">sherik tomonidan rad etilgan</string>
     <string name="accepted_by_partner">hamkor tomonidan qabul qilinadi</string>
+    <string name="process_of_sending">yuborish jarayonida</string>
+    <string name="error_while_settings">yuborish paytida xato</string>
     <string name="number">Raqam</string>
     <string name="from_date">Sanasidan Boshlab</string>
     <string name="date_by">Sana tomonidan</string>
@@ -119,4 +121,10 @@
     <string name="denied_status">Rad etilgan</string>
     <string name="signature_status">Imzo kutilmoqda</string>
     <string name="send_status">Yuborildi</string>
+    <string name="search_doc">Qidiruv</string>
+    <string name="create_screen">Siz yaratish oynasidan o\'tdingiz</string>
+    <string name="delete_text">O\'chirishni xoxlaysizmi?</string>
+
+
+
 </resources>

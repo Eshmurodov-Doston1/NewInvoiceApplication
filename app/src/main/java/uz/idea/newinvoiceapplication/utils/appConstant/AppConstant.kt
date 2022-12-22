@@ -33,7 +33,14 @@ object AppConstant {
     const val EDITE_CLICK = 2
     const val DELETE_CLICK = 3
     const val CLICK_TYPE_SIGNED = 4
+    const val ERROR_STATUS_UPDATE_ACT = 5
 
     const val DOCUMENT_ID = "document_id"
+    const val DOCUMENT_ID_APP = "documentId"
     const val DOC_STATUS = "document_status"
+    const val STATE_ID = "state_id"
+    const val SELLER_TYPE = 1
+    const val BUYER_TYPE = 2
+    const val DELETE_TYPE = 3
+    const val ERROR_BRANCH_CODE = 4
 }

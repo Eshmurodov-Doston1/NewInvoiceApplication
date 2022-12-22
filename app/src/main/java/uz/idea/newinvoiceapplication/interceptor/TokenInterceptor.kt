@@ -41,16 +41,14 @@ class TokenInterceptor @Inject constructor(
                     .build()
 
                 val responseRefresh = client.newCall(nRequest).execute()
-                logData(responseRefresh.body?.string().toString())
-                logData(responseRefresh.code.toString())
                 if (responseRefresh.code == HttpURLConnection.HTTP_OK){
                     logData(responseRefresh.body?.string().toString())
-//                    val asJsonObject = JsonParser.parseString(responseRefresh.body?.string().toString()).asJsonObject
-//                    val gson = Gson()
-//                    val resAuth: ResAuthModel = gson.fromJson(asJsonObject, ResAuthModel::class.java)
-//                    preferenceHelper.accessToken = resAuth.access_token
-//                    preferenceHelper.refreshToken = resAuth.refresh_token
-//                    preferenceHelper.tokenType = resAuth.token_type
+                    val jsonData = responseRefresh.body?.string() ?: ""
+                    val gson = Gson()
+                    val resAuth: ResAuthModel = gson.fromJson(jsonData, ResAuthModel::class.java)
+                    preferenceHelper.accessToken = resAuth.access_token
+                    preferenceHelper.refreshToken = resAuth.refresh_token
+                    preferenceHelper.tokenType = resAuth.token_type
                     oldResponse.close()
                     return chain.proceed(newRequestWithAccessToken(oldRequest,preferenceHelper.accessToken.toString()))
                 } else {

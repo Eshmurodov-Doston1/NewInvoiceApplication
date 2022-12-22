@@ -6,17 +6,29 @@ import androidx.navigation.NavOptions
 import uz.idea.newinvoiceapplication.R
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.DOCUMENT_ID
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.DOCUMENT_ID_APP
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.DOC_STATUS
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.STATE_ID
 
 class ScreenNavigate(
     private val navController: NavController
 ) {
-    fun createDocument(actId:String,docStatus:Int){
+    fun createDocument(actId:String,docStatus:Int,stateId:Int){
         val bundle = Bundle()
         bundle.putString(DOCUMENT_ID,actId)
         bundle.putInt(DOC_STATUS,docStatus)
+        bundle.putInt(STATE_ID,stateId)
         navController.navigate(R.id.action_home_to_documentFragment,bundle,animationViewCreateRight())
     }
+
+    fun createUpdateDocumentScreen(documentId:Int,docId:String?){
+        val bundle = Bundle()
+        bundle.putInt(DOCUMENT_ID_APP,documentId)
+        bundle.putString(DOCUMENT_ID,docId)
+        navController.navigate(R.id.action_documentFragment_to_updateFragment,bundle,animationViewCreateRight())
+    }
+
+
 
     private fun animationViewCreateRight(): NavOptions {
         return NavOptions.Builder()

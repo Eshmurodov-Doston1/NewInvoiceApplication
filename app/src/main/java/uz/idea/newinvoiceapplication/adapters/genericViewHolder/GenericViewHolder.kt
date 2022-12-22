@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import uz.idea.domain.database.actProductEntity.ActProductEntity
 import uz.idea.domain.database.measure.MeasureEntity
+import uz.idea.domain.models.documents.actDocument.Product
 import uz.idea.domain.models.localeClass.table.ActCreateTable
 import uz.idea.domain.models.menuModel.Children
 import uz.idea.domain.models.menuModel.Data
@@ -17,6 +18,7 @@ import uz.idea.newinvoiceapplication.BuildConfig.BASE_URL
 import uz.idea.newinvoiceapplication.R
 import uz.idea.newinvoiceapplication.databinding.ItemActDocBinding
 import uz.idea.newinvoiceapplication.databinding.ItemBottomsheetDataBinding
+import uz.idea.newinvoiceapplication.databinding.ItemIdBinding
 import uz.idea.newinvoiceapplication.databinding.ItemMenuBinding
 import uz.idea.newinvoiceapplication.databinding.RecyclerActProductItemBinding
 import uz.idea.newinvoiceapplication.databinding.SpinnerDoubleItemBinding
@@ -56,6 +58,19 @@ class GenericViewHolder<T>(private val itemView:View):RecyclerView.ViewHolder(it
             R.layout.spinner_item->{
                 spinnerItem(itemView,data,position,onClick)
             }
+            R.layout.item_id->{
+                itemId(itemView,data,position,onClick)
+            }
+        }
+    }
+
+    private fun itemId(itemView:View, data: T, position: Int, onClick: (data: T, position: Int, clickType: Int) -> Unit){
+        val binding = ItemIdBinding.bind(itemView)
+        if (data is String){
+            binding.textId.text = data
+        }
+        itemView.setOnClickListener {
+            onClick.invoke(data,position, DEFAULT_CLICK_TYPE)
         }
     }
 
@@ -74,7 +89,6 @@ class GenericViewHolder<T>(private val itemView:View):RecyclerView.ViewHolder(it
     private fun itemActDoc(itemView:View, data: T, position: Int, onClick: (data: T, position: Int, clickType: Int) -> Unit){
         val binding = ItemActDocBinding.bind(itemView)
         if (data is ActCreateTable){
-            binding.idTv.text = data.actNumber
             binding.tvService.text = data.actService
             binding.tvName.text = data.name
             binding.tvMeasurement.text = data.measure
@@ -89,14 +103,18 @@ class GenericViewHolder<T>(private val itemView:View):RecyclerView.ViewHolder(it
         val binding = RecyclerActProductItemBinding.bind(itemView)
         if (data is ActProductEntity){
             binding.tvName.text = data.name
-            binding.tvCount.text = data.count.toString()
+            binding.tvCount.text = data.count
             binding.tvCost.text = data.totalSumma
-            binding.editCard.setOnClickListener {
-                onClick.invoke(data,position, EDITE_CLICK)
-            }
-            binding.deleteCard.setOnClickListener {
-                onClick.invoke(data,position, DELETE_CLICK)
-            }
+        } else if (data is Product){
+            binding.tvName.text = data.name
+            binding.tvCount.text = data.count
+            binding.tvCost.text = data.totalsum
+        }
+        binding.editCard.setOnClickListener {
+            onClick.invoke(data,position, EDITE_CLICK)
+        }
+        binding.deleteCard.setOnClickListener {
+            onClick.invoke(data,position, DELETE_CLICK)
         }
     }
 

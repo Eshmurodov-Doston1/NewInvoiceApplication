@@ -1,6 +1,7 @@
 package uz.idea.domain.utils.resPonseFetcher
 
 import android.content.Context
+import android.util.Log
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -32,7 +33,7 @@ interface ResponseFetcher{
                 }
             } catch (e:Exception){
                 var error = e
-
+                Log.e("ErrorResponseFetcher", e.message.toString())
                 when (e) {
                     is SocketTimeoutException -> {
                         error = NetworkErrorException(errorMessage = "connection error!")

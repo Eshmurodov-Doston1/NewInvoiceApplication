@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_item"
+            android:id="@+id/send"
             app:fab_size="mini"
              app:fab_colorNormal="@color/white"
             app:rippleColor="@color/send_color"
@@ -51,7 +51,7 @@
             app:fabSize="mini"
             app:fab_label="@string/send"/>
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_item2"
+            android:id="@+id/edit"
             app:fab_colorNormal="@color/white"
             app:rippleColor="@color/edit_color"
             android:layout_width="@dimen/_30sdp"
@@ -65,7 +65,7 @@
             app:fabSize="mini"
             app:fab_label="@string/update"/>
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_item3"
+            android:id="@+id/delete"
             app:rippleColor="@color/delete_color"
             app:fab_colorNormal="@color/white"
             app:fab_progress_color="@color/delete_color"
@@ -79,7 +79,7 @@
             app:fabSize="mini"
             app:fab_label="@string/delete"/>
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_item4"
+            android:id="@+id/copy"
             app:fab_colorNormal="@color/white"
             app:fab_progress_color="@color/copy_color"
             app:fab_colorRipple="@color/copy_color"
@@ -93,7 +93,7 @@
             app:fabSize="mini"
             app:fab_label="@string/copy"/>
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/menu_item5"
+            android:id="@+id/edit_status"
             app:fab_colorNormal="@color/white"
             app:rippleColor="@color/update_status"
 

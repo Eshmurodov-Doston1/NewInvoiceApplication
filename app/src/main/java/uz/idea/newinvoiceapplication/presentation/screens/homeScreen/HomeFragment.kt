@@ -109,6 +109,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         }
                         "/acts/sent"->{
                             if (!isCreate) actUiController()
+
                             if (binding.includeActCreate.consActCreate.isVisible) {
                                 binding.includeActCreate.consActCreate.gone()
                             } else if (binding.includeActDraft.consDraft.isVisible){

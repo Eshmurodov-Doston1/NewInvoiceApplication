@@ -103,6 +103,9 @@
     <string name="cancelled_by_send">жўнатувчи томонидан бекор қилинган</string>
     <string name="rejected_by_partner">шерик томонидан рад этилган</string>
     <string name="accepted_by_partner">ҳамкор томонидан қабул қилинади</string>
+    <string name="process_of_sending">юбориш жараёнида</string>
+    <string name="error_while_settings">юбориш пайтида хато</string>
+
     <string name="number">Рақам</string>
     <string name="from_date">Санасидан Бошлаб</string>
     <string name="date_by">Сана томонидан</string>
@@ -116,4 +119,8 @@
     <string name="denied_status">Рад этилган</string>
     <string name="signature_status">Имзо кутилмоқда</string>
     <string name="send_status">Юборилди</string>
+    <string name="search_doc">Қидирув</string>
+    <string name="create_screen">Сиз яратиш ойнасидан ўтдингиз</string>
+    <string name="delete_text">Ўчиришни хохлайсизми?</string>
+
 </resources>

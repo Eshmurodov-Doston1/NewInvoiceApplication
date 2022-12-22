@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:visibility="visible"
+    android:visibility="gone"
     android:id="@+id/cons_incoming_filter"
     android:layout_height="match_parent">
     <androidx.core.widget.NestedScrollView
@@ -288,7 +288,7 @@
                         <EditText
                             android:id="@+id/inn"
                             android:inputType="number"
-                            android:maxLength="9"
+                            android:maxLength="14"
                             android:layout_weight="1"
                             android:layout_marginTop="@dimen/_4sdp"
                             android:paddingVertical="@dimen/_7sdp"
@@ -370,7 +370,7 @@
                 android:textSize="@dimen/_11sdp"
                 android:textColor="@color/white"
                 android:fontFamily="@font/inter_medium"
-                android:text="@string/search"
+                android:text="@string/search_doc"
                 android:gravity="center"
                 android:background="@drawable/button_bac"
                 android:layout_marginVertical="@dimen/_10sdp"

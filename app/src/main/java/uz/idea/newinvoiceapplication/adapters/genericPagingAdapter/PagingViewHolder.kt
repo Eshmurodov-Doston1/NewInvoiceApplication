@@ -35,6 +35,7 @@ class PagingViewHolder(var itemView:View):RecyclerView.ViewHolder(itemView),Hold
                    binding.contractNumber.text = "№ " + data.contractdoc.contractno
                    binding.name.text = data.buyername
                    binding.inn.text = "${itemView.context.getString(R.string.inn)}: ${data.buyertin}"
+                   data.payabletotal
                    binding.totalSumma.text = "${data.payabletotal.numberFormatter()} ${itemView.context.getString(R.string.money_type)}"
                    if (data.stateid==0) {
                        colorItems(R.string.created,R.color.primary_color,binding,itemView)

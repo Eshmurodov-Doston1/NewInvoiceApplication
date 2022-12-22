@@ -108,6 +108,10 @@
     <string name="cancelled_by_send">отменено отправителем</string>
     <string name="rejected_by_partner">отклонено партнёром</string>
     <string name="accepted_by_partner">принято партнёром</string>
+    <string name="process_of_sending">в процесс отправки</string>
+    <string name="error_while_settings">ошибка при отправки</string>
+
+
     <string name="number">Нумбер</string>
     <string name="from_date">Дата  с</string>
     <string name="date_by">Дата по</string>
@@ -121,4 +125,7 @@
     <string name="denied_status">Отказан</string>
     <string name="signature_status">Ожидает подписи</string>
     <string name="send_status">Отправлен</string>
+    <string name="search_doc">Поиск</string>
+    <string name="create_screen">Вы прошли окно создания</string>
+    <string name="delete_text">Вы хотите удалить?</string>
 </resources>

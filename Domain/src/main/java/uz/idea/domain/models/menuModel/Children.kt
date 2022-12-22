@@ -1,8 +1,8 @@
 package uz.idea.domain.models.menuModel
 
 data class Children(
-    val api_path: Any,
-    val icon_path: Any,
+    val api_path: Any?=null,
+    val icon_path: Any?=null,
     val id: Int,
     val menu_id: Int,
     val ordering: Int,

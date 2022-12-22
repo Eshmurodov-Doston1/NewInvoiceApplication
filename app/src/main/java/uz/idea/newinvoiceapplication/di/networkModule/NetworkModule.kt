@@ -44,11 +44,14 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(@ApplicationContext context: Context, tokenInterceptor: TokenInterceptor): OkHttpClient {
-        return OkHttpClient().newBuilder().connectTimeout(CONNECTION_TIMEOUT.toLong(), TimeUnit.SECONDS)
+        val okHttpClient = OkHttpClient().newBuilder().connectTimeout(CONNECTION_TIMEOUT.toLong(), TimeUnit.SECONDS)
             .readTimeout(READ_TIMEOUT.toLong(), TimeUnit.SECONDS)
             .writeTimeout(WRITE_TIMEOUT.toLong(), TimeUnit.SECONDS)
             .addInterceptor(tokenInterceptor)
-            .addInterceptor(ChuckerInterceptor(context)).build()
+            if (BuildConfig.DEBUG){
+                okHttpClient.addInterceptor(ChuckerInterceptor(context))
+            }
+        return okHttpClient.build()
     }
 
 

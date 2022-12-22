@@ -82,5 +82,7 @@ dependencies {
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
     // zoom view
     implementation 'com.github.shopgun:zoomlayout:3.0.0'
+    // horcrux
+  //  implementation 'com.github.alimninja:horcrux:2.0'
 
 }

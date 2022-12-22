@@ -28,5 +28,13 @@
         android:id="@+id/documentFragment"
         android:name="uz.idea.newinvoiceapplication.presentation.screens.docDataScreen.DocumentInfoFragment"
         android:label="Document"
-        tools:layout="@layout/fragment_document_info" />
+        tools:layout="@layout/fragment_document_info" >
+        <action
+            android:id="@+id/action_documentFragment_to_updateFragment"
+            app:destination="@id/updateFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/updateFragment"
+        android:name="uz.idea.newinvoiceapplication.presentation.screens.updateDocument.UpdateFragment"
+        tools:layout="@layout/fragment_update" />
 </navigation>

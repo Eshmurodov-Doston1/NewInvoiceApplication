@@ -1,7 +1,7 @@
 package uz.idea.domain.models.documents.actDocument
 
 data class Data(
-    val _id: String,
+    var _id: String,
     val actdoc: Actdoc,
     val buyerbranchcode: String,
     val buyerbranchname: String,
@@ -18,7 +18,7 @@ data class Data(
     val sellerbranchcode: String,
     val sellerbranchname: String?=null,
     val sellername: String,
-    val sellertin: Int,
+    val sellertin: Long,
     val stateid: Int,
     val statetext: Statetext,
     val summatotal: Int

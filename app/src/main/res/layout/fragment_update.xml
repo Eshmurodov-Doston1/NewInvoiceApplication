@@ -1,0 +1,933 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".presentation.screens.updateDocument.UpdateFragment">
+
+   <androidx.core.widget.NestedScrollView
+          android:id="@+id/nested_act_edit"
+          android:visibility="visible"
+          android:overScrollMode="never"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+         <androidx.appcompat.widget.LinearLayoutCompat
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
+            <!--act-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="@color/line_color" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp">
+               <com.github.florent37.expansionpanel.ExpansionHeader
+                   android:id="@+id/expansion_header_act"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:expansion_headerIndicator="@id/header_indicator_act"
+                   app:expansion_layout="@id/expansion_layout_act"
+                   app:expansion_toggleOnClick="true">
+
+                  <RelativeLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="@dimen/_33sdp"
+                      android:background="@android:color/white"
+                      android:paddingHorizontal="@dimen/_10sdp">
+
+                     <TextView
+                         android:id="@+id/tv_title_act"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_centerVertical="true"
+                         android:fontFamily="@font/inter_regular"
+                         android:text="@string/act"
+                         android:textColor="@color/black"
+                         android:textSize="@dimen/_11sdp"
+                         android:textStyle="bold" />
+
+                     <ImageView
+                         android:id="@+id/header_indicator_act"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentEnd="true"
+                         android:layout_centerVertical="true"
+                         android:adjustViewBounds="true"
+                         app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
+
+                  </RelativeLayout>
+
+               </com.github.florent37.expansionpanel.ExpansionHeader>
+
+               <com.github.florent37.expansionpanel.ExpansionLayout
+                   android:id="@+id/expansion_layout_act"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:expansion_expanded="true">
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:visibility="visible">
+
+                     <!-- actno-->
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/hint_actno"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="normal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="@string/act_number"
+                            android:textColor="@color/text_color_gray" />
+
+                        <EditText
+                            android:id="@+id/edit_actno"
+                            android:layout_width="match_parent"
+                            android:inputType="text"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/create_edit_text_background"
+                            android:fontFamily="@font/inter_regular"
+                            android:paddingHorizontal="@dimen/_6sdp"
+                            android:paddingVertical="@dimen/_7sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+
+                     </LinearLayout>
+
+                     <LinearLayout
+                         android:layout_marginTop="@dimen/_5sdp"
+                         android:layout_width="match_parent"
+                         android:layout_height="match_parent"
+                         android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/hint_actdate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="normal"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="@string/act_date"
+                            android:textColor="@color/text_color_gray" />
+
+                        <TextView
+                            android:id="@+id/tv_act_date"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/create_edit_text_background"
+                            android:fontFamily="@font/inter_regular"
+                            android:paddingHorizontal="@dimen/_6sdp"
+                            android:paddingVertical="@dimen/_7sdp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/text_color"
+                            android:textSize="@dimen/_11sdp" />
+
+                     </LinearLayout>
+
+                  </LinearLayout>
+
+               </com.github.florent37.expansionpanel.ExpansionLayout>
+            </LinearLayout>
+            <!--Исполнитель-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="@color/line_color" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp">
+               <com.github.florent37.expansionpanel.ExpansionHeader
+                   android:id="@+id/expansion_header_seller"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:expansion_headerIndicator="@id/header_indicator_seller"
+                   app:expansion_layout="@id/expansion_layout_seller"
+                   app:expansion_toggleOnClick="true">
+
+                  <RelativeLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="@dimen/_33sdp"
+                      android:background="@android:color/white"
+                      android:paddingHorizontal="@dimen/_10sdp">
+
+                     <TextView
+                         android:id="@+id/tv_title_seller"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_centerVertical="true"
+                         android:fontFamily="@font/inter_regular"
+                         android:text="@string/seller"
+                         android:textColor="@color/black"
+                         android:textSize="@dimen/_11sdp"
+                         android:textStyle="bold" />
+
+                     <ImageView
+                         android:id="@+id/header_indicator_seller"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentEnd="true"
+                         android:layout_centerVertical="true"
+                         android:adjustViewBounds="true"
+                         app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
+
+                  </RelativeLayout>
+
+               </com.github.florent37.expansionpanel.ExpansionHeader>
+
+               <com.github.florent37.expansionpanel.ExpansionLayout
+                   android:id="@+id/expansion_layout_seller"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:expansion_expanded="true">
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:visibility="visible">
+
+                     <!-- sellertin-->
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/_8sdp"
+                         android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/hint_sellertin"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="normal"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="@string/seller_tin"
+                            android:textColor="@color/text_color_gray" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                           <EditText
+                               android:id="@+id/edit_seller_tin"
+                               android:inputType="text"
+
+                               android:background="@drawable/create_edit_text_background"
+                               android:enabled="false"
+                               android:fontFamily="@font/inter_regular"
+                               android:paddingHorizontal="@dimen/_6sdp"
+                               android:paddingVertical="@dimen/_7sdp"
+                               android:textColor="@color/black"
+                               android:textSize="@dimen/_11sdp"
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"/>
+                           <ProgressBar
+                               android:id="@+id/progress_seller_tin"
+                               android:visibility="gone"
+                               app:layout_constraintBottom_toBottomOf="parent"
+                               app:layout_constraintRight_toRightOf="parent"
+                               app:layout_constraintTop_toTopOf="parent"
+                               app:layout_constraintLeft_toLeftOf="parent"
+                               app:layout_constraintHorizontal_bias="0.98"
+                               android:layout_width="@dimen/_15sdp"
+                               android:layout_height="@dimen/_15sdp"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                     </LinearLayout>
+
+                     <!-- sellername-->
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/_8sdp"
+                         android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/hint_sellername"
+                            android:layout_width="match_parent"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="normal"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="@string/name_1"
+                            android:textColor="@color/text_color_gray" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                           <EditText
+                               android:id="@+id/edit_seller_name"
+                               android:inputType="text"
+                               android:background="@drawable/create_edit_text_background"
+                               android:fontFamily="@font/inter_regular"
+                               android:textStyle="normal"
+                               android:paddingHorizontal="@dimen/_6sdp"
+                               android:paddingVertical="@dimen/_7sdp"
+                               android:textColor="@color/black"
+                               android:textSize="@dimen/_11sdp"
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"/>
+                           <ProgressBar
+                               android:id="@+id/progress_seller_name"
+                               android:visibility="gone"
+                               app:layout_constraintBottom_toBottomOf="parent"
+                               app:layout_constraintRight_toRightOf="parent"
+                               app:layout_constraintTop_toTopOf="parent"
+                               app:layout_constraintLeft_toLeftOf="parent"
+                               app:layout_constraintHorizontal_bias="0.98"
+                               android:layout_width="@dimen/_15sdp"
+                               android:layout_height="@dimen/_15sdp"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                     </LinearLayout>
+
+                     <!-- seller branches-->
+                     <LinearLayout
+                         android:id="@+id/layout_seller_branches"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/_8sdp"
+                         android:orientation="vertical"
+                         android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/hint_seller_branches"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="normal"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="@string/branches"
+                            android:textColor="@color/text_color_gray" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:orientation="horizontal"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:gravity="center"
+                            android:id="@+id/list_seller_branches1"
+                            android:background="@drawable/filter_components_back"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                           <TextView
+                               android:drawableEnd="@drawable/ic_arrow_bottom"
+                               android:ellipsize="end"
+                               android:textSize="@dimen/_11sdp"
+                               android:textStyle="normal"
+                               android:fontFamily="@font/inter_regular"
+                               android:gravity="center_vertical"
+                               android:maxLines="1"
+                               android:paddingHorizontal="@dimen/_6sdp"
+                               android:paddingVertical="@dimen/_7sdp"
+                               android:text="@string/choose"
+                               android:textColor="@color/text_color"
+                               android:id="@+id/list_seller_branches"
+                               android:layout_weight="1"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"/>
+                           <ImageView
+                               android:visibility="gone"
+                               android:id="@+id/cancel_branch_seller"
+                               android:src="@drawable/ic_baseline_cancel_24"
+                               android:layout_marginHorizontal="@dimen/_5sdp"
+                               android:padding="@dimen/_2sdp"
+                               android:layout_width="@dimen/_20sdp"
+                               android:layout_height="@dimen/_20sdp"/>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                     </LinearLayout>
+
+                  </LinearLayout>
+
+               </com.github.florent37.expansionpanel.ExpansionLayout>
+            </LinearLayout>
+            <!--Договор-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="@color/line_color" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp">
+               <com.github.florent37.expansionpanel.ExpansionHeader
+                   android:id="@+id/expansion_header_contract"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:expansion_headerIndicator="@id/header_indicator_contract"
+                   app:expansion_layout="@id/expansion_layout_contract"
+                   app:expansion_toggleOnClick="true">
+
+                  <RelativeLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="@dimen/_33sdp"
+                      android:background="@android:color/white"
+                      android:paddingHorizontal="@dimen/_10sdp">
+
+                     <TextView
+                         android:id="@+id/tv_title_contract"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_centerVertical="true"
+                         android:fontFamily="@font/inter_regular"
+                         android:text="@string/contract"
+                         android:textColor="@color/black"
+                         android:textSize="@dimen/_11sdp"
+                         android:textStyle="bold" />
+
+                     <ImageView
+                         android:id="@+id/header_indicator_contract"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentRight="true"
+                         android:layout_centerVertical="true"
+                         android:adjustViewBounds="true"
+                         app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
+
+                  </RelativeLayout>
+
+               </com.github.florent37.expansionpanel.ExpansionHeader>
+
+               <com.github.florent37.expansionpanel.ExpansionLayout
+                   android:id="@+id/expansion_layout_contract"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:expansion_expanded="true">
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:visibility="visible">
+
+                     <!-- sellertin-->
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/_8sdp"
+                         android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/hint_contractno"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="@string/contract_number"
+                            android:textColor="@color/text_color_gray"
+                            android:textStyle="normal"
+                            android:textSize="@dimen/_9sdp"/>
+
+                        <EditText
+                            android:id="@+id/edit_contractno"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:background="@drawable/create_edit_text_background"
+                            android:fontFamily="@font/inter_regular"
+                            android:paddingHorizontal="@dimen/_6sdp"
+                            android:paddingVertical="@dimen/_7sdp"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_11sdp" />
+
+                     </LinearLayout>
+
+                     <!-- sellername-->
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/_8sdp"
+                         android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/hint_contractdate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="@string/contract_date"
+                            android:textColor="@color/text_color_gray"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="normal"/>
+
+                        <TextView
+                            android:id="@+id/tv_contract_date"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:background="@drawable/create_edit_text_background"
+                            android:fontFamily="@font/inter_regular"
+                            android:paddingHorizontal="@dimen/_6sdp"
+                            android:paddingVertical="@dimen/_7sdp"
+                            android:textColor="@color/black"
+                            android:textColorHint="@color/text_color_gray"
+                            android:textSize="@dimen/_11sdp" />
+
+                     </LinearLayout>
+
+                  </LinearLayout>
+
+               </com.github.florent37.expansionpanel.ExpansionLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+            <!--Заказчик-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="@color/line_color"/>
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp">
+               <com.github.florent37.expansionpanel.ExpansionHeader
+                   android:id="@+id/expansion_header_buyer"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:expansion_headerIndicator="@id/header_indicator_buyer"
+                   app:expansion_layout="@id/expansion_layout_buyer"
+                   app:expansion_toggleOnClick="true">
+
+                  <RelativeLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="@dimen/_33sdp"
+                      android:background="@android:color/white"
+                      android:paddingHorizontal="@dimen/_10sdp">
+
+                     <TextView
+                         android:id="@+id/tv_title_buyer"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_centerVertical="true"
+                         android:fontFamily="@font/inter_regular"
+                         android:text="@string/buyer_1"
+                         android:textColor="@color/black"
+                         android:textSize="@dimen/_11sdp"
+                         android:textStyle="bold" />
+
+                     <ImageView
+                         android:id="@+id/header_indicator_buyer"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentEnd="true"
+                         android:layout_centerVertical="true"
+                         android:adjustViewBounds="true"
+                         app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
+
+                  </RelativeLayout>
+
+               </com.github.florent37.expansionpanel.ExpansionHeader>
+               <com.github.florent37.expansionpanel.ExpansionLayout
+                   android:id="@+id/expansion_layout_buyer"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:expansion_expanded="true">
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:visibility="visible">
+
+                     <!-- buyer tin or pinfl-->
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/_8sdp"
+                         android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/hint_buyertinorpinfl"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="@string/tin_or_pinfl"
+                            android:textStyle="normal"
+                            android:textSize="@dimen/_9sdp"
+                            android:textColor="@color/text_color_gray" />
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                           <EditText
+                               android:id="@+id/edit_buyer_tin_or_pinfl"
+                               android:background="@drawable/create_edit_text_background"
+                               android:fontFamily="@font/inter_regular"
+                               android:paddingHorizontal="@dimen/_6sdp"
+                               android:paddingVertical="@dimen/_7sdp"
+                               android:inputType="number"
+                               android:maxLength="14"
+                               android:textColor="@color/black"
+                               android:textSize="@dimen/_11sdp"
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"/>
+                           <ProgressBar
+                               android:id="@+id/progress_buyer_tin"
+                               android:visibility="gone"
+                               android:indeterminateTint="@color/primary_color"
+                               app:layout_constraintTop_toTopOf="parent"
+                               app:layout_constraintLeft_toLeftOf="parent"
+                               app:layout_constraintRight_toRightOf="parent"
+                               app:layout_constraintBottom_toBottomOf="parent"
+                               app:layout_constraintHorizontal_bias="0.98"
+                               android:layout_width="@dimen/_15sdp"
+                               android:layout_height="@dimen/_15sdp"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                     </LinearLayout>
+
+                     <!-- buyer name-->
+                     <LinearLayout
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/_8sdp"
+                         android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/hint_buyer_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="@string/name_1"
+                            android:textSize="@dimen/_9sdp"
+                            android:textStyle="normal"
+                            android:textColor="@color/text_color_gray" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_marginTop="@dimen/_3sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                           <EditText
+                               android:id="@+id/edit_buyer_name"
+                               android:background="@drawable/create_edit_text_background"
+                               android:fontFamily="@font/inter_regular"
+                               android:paddingHorizontal="@dimen/_6sdp"
+                               android:paddingVertical="@dimen/_7sdp"
+                               android:textColor="@color/black"
+                               android:textSize="@dimen/_11sdp"
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"/>
+                           <ProgressBar
+                               android:id="@+id/progress_buyer_name"
+                               android:visibility="gone"
+                               android:indeterminateTint="@color/primary_color"
+                               app:layout_constraintTop_toTopOf="parent"
+                               app:layout_constraintLeft_toLeftOf="parent"
+                               app:layout_constraintRight_toRightOf="parent"
+                               app:layout_constraintBottom_toBottomOf="parent"
+                               app:layout_constraintHorizontal_bias="0.98"
+                               android:layout_width="@dimen/_15sdp"
+                               android:layout_height="@dimen/_15sdp"/>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                     </LinearLayout>
+
+                     <!-- buyer branches-->
+                     <LinearLayout
+                         android:id="@+id/layout_buyer_branches"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:layout_marginTop="@dimen/_8sdp"
+                         android:orientation="vertical"
+                         android:visibility="gone">
+
+                        <TextView
+                            android:id="@+id/hint_buyer_branches"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/inter_regular"
+                            android:text="@string/branches"
+                            android:textSize="@dimen/_8sdp"
+                            android:textStyle="normal"
+                            android:textColor="@color/text_color_gray" />
+
+                        <androidx.appcompat.widget.LinearLayoutCompat
+                            android:orientation="horizontal"
+                            android:gravity="center"
+                            android:id="@+id/list_buyer_branches1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/filter_components_back">
+                           <TextView
+                               android:ellipsize="end"
+                               android:fontFamily="@font/inter_regular"
+                               android:gravity="center_vertical"
+                               android:maxLines="1"
+                               android:paddingHorizontal="@dimen/_6sdp"
+                               android:paddingVertical="@dimen/_7sdp"
+                               android:textSize="@dimen/_11sdp"
+                               android:text="@string/branches"
+                               android:layout_weight="1"
+                               android:textColor="@color/text_color"
+                               app:drawableEndCompat="@drawable/ic_arrow_bottom"
+                               android:id="@+id/list_buyer_branches"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"/>
+                           <ImageView
+                               android:id="@+id/cancel_buyer_branch"
+                               android:padding="@dimen/_2sdp"
+                               android:visibility="gone"
+                               android:layout_marginHorizontal="@dimen/_5sdp"
+                               android:src="@drawable/ic_baseline_cancel_24"
+                               android:layout_width="@dimen/_20sdp"
+                               android:layout_height="@dimen/_20sdp"/>
+                        </androidx.appcompat.widget.LinearLayoutCompat>
+
+                     </LinearLayout>
+
+                  </LinearLayout>
+
+               </com.github.florent37.expansionpanel.ExpansionLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <!--Описание-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="@color/line_color" />
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp">
+               <com.github.florent37.expansionpanel.ExpansionHeader
+                   android:id="@+id/expansion_header_acttext"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:expansion_headerIndicator="@id/header_indicator_acttext"
+                   app:expansion_layout="@id/expansion_layout_acttext"
+                   app:expansion_toggleOnClick="true">
+
+                  <RelativeLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="@dimen/_33sdp"
+                      android:background="@android:color/white"
+                      android:paddingHorizontal="@dimen/_10sdp">
+
+                     <TextView
+                         android:id="@+id/tv_title_acttext"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_centerVertical="true"
+                         android:fontFamily="@font/inter_regular"
+                         android:text="@string/description"
+                         android:textColor="@color/black"
+                         android:textSize="@dimen/_11sdp"
+                         android:textStyle="bold" />
+
+                     <ImageView
+                         android:id="@+id/header_indicator_acttext"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentRight="true"
+                         android:layout_centerVertical="true"
+                         android:adjustViewBounds="true"
+                         app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
+
+                  </RelativeLayout>
+
+               </com.github.florent37.expansionpanel.ExpansionHeader>
+               <com.github.florent37.expansionpanel.ExpansionLayout
+                   android:id="@+id/expansion_layout_acttext"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:expansion_expanded="true">
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:visibility="visible">
+
+                     <!--acttext-->
+                     <EditText
+                         android:id="@+id/edit_act_text"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content"
+                         android:background="@drawable/create_edit_text_background"
+                         android:fontFamily="@font/inter_regular"
+                         android:gravity="start|top"
+                         android:minHeight="@dimen/_150sdp"
+                         android:padding="@dimen/_6sdp"
+                         android:textColor="@color/text_color"
+                         android:textSize="@dimen/_11sdp" />
+                  </LinearLayout>
+
+               </com.github.florent37.expansionpanel.ExpansionLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <!--товары-->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.8dp"
+                android:background="@color/line_color" />
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical"
+                android:padding="@dimen/_8sdp">
+               <com.github.florent37.expansionpanel.ExpansionHeader
+                   android:id="@+id/expansion_header_products"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:expansion_headerIndicator="@id/header_indicator_products"
+                   app:expansion_layout="@id/expansion_layout_products"
+                   app:expansion_toggleOnClick="true">
+
+                  <RelativeLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="@dimen/_33sdp"
+                      android:background="@android:color/white"
+                      android:paddingHorizontal="@dimen/_10sdp">
+
+                     <TextView
+                         android:id="@+id/tv_title_products"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_centerVertical="true"
+                         android:fontFamily="@font/inter_regular"
+                         android:text="@string/products"
+                         android:textColor="@color/black"
+                         android:textSize="@dimen/_12sdp"
+                         android:textStyle="bold" />
+
+                     <ImageView
+                         android:id="@+id/header_indicator_products"
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_alignParentEnd="true"
+                         android:layout_centerVertical="true"
+                         android:adjustViewBounds="true"
+                         app:srcCompat="@drawable/ic_expansion_header_indicator_grey_24dp" />
+
+                  </RelativeLayout>
+
+               </com.github.florent37.expansionpanel.ExpansionHeader>
+
+               <com.github.florent37.expansionpanel.ExpansionLayout
+                   android:id="@+id/expansion_layout_products"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   app:expansion_expanded="true">
+
+                  <LinearLayout
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical"
+                      android:visibility="visible">
+
+                     <!--product_add-->
+                     <androidx.cardview.widget.CardView
+                         android:id="@+id/btn_add_product"
+                         android:layout_width="match_parent"
+                         android:layout_height="@dimen/_33sdp"
+                         android:layout_marginVertical="10dp"
+                         app:cardCornerRadius="6dp"
+                         app:cardElevation="0dp"
+                         android:layout_margin="@dimen/_2sdp"
+                         app:layout_constraintBottom_toBottomOf="parent"
+                         app:layout_constraintEnd_toEndOf="parent"
+                         app:layout_constraintStart_toStartOf="parent"
+                         app:layout_constraintTop_toBottomOf="@+id/include">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/primary_color">
+
+                           <LinearLayout
+                               android:layout_width="match_parent"
+                               android:layout_height="match_parent"
+                               android:background="?attr/selectableItemBackground"
+                               android:gravity="center_vertical"
+                               android:orientation="horizontal"
+                               android:paddingHorizontal="@dimen/_12sdp">
+
+                              <ImageView
+                                  android:tint="@color/white"
+                                  android:layout_width="@dimen/_15sdp"
+                                  android:layout_height="@dimen/_15sdp"
+                                  android:src="@drawable/ic_add"
+                                  tools:ignore="UseAppTint" />
+
+                              <TextView
+                                  android:layout_width="wrap_content"
+                                  android:layout_height="wrap_content"
+                                  android:layout_marginLeft="15dp"
+                                  android:layout_marginRight="15dp"
+                                  android:ellipsize="end"
+                                  android:fontFamily="@font/inter_regular"
+                                  android:lines="1"
+                                  android:text="@string/add_product"
+                                  android:textColor="@color/white"
+                                  android:textSize="@dimen/_10sdp"
+                                  android:textStyle="bold" />
+
+                           </LinearLayout>
+                        </FrameLayout>
+                     </androidx.cardview.widget.CardView>
+
+                     <androidx.recyclerview.widget.RecyclerView
+                         android:id="@+id/recycler_view_products"
+                         android:layout_width="match_parent"
+                         android:overScrollMode="never"
+                         android:layout_height="wrap_content"
+                         android:orientation="vertical"
+                         tools:itemCount="2"
+                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                         tools:listitem="@layout/recycler_act_product_item" />
+                  </LinearLayout>
+
+               </com.github.florent37.expansionpanel.ExpansionLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_update"
+                android:textAllCaps="false"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_33sdp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="10dp"
+                android:layout_marginTop="@dimen/_12sdp"
+                android:clickable="true"
+                android:focusable="true"
+                android:ellipsize="end"
+                android:fontFamily="@font/inter_regular"
+                android:lines="1"
+                android:text="@string/update"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10sdp"
+                android:background="@drawable/button_bac"
+                android:textStyle="bold"
+                android:gravity="center" />
+         </androidx.appcompat.widget.LinearLayoutCompat>
+      </androidx.core.widget.NestedScrollView>
+
+
+   <include
+       android:id="@+id/include_shimmer_edit_act"
+      layout="@layout/shimmer_act_create"/>
+
+
+</androidx.appcompat.widget.LinearLayoutCompat>

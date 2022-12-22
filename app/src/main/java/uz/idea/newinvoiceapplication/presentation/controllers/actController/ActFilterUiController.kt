@@ -3,6 +3,7 @@ package uz.idea.newinvoiceapplication.presentation.controllers.actController
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
 import uz.idea.domain.models.act.actDraftModel.actDraftFilter.ActDraftFilter
+import uz.idea.domain.models.act.actSend.actSendFilter.ActSendFilter
 import uz.idea.domain.models.branchModel.BranchModel
 import uz.idea.domain.models.branchModel.Data
 import uz.idea.domain.models.companyInfo.CompanyInfo
@@ -12,10 +13,7 @@ import uz.idea.newinvoiceapplication.R
 import uz.idea.newinvoiceapplication.databinding.FragmentFilterBinding
 import uz.idea.newinvoiceapplication.presentation.activities.MainActivity
 import uz.idea.newinvoiceapplication.presentation.screens.filterScreen.FilterFragment
-import uz.idea.newinvoiceapplication.utils.extension.getLanguage
-import uz.idea.newinvoiceapplication.utils.extension.gone
-import uz.idea.newinvoiceapplication.utils.extension.logData
-import uz.idea.newinvoiceapplication.utils.extension.visible
+import uz.idea.newinvoiceapplication.utils.extension.*
 import uz.idea.newinvoiceapplication.vm.actVm.ActViewModel
 import java.util.*
 
@@ -27,17 +25,10 @@ class ActFilterUiController(
 ):ActController {
 
     override fun createAct() {
-
+        binding.includeCreateFilter.apply {
+            consCreateFilter.visible()
+        }
     }
-
-    override fun incomingAct() {
-
-    }
-
-    override fun outgoingAct() {
-
-    }
-
     // draft act
     private var actStartDate:String?=null
     private var actEndDate:String?=null
@@ -46,6 +37,170 @@ class ActFilterUiController(
     private var endContractDate:String?=null
     // draft sellerData
     private var branchDataMainSeller:Data?=null
+
+    override fun incomingAct() {
+        binding.incomingActFilter.apply {
+            // act date
+            dateActStart.setOnClickListener {
+                datePickerFilter(0)
+            }
+            dateActEnd.setOnClickListener {
+                datePickerFilter(0)
+            }
+
+            // contract date
+            dateStartContract.setOnClickListener {
+                datePickerFilter(1)
+            }
+
+            dateContractEnd.setOnClickListener {
+                datePickerFilter(1)
+            }
+            // status check
+            statusChecked.text = getStatusList()[0]
+            statusChecked.setOnClickListener {
+                mainActivity.containerApplication.applicationDialog(3,getStatusList()){ data ->
+                    statusChecked.text = data
+                }
+            }
+
+            // company branch
+            subdivisionsEditTv.text = mainActivity.getString(R.string.choose)
+            val userData = actViewModel.getUserData()
+            actViewModel.getUserCompany(getLanguage(mainActivity),userData?.data?.tin.toString())
+            filterFragment.lifecycleScope.launchWhenCreated {
+                actViewModel.companyInfo.collect { result->
+                    when(result){
+                        is ResponseState.Loading->{
+                            progressActDraft.visible()
+                        }
+                        is ResponseState.Success->{
+                            progressActDraft.gone()
+                            if (result.data[1]!=null && result.data[1].toString().isNotEmptyOrNull()){
+                                val branchModel = result.data[1]?.parseClass(BranchModel::class.java)
+                                if (branchModel?.data?.isNotEmpty() == true && branchModel.data.size > 1){
+                                    subdivisionsEditTv.setOnClickListener {
+                                        mainActivity.containerApplication.applicationDialog(0, branchModel.data){ data ->
+                                            branchDataMainSeller =  data
+                                            subdivisionsEditTv.text = data.branchName
+                                            cancelBranchSeller.visible()
+                                            cancelBranchSeller.setOnClickListener {
+                                                subdivisionsEditTv.text = mainActivity.getString(R.string.choose)
+                                                branchDataMainSeller = null
+                                                cancelBranchSeller.gone()
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    subdivisionsEditTv.enabledFalse()
+                                }
+                            }
+                        }
+                        is ResponseState.Error->{
+                            progressActDraft.gone()
+                        }
+                    }
+                }
+            }
+            buttonFilter.setOnClickListener {
+                val actNumber = docNumber.text.toString()
+                val tin = inn.text.toString()
+                val contractNumber = contractNumber.text.toString()
+                val status = getStatus(statusChecked.text.toString(),mainActivity)
+
+                val actDraftFilter = ActDraftFilter(actEndDate, actStartDate, actNumber, null, null,
+                    endContractDate, startContractDate, contractNumber,null,null,branchDataMainSeller?.branchNum,if(tin.isNotEmptyOrNull()) tin.toLong() else null,status.toLong())
+                filterFragment.lifecycleScope.launchWhenCreated {
+                    mainActivity.containerViewModel.actFilter.emit(actDraftFilter)
+                    mainActivity.navHostFragment.navController.popBackStack()
+                }
+            }
+        }
+    }
+
+
+
+    override fun outgoingAct() {
+        binding.incomingActFilter.apply {
+            // act date
+            dateActStart.setOnClickListener {
+                datePickerFilter(0)
+            }
+            dateActEnd.setOnClickListener {
+                datePickerFilter(0)
+            }
+
+            // contract date
+            dateStartContract.setOnClickListener {
+                datePickerFilter(1)
+            }
+
+            dateContractEnd.setOnClickListener {
+                datePickerFilter(1)
+            }
+            // status check
+            statusChecked.text = getStatusList()[0]
+            statusChecked.setOnClickListener {
+                mainActivity.containerApplication.applicationDialog(3,getStatusList()){ data ->
+                    statusChecked.text = data
+                }
+            }
+
+            // company branch
+            subdivisionsEditTv.text = mainActivity.getString(R.string.choose)
+            val userData = actViewModel.getUserData()
+            actViewModel.getUserCompany(getLanguage(mainActivity),userData?.data?.tin.toString())
+            filterFragment.lifecycleScope.launchWhenCreated {
+                actViewModel.companyInfo.collect { result->
+                    when(result){
+                        is ResponseState.Loading->{
+                            progressActDraft.visible()
+                        }
+                        is ResponseState.Success->{
+                            progressActDraft.gone()
+                            if (result.data[1]!=null && result.data[1].toString().isNotEmptyOrNull()){
+                                val branchModel = result.data[1]?.parseClass(BranchModel::class.java)
+                                if (branchModel?.data?.isNotEmpty() == true && branchModel.data.size > 1){
+                                    subdivisionsEditTv.setOnClickListener {
+                                        mainActivity.containerApplication.applicationDialog(0, branchModel.data){ data ->
+                                            branchDataMainSeller =  data
+                                            subdivisionsEditTv.text = data.branchName
+                                            cancelBranchSeller.visible()
+                                            cancelBranchSeller.setOnClickListener {
+                                                subdivisionsEditTv.text = mainActivity.getString(R.string.choose)
+                                                branchDataMainSeller = null
+                                                cancelBranchSeller.gone()
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    subdivisionsEditTv.enabledFalse()
+                                }
+                            }
+                        }
+                        is ResponseState.Error->{
+                            progressActDraft.gone()
+                        }
+                    }
+                }
+            }
+            buttonFilter.setOnClickListener {
+                val actNumber = docNumber.text.toString()
+                val tin = inn.text.toString()
+                val contractNumber = contractNumber.text.toString()
+                val status = getStatus(statusChecked.text.toString(),mainActivity)
+
+                val actDraftFilter = ActDraftFilter(actEndDate, actStartDate, actNumber, null, null,
+                    endContractDate, startContractDate, contractNumber,null,null,branchDataMainSeller?.branchNum,if(tin.isNotEmptyOrNull()) tin.toLong() else null,status.toLong())
+                filterFragment.lifecycleScope.launchWhenCreated {
+                    mainActivity.containerViewModel.actFilter.emit(actDraftFilter)
+                    mainActivity.navHostFragment.navController.popBackStack()
+                }
+            }
+        }
+    }
+
+
     override fun draftAct() {
         binding.incomingActFilter.apply {
             // act date
@@ -83,19 +238,23 @@ class ActFilterUiController(
                         }
                         is ResponseState.Success->{
                             progressActDraft.gone()
-                            val branchModel = result.data[1]?.parseClass(BranchModel::class.java)
-                            if (branchModel?.data?.isNotEmpty() == true && branchModel.data.size > 1){
-                                subdivisionsEditTv.setOnClickListener {
-                                    mainActivity.containerApplication.applicationDialog(0, branchModel.data){ data ->
-                                        branchDataMainSeller =  data
-                                        subdivisionsEditTv.text = data.branchName
-                                        cancelBranchSeller.visible()
-                                        cancelBranchSeller.setOnClickListener {
-                                            subdivisionsEditTv.text = mainActivity.getString(R.string.choose)
-                                            branchDataMainSeller = null
-                                            cancelBranchSeller.gone()
+                            if (result.data[1]!=null && result.data[1].toString().isNotEmptyOrNull()){
+                                val branchModel = result.data[1]?.parseClass(BranchModel::class.java)
+                                if (branchModel?.data?.isNotEmpty() == true && branchModel.data.size > 1){
+                                    subdivisionsEditTv.setOnClickListener {
+                                        mainActivity.containerApplication.applicationDialog(0, branchModel.data){ data ->
+                                            branchDataMainSeller =  data
+                                            subdivisionsEditTv.text = data.branchName
+                                            cancelBranchSeller.visible()
+                                            cancelBranchSeller.setOnClickListener {
+                                                subdivisionsEditTv.text = mainActivity.getString(R.string.choose)
+                                                branchDataMainSeller = null
+                                                cancelBranchSeller.gone()
+                                            }
                                         }
                                     }
+                                } else {
+                                    subdivisionsEditTv.enabledFalse()
                                 }
                             }
                         }
@@ -109,7 +268,10 @@ class ActFilterUiController(
                 val actNumber = docNumber.text.toString()
                 val tin = inn.text.toString()
                 val contractNumber = contractNumber.text.toString()
-                val actDraftFilter = ActDraftFilter(actEndDate, actStartDate, actNumber, branchDataMainSeller?.branchNum, tin, endContractDate, startContractDate, contractNumber)
+                val status = getStatus(statusChecked.text.toString(),mainActivity)
+                val actDraftFilter = ActDraftFilter(actEndDate, actStartDate, actNumber, null, null,
+                    endContractDate, startContractDate, contractNumber,null,null,branchDataMainSeller?.branchNum,if(tin.isNotEmptyOrNull()) tin.toLong() else null,status.toLong())
+                logData(actDraftFilter.toString())
                 filterFragment.lifecycleScope.launchWhenCreated {
                     mainActivity.containerViewModel.actFilter.emit(actDraftFilter)
                     mainActivity.navHostFragment.navController.popBackStack()
@@ -126,9 +288,9 @@ class ActFilterUiController(
     private fun getStatusList():List<String>{
         val listStatus = LinkedList<String>()
         listStatus.add(mainActivity.getString(R.string.all_status))
-        listStatus.add(mainActivity.getString(R.string.confirmed_status))
-        listStatus.add(mainActivity.getString(R.string.denied_status))
-        listStatus.add(mainActivity.getString(R.string.signature_status))
+        listStatus.add(mainActivity.getString(R.string.created))
+        listStatus.add(mainActivity.getString(R.string.process_of_sending))
+        listStatus.add(mainActivity.getString(R.string.error_while_settings))
         listStatus.add(mainActivity.getString(R.string.send_status))
         return listStatus
     }

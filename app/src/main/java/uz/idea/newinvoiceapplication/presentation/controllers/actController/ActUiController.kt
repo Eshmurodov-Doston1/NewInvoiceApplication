@@ -19,7 +19,6 @@ import com.github.razir.progressbutton.showProgress
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import uz.idea.domain.database.actProductEntity.ActProductEntity
@@ -48,8 +47,10 @@ import uz.idea.newinvoiceapplication.databinding.FragmentHomeBinding
 import uz.idea.newinvoiceapplication.presentation.activities.MainActivity
 import uz.idea.newinvoiceapplication.presentation.screens.homeScreen.HomeFragment
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.BUYER_TYPE
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.DELETE_CLICK
 import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.EDITE_CLICK
+import uz.idea.newinvoiceapplication.utils.appConstant.AppConstant.SELLER_TYPE
 import uz.idea.newinvoiceapplication.utils.extension.*
 import uz.idea.newinvoiceapplication.vm.actVm.ActViewModel
 import java.math.BigDecimal
@@ -307,7 +308,6 @@ class ActUiController(
                                      binding.includeActCreate.btnSave.enabled()
                                     actViewModel.deleteTableActProduct()
                                     clearUiActCreate(result.data)
-                                    logData("SaveActData->${result.data.toString()}")
                                 }
                                 is ResponseState.Error->{
                                     loadingButton(false)
@@ -343,7 +343,7 @@ class ActUiController(
             editBuyerName.clear()
             editActText.text.clear()
             val responseSaveAct = jsonElement?.parseClass(ResponseSaveAct::class.java)
-            mainActivity.containerApplication.screenNavigate.createDocument(responseSaveAct?.data?.actid.toString(),1)
+            mainActivity.containerApplication.screenNavigate.createDocument(responseSaveAct?.data?.actid.toString(),1,SELLER_TYPE)
         }
     }
 
@@ -623,7 +623,7 @@ class ActUiController(
     // Incoming act
     private val genericPagingAdapterIncoming:GenericPagingAdapter<uz.idea.domain.models.act.actIncoming.actIn.Data> by lazy {
         GenericPagingAdapter(R.layout.item_draft){ data, position, clickType, viewBinding ->
-            mainActivity.containerApplication.screenNavigate.createDocument(data?._id.toString(),1)
+            mainActivity.containerApplication.screenNavigate.createDocument(data?._id.toString(),1,BUYER_TYPE)
         }
     }
     override fun incomingAct() {
@@ -634,10 +634,8 @@ class ActUiController(
             rvIncoming.addOnScrollListener(object: RecyclerView.OnScrollListener(){
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    if (genericPagingAdapter.itemCount>5){
-                        if (layoutManager.findLastCompletelyVisibleItemPosition() == genericPagingAdapterIncoming.itemCount-1){
-                            mainActivity.bottomBarView(false)
-                        }
+                    if (layoutManager.findLastCompletelyVisibleItemPosition() == genericPagingAdapterIncoming.itemCount-1){
+                        mainActivity.bottomBarView(false)
                     }
                 }
 
@@ -648,10 +646,24 @@ class ActUiController(
                     }
                 }
             })
-            val incomingFilter = IncomingFilterModel()
+
+            var incomingFilter = IncomingFilterModel()
+
+            homeFragment.lifecycleScope.launchWhenCreated {
+                mainActivity.containerViewModel.actFilter.collect {
+                    incomingFilter = IncomingFilterModel(it?.actdate_end,it?.actdate_start,it?.actno,it?.buyer_branchcode,it?.buyertin,it?.contractdate_end,
+                        it?.contractdate_start,it?.contractno,it?.limit,it?.page,
+                        it?.seller_branchcode,it?.sellertin,it?.stateid)
+                }
+            }
             pagingDataIncoming(incomingFilter)
+
             swipeRefresh.setOnRefreshListener {
+                incomingFilter = IncomingFilterModel()
                 pagingDataIncoming(incomingFilter)
+                homeFragment.lifecycleScope.launchWhenCreated {
+                    mainActivity.containerViewModel.actFilter.emit(null)
+                }
             }
             rvIncoming.adapter = genericPagingAdapterIncoming
             swipeRefresh.setColorSchemeColors(ContextCompat.getColor(mainActivity,R.color.primary_color))
@@ -688,7 +700,7 @@ class ActUiController(
     // send act
     private val genericPagingAdapterActSend:GenericPagingAdapter<uz.idea.domain.models.act.actSend.actSendData.Data> by lazy {
         GenericPagingAdapter(R.layout.item_draft){ data, position, clickType, viewBinding ->
-            mainActivity.containerApplication.screenNavigate.createDocument(data?._id.toString(),1)
+            mainActivity.containerApplication.screenNavigate.createDocument(data?._id.toString(),1,SELLER_TYPE)
         }
     }
     override fun outgoingAct() {
@@ -699,10 +711,8 @@ class ActUiController(
             rvActSend.addOnScrollListener(object: RecyclerView.OnScrollListener(){
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    if (genericPagingAdapter.itemCount>5){
-                        if (layoutManager.findLastCompletelyVisibleItemPosition() == genericPagingAdapterActSend.itemCount-1){
-                            mainActivity.bottomBarView(false)
-                        }
+                    if (layoutManager.findLastCompletelyVisibleItemPosition() == genericPagingAdapterActSend.itemCount-1){
+                        mainActivity.bottomBarView(false)
                     }
                 }
 
@@ -714,10 +724,22 @@ class ActUiController(
                 }
             })
 
-            val actSendFilter = ActSendFilter()
+            var actSendFilter = ActSendFilter()
+            homeFragment.lifecycleScope.launchWhenCreated {
+                mainActivity.containerViewModel.actFilter.collect {
+                    actSendFilter = ActSendFilter(it?.actdate_end,it?.actdate_start,it?.actno,it?.buyer_branchcode,it?.buyertin,it?.contractdate_end,
+                        it?.contractdate_start,it?.contractno,it?.limit,it?.page,
+                        it?.seller_branchcode,it?.sellertin,it?.stateid)
+                }
+            }
             pagingDataActSend(actSendFilter)
+
             swipeRefresh.setOnRefreshListener {
+                actSendFilter = ActSendFilter()
                 pagingDataActSend(actSendFilter)
+                homeFragment.lifecycleScope.launchWhenCreated {
+                    mainActivity.containerViewModel.actFilter.emit(null)
+                }
             }
             rvActSend.adapter = genericPagingAdapterActSend
             swipeRefresh.setColorSchemeColors(ContextCompat.getColor(mainActivity,R.color.primary_color))
@@ -753,7 +775,7 @@ class ActUiController(
     // draft act
     private val genericPagingAdapter:GenericPagingAdapter<uz.idea.domain.models.act.actDraftModel.actDraft.Data> by lazy {
         GenericPagingAdapter(R.layout.item_draft){ data, position, clickType, viewBinding ->
-            mainActivity.containerApplication.screenNavigate.createDocument(data?._id.toString(),1)
+            mainActivity.containerApplication.screenNavigate.createDocument(data?._id.toString(),1,SELLER_TYPE)
         }
     }
     override fun draftAct() {
@@ -764,10 +786,8 @@ class ActUiController(
             rvDraft.addOnScrollListener(object: RecyclerView.OnScrollListener(){
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                     super.onScrollStateChanged(recyclerView, newState)
-                    if (genericPagingAdapter.itemCount>5){
-                        if (layoutManager.findLastCompletelyVisibleItemPosition() == genericPagingAdapter.itemCount-1){
-                            mainActivity.bottomBarView(false)
-                        }
+                    if (layoutManager.findLastCompletelyVisibleItemPosition() == genericPagingAdapter.itemCount-1){
+                        mainActivity.bottomBarView(false)
                     }
                 }
 
@@ -788,6 +808,9 @@ class ActUiController(
             swipeRefresh.setOnRefreshListener {
                 actFilter = ActDraftFilter()
                 pagingData(actFilter)
+                homeFragment.lifecycleScope.launchWhenCreated {
+                    mainActivity.containerViewModel.actFilter.emit(null)
+                }
             }
             rvDraft.adapter = genericPagingAdapter
             swipeRefresh.setColorSchemeColors(ContextCompat.getColor(mainActivity,R.color.primary_color))
@@ -810,11 +833,12 @@ class ActUiController(
                 header = ExampleLoadStateAdapter(R.layout.load_state_draft,genericPagingAdapter::retry),
                 footer = ExampleLoadStateAdapter(R.layout.load_state_draft,genericPagingAdapter::retry)
             )
-        homeFragment.lifecycleScope.launch {
+        homeFragment.lifecycleScope.launchWhenCreated {
             genericPagingAdapter.loadStateFlow.collectLatest {  loadStates ->
                 binding.includeActDraft.shimmerInclude.shimmer.isVisible = loadStates.refresh is LoadState.Loading
                 binding.includeActDraft.rvDraft.isVisible = loadStates.refresh !is LoadState.Loading
                 binding.includeActDraft.swipeRefresh.isRefreshing = loadStates.refresh is LoadState.Error
+                mainActivity.containerViewModel.actFilter.emit(null)
             }
         }
     }

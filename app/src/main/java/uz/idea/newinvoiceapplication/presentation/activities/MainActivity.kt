@@ -1,13 +1,16 @@
 package uz.idea.newinvoiceapplication.presentation.activities
 
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.WindowManager
 import android.viewbinding.library.activity.viewBinding
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -25,14 +28,12 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.JsonParser
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import uz.idea.domain.models.menuModel.Children
 import uz.idea.domain.models.menuModel.Data
 import uz.idea.domain.models.menuModel.MenuDataModel
-import uz.idea.domain.models.userInfo.UserInfoModel
 import uz.idea.domain.usesCase.apiUsesCase.parseClass
 import uz.idea.domain.utils.loadState.ResponseState
 import uz.idea.newinvoiceapplication.R
@@ -69,8 +70,7 @@ class MainActivity : AppCompatActivity(),UIController{
     // childrenList
     private val childrenList:LinkedList<Data> = LinkedList()
 
-
-
+    private var isChecked:Boolean = false
     // generic main menu item
     private val genericRvAdapter:GenericRvAdapter<Data> by lazy {
         GenericRvAdapter(R.layout.item_menu){ data, position, clickType ->
@@ -85,6 +85,9 @@ class MainActivity : AppCompatActivity(),UIController{
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var navHostFragment: NavHostFragment
+    lateinit var packages:List<ApplicationInfo>
+    lateinit var pm: PackageManager
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -101,6 +104,10 @@ class MainActivity : AppCompatActivity(),UIController{
             statusBarColor(R.color.white)
             setSupportActionBar(binding.appBarMain.toolbar)
             // save measure database
+
+
+            getPackNameByAppName()
+
 
             // fab icon tint
             binding.appBarMain.fab.setColorFilter(ContextCompat.getColor(this@MainActivity,R.color.primary_color))
@@ -148,6 +155,26 @@ class MainActivity : AppCompatActivity(),UIController{
             navView.setupWithNavController(navHostFragment.navController)
             navUiController()
             menuList()
+        }
+    }
+
+
+
+
+    fun getPackNameByAppName(){
+        val flags = PackageManager.GET_META_DATA or
+                PackageManager.GET_SHARED_LIBRARY_FILES or
+                PackageManager.GET_UNINSTALLED_PACKAGES
+        val pm = packageManager
+        val applications = pm.getInstalledApplications(flags)
+        for (appInfo in applications) {
+            if (appInfo.flags and ApplicationInfo.FLAG_SYSTEM == 1) {
+            } else {
+                // Installed by user
+                if(appInfo.packageName.lowercase() == "uz.yt.eimzo".lowercase()){
+                  isChecked = true
+                }
+            }
         }
     }
 
