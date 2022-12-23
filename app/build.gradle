@@ -7,11 +7,11 @@ plugins {
 apply from :'../common.gradle'
 
 android {
-    namespace 'uz.idea.newinvoiceapplication'
+    namespace 'uz.einvoice.android'
     compileSdk 33
 
     defaultConfig {
-        applicationId "uz.idea.newinvoiceapplication"
+        applicationId "uz.einvoice.android"
         minSdk 21
         targetSdk 33
         versionCode 1
@@ -23,10 +23,13 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "BASE_URL", "\"https://back.e-invoice.uz\""
+            buildConfigField "String", "EIMZO_API_KEY", "\"5A000A430E8474A5FEBE3383EABB2B21827B1A2883F8746D5DF2B6BB0772657960C9AADB93D34CE66299CB42EB9064EDB01EB41780430905861F32E742C4E348\""
+
         }
         release {
             minifyEnabled false
             buildConfigField "String", "BASE_URL", "\"https://back.e-invoice.uz\""
+            buildConfigField "String", "EIMZO_API_KEY", "\"5A000A430E8474A5FEBE3383EABB2B21827B1A2883F8746D5DF2B6BB0772657960C9AADB93D34CE66299CB42EB9064EDB01EB41780430905861F32E742C4E348\""
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -83,6 +86,6 @@ dependencies {
     // zoom view
     implementation 'com.github.shopgun:zoomlayout:3.0.0'
     // horcrux
-  //  implementation 'com.github.alimninja:horcrux:2.0'
+    implementation 'com.github.alimninja:horcrux:0.0.1-beta.1'
 
 }

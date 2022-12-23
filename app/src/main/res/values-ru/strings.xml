@@ -128,4 +128,6 @@
     <string name="search_doc">Поиск</string>
     <string name="create_screen">Вы прошли окно создания</string>
     <string name="delete_text">Вы хотите удалить?</string>
+    <string name="no_eimzo">У вас нет приложения электронной подписи</string>
+    <string name="check_sign">Документ успешно подписан</string>
 </resources>

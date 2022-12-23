@@ -5,7 +5,7 @@ plugins {
 }
 apply from :'../common.gradle'
 android {
-    namespace 'uz.idea.domain'
+    namespace 'uz.einvoice.domain'
     compileSdk 33
 
     defaultConfig {

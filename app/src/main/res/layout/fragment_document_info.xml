@@ -35,8 +35,25 @@
         app:layout_constraintHorizontal_bias="0.95"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/send"
+            android:id="@+id/cancel"
+            android:visibility="gone"
+            app:rippleColor="@color/delete_color"
+            app:fab_colorNormal="@color/white"
+            app:fab_progress_color="@color/delete_color"
+            app:fab_colorRipple="@color/delete_color"
+            app:fab_colorPressed="#AEFF0000"
+            app:fab_shadowColor="#6BFF0000"
+            app:fab_size="mini"
+            android:layout_width="@dimen/_30sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/ic_baseline_cancel_24"
+            app:fabSize="mini"
+            app:fab_label="@string/cancel"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/send_sign"
             app:fab_size="mini"
              app:fab_colorNormal="@color/white"
             app:rippleColor="@color/send_color"

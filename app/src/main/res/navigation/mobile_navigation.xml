@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/home"
         android:label="Home"
-        android:name="uz.idea.newinvoiceapplication.presentation.screens.homeScreen.HomeFragment"
+        android:name="uz.einvoice.android.presentation.screens.homeScreen.HomeFragment"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_home_to_documentFragment"
@@ -16,17 +16,17 @@
     </fragment>
     <fragment
         android:id="@+id/settings"
-        android:name="uz.idea.newinvoiceapplication.presentation.screens.settingsScreen.SettingsFragment"
+        android:name="uz.einvoice.android.presentation.screens.settingsScreen.SettingsFragment"
         android:label="Settings"
         tools:layout="@layout/fragment_settings" />
     <fragment
         android:id="@+id/filter"
         android:label="Filter"
-        android:name="uz.idea.newinvoiceapplication.presentation.screens.filterScreen.FilterFragment"
+        android:name="uz.einvoice.android.presentation.screens.filterScreen.FilterFragment"
         tools:layout="@layout/fragment_filter" />
     <fragment
         android:id="@+id/documentFragment"
-        android:name="uz.idea.newinvoiceapplication.presentation.screens.docDataScreen.DocumentInfoFragment"
+        android:name="uz.einvoice.android.presentation.screens.docDataScreen.DocumentInfoFragment"
         android:label="Document"
         tools:layout="@layout/fragment_document_info" >
         <action
@@ -35,6 +35,6 @@
     </fragment>
     <dialog
         android:id="@+id/updateFragment"
-        android:name="uz.idea.newinvoiceapplication.presentation.screens.updateDocument.UpdateFragment"
+        android:name="uz.einvoice.android.presentation.screens.updateDocument.UpdateFragment"
         tools:layout="@layout/fragment_update" />
 </navigation>

@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/authFragment"
-        android:name="uz.idea.newinvoiceapplication.presentation.screens.authScreen.AuthFragment"
+        android:name="uz.einvoice.android.presentation.screens.authScreen.AuthFragment"
         android:label="fragment_auth"
         tools:layout="@layout/fragment_auth" />
     <fragment
         android:id="@+id/languageFragment"
-        android:name="uz.idea.newinvoiceapplication.presentation.screens.languageScreen.LanguageFragment"
+        android:name="uz.einvoice.android.presentation.screens.languageScreen.LanguageFragment"
         android:label="fragment_language"
         tools:layout="@layout/fragment_language" >
         <action

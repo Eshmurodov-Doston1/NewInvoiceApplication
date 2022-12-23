@@ -122,5 +122,7 @@
     <string name="search_doc">Қидирув</string>
     <string name="create_screen">Сиз яратиш ойнасидан ўтдингиз</string>
     <string name="delete_text">Ўчиришни хохлайсизми?</string>
+    <string name="no_eimzo">Сизда Э-Имзо иловаси мавжуд эмас</string>
+    <string name="check_sign">Документ мувофақиятли имзоланди</string>
 
 </resources>

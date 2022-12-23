@@ -26,7 +26,7 @@
            android:layout_marginTop="@dimen/_5sdp"
            android:layout_width="match_parent"
            android:layout_height="@dimen/_30sdp"/>
-       <uz.idea.newinvoiceapplication.utils.mask.MaskedEditText
+       <uz.einvoice.android.utils.mask.MaskedEditText
            android:id="@+id/phone_number"
            android:textSize="@dimen/_12sdp"
            android:layout_marginTop="@dimen/_10sdp"

@@ -5,7 +5,7 @@ plugins {
 }
 apply from :'../common.gradle'
 android {
-    namespace 'uz.idea.mylibrary'
+    namespace 'uz.einvoice.data'
     compileSdk 33
 
     defaultConfig {
