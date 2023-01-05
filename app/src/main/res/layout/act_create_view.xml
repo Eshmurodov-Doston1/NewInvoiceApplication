@@ -575,6 +575,7 @@
                                         android:fontFamily="@font/inter_regular"
                                         android:paddingHorizontal="@dimen/_6sdp"
                                         android:paddingVertical="@dimen/_7sdp"
+                                        android:imeOptions="actionSearch"
                                         android:inputType="number"
                                         android:maxLength="14"
                                         android:textColor="@color/black"

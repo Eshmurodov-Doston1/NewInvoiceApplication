@@ -1,4 +1,4 @@
-package uz.einvoice.domain.models.act.actDraftModel.actDraft
+package uz.einvoice.domain.models.act.actDocument.actDocumentData
 
 data class Actdoc(
     val actdate: String,

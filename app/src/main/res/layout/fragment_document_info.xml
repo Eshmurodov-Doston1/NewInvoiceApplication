@@ -35,7 +35,22 @@
         app:layout_constraintHorizontal_bias="0.95"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/checked"
+            app:fab_size="mini"
+            android:visibility="gone"
+            app:fab_colorNormal="@color/white"
+            app:rippleColor="@color/send_color"
+            android:layout_width="@dimen/_30sdp"
+            app:fab_progress_color="@color/send_color"
+            app:fab_colorRipple="@color/send_color"
+            app:fab_shadowColor="#5C42AE46"
+            app:fab_colorPressed="#AD42AE46"
+            android:layout_height="@dimen/_30sdp"
+            android:src="@drawable/ic_check"
+            android:tintMode="src_in"
+            app:fabSize="mini"
+            app:fab_label="@string/checked"/>
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/cancel"
             android:visibility="gone"

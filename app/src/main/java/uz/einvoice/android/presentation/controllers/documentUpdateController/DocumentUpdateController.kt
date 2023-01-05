@@ -635,7 +635,7 @@ class DocumentUpdateController(
                     }
                 }
             }
-            this.btnClose.setOnClickListener {
+            this.btnAdded.setOnClickListener {
                 bottomSheetDialog.dismiss()
             }
         }

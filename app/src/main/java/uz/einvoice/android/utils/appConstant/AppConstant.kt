@@ -36,12 +36,26 @@ object AppConstant {
     const val ERROR_STATUS_UPDATE_ACT = 5
 
     const val DOCUMENT_ID = "document_id"
+    const val DOC_TYPE = "doc_type"
     const val DOCUMENT_ID_APP = "documentId"
     const val DOC_STATUS = "document_status"
     const val STATE_ID = "state_id"
+    const val DOCUMENT_STATE_ID = "document_state_id"
     const val SELLER_TYPE = 1
     const val BUYER_TYPE = 2
     const val DELETE_TYPE = 3
     const val ERROR_BRANCH_CODE = 4
     const val CHECK_STATUS = 5
+
+    // act
+    const val RECEIVE = "receive"
+    const val DRAFT = "draft"
+    const val SEND = "send"
+
+    // types
+    const val ACT_DRAFT = "/acts/draft"
+    const val ACT_RECEIVE = "/acts/receive"
+    const val ACT_SENT = "/acts/sent"
+    const val ACT_QUEUE = "/acts/queue"
+    const val ACT_ADD = "/acts/add"
 }

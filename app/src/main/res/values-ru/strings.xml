@@ -130,4 +130,9 @@
     <string name="delete_text">Вы хотите удалить?</string>
     <string name="no_eimzo">У вас нет приложения электронной подписи</string>
     <string name="check_sign">Документ успешно подписан</string>
+    <string name="copy_doc_id">Идентификатор документа был скопирован</string>
+    <string name="checked">Подтвердить</string>
+    <string name="install_e_signed">Установка</string>
+    <string name="checked_text">Выберите</string>
+    <string name="added">Добавить</string>
 </resources>

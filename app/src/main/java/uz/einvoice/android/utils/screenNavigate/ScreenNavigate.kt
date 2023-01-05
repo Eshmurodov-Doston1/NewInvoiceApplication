@@ -6,17 +6,21 @@ import androidx.navigation.NavOptions
 import uz.einvoice.android.R
 import uz.einvoice.android.utils.appConstant.AppConstant.DOCUMENT_ID
 import uz.einvoice.android.utils.appConstant.AppConstant.DOCUMENT_ID_APP
+import uz.einvoice.android.utils.appConstant.AppConstant.DOCUMENT_STATE_ID
 import uz.einvoice.android.utils.appConstant.AppConstant.DOC_STATUS
+import uz.einvoice.android.utils.appConstant.AppConstant.DOC_TYPE
 import uz.einvoice.android.utils.appConstant.AppConstant.STATE_ID
 
 class ScreenNavigate(
     private val navController: NavController
 ) {
-    fun createDocument(actId:String,docStatus:Int,stateId:Int){
+    fun createDocument(actId:String,docStatus:Int,stateId:Int,documentStateId:Int?,docType:String?){
         val bundle = Bundle()
         bundle.putString(DOCUMENT_ID,actId)
+        bundle.putString(DOC_TYPE,docType)
         bundle.putInt(DOC_STATUS,docStatus)
         bundle.putInt(STATE_ID,stateId)
+        bundle.putInt(DOCUMENT_STATE_ID,documentStateId?:-1)
         navController.navigate(R.id.action_home_to_documentFragment,bundle,animationViewCreateRight())
     }
 

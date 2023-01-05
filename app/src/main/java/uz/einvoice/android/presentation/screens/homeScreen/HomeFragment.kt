@@ -11,6 +11,7 @@ import uz.einvoice.android.databinding.FragmentHomeBinding
 import uz.einvoice.android.presentation.controllers.actController.ActUiController
 import uz.einvoice.android.presentation.screens.baseFragment.BaseFragment
 import uz.einvoice.android.utils.appConstant.AppConstant
+import uz.einvoice.android.utils.appConstant.AppConstant.ACT_ADD
 import uz.einvoice.android.utils.extension.getLanguage
 import uz.einvoice.android.utils.extension.gone
 import uz.einvoice.android.utils.extension.logData
@@ -23,7 +24,7 @@ import kotlin.math.abs
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     // act controller
-    private lateinit var actUIController: ActUiController
+    private lateinit var actUIController: ActUiController<Any>
     // act view Model
     private val actViewModel:ActViewModel by viewModels()
     // main view model
@@ -60,7 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 mainActivity.containerViewModel.children.collect { children->
                     logData(children?.path.toString())
                     when(children?.path){
-                        "/acts/add"->{
+                        ACT_ADD->{
                             if (!isCreate)  actUiController()
                             binding.includeActCreate.nested.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
                                 if (scrollY < oldScrollY) {
@@ -71,50 +72,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                                 }
                             })
                             actUIController.createAct()
-                            if (binding.includeActDraft.consDraft.isVisible) {
-                                binding.includeActDraft.consDraft.gone()
-                            } else if (binding.includeActIncoming.consIncoming.isVisible){
-                                binding.includeActIncoming.consIncoming.gone()
-                            } else if (binding.includeActSent.consActSend.isVisible){
-                                binding.includeActSent.consActSend.gone()
-                            }
+                            binding.includeActDocument.consDocuments.gone()
                             binding.includeActCreate.consActCreate.visible()
                         }
-                        "/acts/draft"->{
-                            if (!isCreate)  actUiController()
-                            if (binding.includeActCreate.consActCreate.isVisible) {
-                                binding.includeActCreate.consActCreate.gone()
-                            } else if(binding.includeActIncoming.consIncoming.isVisible){
-                                binding.includeActIncoming.consIncoming.gone()
-                            } else if (binding.includeActSent.consActSend.isVisible){
-                                binding.includeActSent.consActSend.gone()
-                            }
-                            binding.includeActDraft.consDraft.visible()
-                            actUIController.draftAct()
-                        }
-                        "/acts/receive"->{
-                            if (!isCreate) actUiController()
-                            if (binding.includeActCreate.consActCreate.isVisible) {
-                                binding.includeActCreate.consActCreate.gone()
-                            } else if (binding.includeActDraft.consDraft.isVisible){
-                                binding.includeActDraft.consDraft.gone()
-                            } else if (binding.includeActSent.consActSend.isVisible){
-                                binding.includeActSent.consActSend.gone()
-                            }
-                            binding.includeActIncoming.consIncoming.visible()
-                            actUIController.incomingAct()
-                        }
-                        "/acts/sent"->{
-                            if (!isCreate) actUiController()
-                            if (binding.includeActCreate.consActCreate.isVisible) {
-                                binding.includeActCreate.consActCreate.gone()
-                            } else if (binding.includeActDraft.consDraft.isVisible){
-                                binding.includeActDraft.consDraft.gone()
-                            } else if (binding.includeActIncoming.consIncoming.isVisible){
-                                binding.includeActIncoming.consIncoming.gone()
-                            }
-                            binding.includeActSent.consActSend.visible()
-                            actUIController.outgoingAct()
+                        else ->{
+                          if (!isCreate) actUiController()
+                            binding.includeActDocument.consDocuments.visible()
+                            binding.includeActCreate.consActCreate.gone()
+
+                          actUIController.documentViews(children?.path.toString())
                         }
                     }
                 }
@@ -125,13 +91,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
 
 
-    private fun actUiController(){
+    private fun  actUiController(){
       try {
-          actUIController = ActUiController(
-              mainActivity,
-              binding,
-              actViewModel,
-              this)
+          actUIController = ActUiController(mainActivity, binding, actViewModel, this){ data, position ->
+
+          }
           isCreate = true
       }catch (e:Exception){
           e.printStackTrace()

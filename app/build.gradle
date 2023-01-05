@@ -88,4 +88,6 @@ dependencies {
     // horcrux
     implementation 'com.github.alimninja:horcrux:0.0.1-beta.1'
 
+    implementation 'com.cottacush:CurrencyEditText:1.0.0'
+
 }

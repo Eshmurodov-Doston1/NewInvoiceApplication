@@ -1,7 +1,5 @@
 package uz.einvoice.android.presentation.activities
 
-import android.R.attr
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
@@ -86,9 +84,6 @@ class MainActivity : AppCompatActivity(),UIController{
             containerViewModel.setData(childrenList[0].children?.get(0))
         }
     }
-
-    var map: HashMap<String, String> = HashMap()
-
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     lateinit var navHostFragment: NavHostFragment
@@ -189,7 +184,7 @@ class MainActivity : AppCompatActivity(),UIController{
                 containerViewModel.setData(children)
                 bottomSheetDialog.dismiss()
             }
-            categoryAdapter.submitList(data.children)
+            categoryAdapter.submitList(data.getMenuList())
             bindingBottom.rvCategory.adapter = categoryAdapter
 
             bottomSheetDialog.setContentView(bindingBottom.root)

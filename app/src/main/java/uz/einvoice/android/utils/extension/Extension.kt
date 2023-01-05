@@ -8,6 +8,8 @@ import android.content.Intent
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.EditText
@@ -31,6 +33,7 @@ import java.math.BigDecimal
 import java.math.RoundingMode
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
+import java.text.NumberFormat
 import java.util.*
 
 fun logData(message:String) =  Log.e("E_Invoice_Log->", message)
@@ -155,7 +158,6 @@ fun slideDown(view: View) {
 
 
 fun getStatus(status:String,context: Context):Int{
-    logData(status)
     return when(status.trim().lowercase()){
         context.getString(R.string.all_status).trim().lowercase() ->{
             -1
@@ -184,6 +186,24 @@ fun getStatus(status:String,context: Context):Int{
         else ->{
             -1
         }
+    }
+}
+
+
+fun checkDocType(docType:String):Int{
+    return when(docType){
+        "draft".lowercase()->{
+            1
+        }
+        "receive".lowercase()->{
+            2
+        }
+        "send".lowercase()->{
+            3
+        }
+         else->{
+             1
+         }
     }
 }
 

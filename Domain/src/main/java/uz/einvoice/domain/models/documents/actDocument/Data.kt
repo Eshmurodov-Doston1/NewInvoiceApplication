@@ -6,7 +6,7 @@ data class Data(
     val buyerbranchcode: String,
     val buyerbranchname: String,
     val buyername: String,
-    val buyertin: Int,
+    val buyertin: Long,
     val contractdoc: Contractdoc,
     val covotingstate: Int,
     val created_at: String,

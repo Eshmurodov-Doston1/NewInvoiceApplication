@@ -124,5 +124,9 @@
     <string name="delete_text">Ўчиришни хохлайсизми?</string>
     <string name="no_eimzo">Сизда Э-Имзо иловаси мавжуд эмас</string>
     <string name="check_sign">Документ мувофақиятли имзоланди</string>
-
+    <string name="copy_doc_id">Документ ид си копй қилинди</string>
+    <string name="checked">Тасдиқланг</string>
+    <string name="install_e_signed">Ўрнатиш</string>
+    <string name="checked_text">Танлаш</string>
+    <string name="added">Қўшиш</string>
 </resources>

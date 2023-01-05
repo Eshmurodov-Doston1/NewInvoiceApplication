@@ -126,6 +126,14 @@
     <string name="delete_text">O\'chirishni xoxlaysizmi?</string>
     <string name="no_eimzo">Sizda E-Imzo ilovasi mavjud emas</string>
     <string name="check_sign">Dokument muvofaqiyatli imzolandi</string>
+    <string name="copy_doc_id">Dokument id si kopy qilindi</string>
+
+    <string name="checked">Tasdiqlang</string>
+    <string name="install_e_signed">O\'rnatish</string>
+    <string name="checked_text">Tanlash</string>
+    <string name="added">Qo\'shish</string>
+
+
 
 
 

@@ -1,4 +1,4 @@
-package uz.einvoice.domain.models.act.actSend.actSendData
+package uz.einvoice.domain.models.act.actDocument.actDocumentData
 
 data class Contractdoc(
     val contractdate: String,

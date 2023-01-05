@@ -5,21 +5,14 @@
     android:layout_height="match_parent"
     tools:context=".presentation.screens.homeScreen.HomeFragment">
 
+    <!--     Akt-->
     <include
         android:id="@+id/include_act_create"
         layout="@layout/act_create_view"/>
 
     <include
-        android:id="@+id/include_act_draft"
-        layout="@layout/act_draft"/>
-
-    <include
-        android:id="@+id/include_act_incoming"
-        layout="@layout/act_incoming"/>
-
-    <include
-        android:id="@+id/include_act_sent"
-        layout="@layout/act_send"/>
-
+        android:id="@+id/include_act_document"
+        layout="@layout/act_documents"/>
+    <!--     Akt-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,6 @@
-package uz.einvoice.domain.models.act.actDraftModel.actDraftFilter
+package uz.einvoice.domain.models.act.actDocument.actDocumentFilter
 
-data class ActDraftFilter(
+data class ActDocumentFilter(
     val actdate_end: String?=null,
     val actdate_start: String?=null,
     val actno: String?=null,

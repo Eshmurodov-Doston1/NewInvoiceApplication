@@ -12,20 +12,34 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-                <TextView
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="horizontal"
                     android:layout_marginHorizontal="@dimen/_6sdp"
-                    android:id="@+id/id_doc"
                     app:layout_constraintTop_toTopOf="parent"
                     android:padding="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:textColor="@color/text_color"
-                    android:textStyle="normal"
-                    android:textSize="@dimen/_13sdp"
-                    android:fontFamily="@font/inter_medium"
-                    android:text="ID: 63a0b30a0cb9a032e80d2182 "
                     android:gravity="center"
+                    android:layout_marginTop="@dimen/_5sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/id_doc"
+                        android:textColor="@color/text_color"
+                        android:textStyle="normal"
+                        android:textSize="@dimen/_13sdp"
+                        android:fontFamily="@font/inter_medium"
+                        android:text="ID: 63a0b30a0cb9a032e80d2182 "
+                        android:gravity="center"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <ImageView
+                        android:id="@+id/copy_doc_id"
+                        android:padding="@dimen/_3sdp"
+                        android:src="@drawable/ic_baseline_content_copy_24"
+                        android:layout_marginStart="@dimen/_1sdp"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"/>
+                </androidx.appcompat.widget.LinearLayoutCompat>
                 <TextView
                     android:id="@+id/name_doc"
                     android:layout_marginHorizontal="@dimen/_6sdp"

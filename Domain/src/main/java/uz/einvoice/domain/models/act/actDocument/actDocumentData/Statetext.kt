@@ -1,4 +1,4 @@
-package uz.einvoice.domain.models.act.actIncoming.actIn
+package uz.einvoice.domain.models.act.actDocument.actDocumentData
 
 data class Statetext(
     val `class`: String,

@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <androidx.cardview.widget.CardView
+        android:id="@+id/card"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -73,7 +74,7 @@
                         android:fontFamily="@font/inter_medium"
                         android:layout_weight="1"
                         android:textSize="@dimen/_10sdp"
-                        android:gravity="center"
+                        android:gravity="end"
                         android:textStyle="normal"
                         android:textColor="@color/primary_color"
                         android:text="N 101"
@@ -86,7 +87,7 @@
                         android:layout_weight="1"
                         android:textSize="@dimen/_9sdp"
                         android:fontFamily="@font/inter_medium"
-                        android:gravity="center"
+                        android:gravity="end"
                         android:textStyle="normal"
                         android:textColor="@color/text_color_gray"
                         android:text="ot 21.02.2022"
@@ -95,12 +96,12 @@
                         android:layout_height="wrap_content"/>
                 </androidx.appcompat.widget.LinearLayoutCompat>
                 <androidx.appcompat.widget.LinearLayoutCompat
-                    android:id="@+id/linear_send"
                     android:orientation="horizontal"
                     android:gravity="top"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent">
                     <androidx.cardview.widget.CardView
+                        android:id="@+id/linear_send"
                         app:cardElevation="0dp"
                         android:clickable="true"
                         android:focusable="true"

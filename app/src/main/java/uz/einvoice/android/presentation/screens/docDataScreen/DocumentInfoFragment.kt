@@ -1,12 +1,20 @@
 package uz.einvoice.android.presentation.screens.docDataScreen
 
 import android.annotation.SuppressLint
+import android.app.Activity.RESULT_OK
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -26,10 +34,13 @@ import uz.einvoice.android.R
 import uz.einvoice.android.adapters.genericRvAdapter.GenericRvAdapter
 import uz.einvoice.android.databinding.FragmentDocumentInfoBinding
 import uz.einvoice.android.presentation.screens.baseFragment.BaseFragment
+import uz.einvoice.android.utils.appConstant.AppConstant
 import uz.einvoice.android.utils.appConstant.AppConstant.CHECK_STATUS
 import uz.einvoice.android.utils.appConstant.AppConstant.DELETE_TYPE
 import uz.einvoice.android.utils.appConstant.AppConstant.DOCUMENT_ID
+import uz.einvoice.android.utils.appConstant.AppConstant.DOCUMENT_STATE_ID
 import uz.einvoice.android.utils.appConstant.AppConstant.DOC_STATUS
+import uz.einvoice.android.utils.appConstant.AppConstant.DOC_TYPE
 import uz.einvoice.android.utils.appConstant.AppConstant.ERROR_STATUS_UPDATE_ACT
 import uz.einvoice.android.utils.appConstant.AppConstant.SELLER_TYPE
 import uz.einvoice.android.utils.appConstant.AppConstant.STATE_ID
@@ -42,7 +53,9 @@ import uz.einvoice.domain.models.act.saveSignAct.SaveSignAct
 import uz.einvoice.domain.models.timesTemp.TimestempModel
 import uz.einvoice.domain.usesCase.apiUsesCase.parseClass
 import uz.sicnt.horcrux.Constants
+import uz.sicnt.horcrux.Constants.*
 import java.math.BigDecimal
+import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -51,9 +64,10 @@ class DocumentInfoFragment : BaseFragment<FragmentDocumentInfoBinding>() {
     private var docId:String?=null
     private var docStatus:Int?=-1
     private var stateId:Int?=-1
+    private var documentStateId:Int?=-1
     private val documentViewModel:DocumentViewModel by viewModels()
-    private var actDocument:ActDocument?=null
     private var clickStatus:Int = -1
+    private var docType:String?=null
     override fun inflateViewBinding(inflater: LayoutInflater, container: ViewGroup?)
     = FragmentDocumentInfoBinding.inflate(inflater,container,false)
 
@@ -77,6 +91,8 @@ class DocumentInfoFragment : BaseFragment<FragmentDocumentInfoBinding>() {
             docId = it?.getString(DOCUMENT_ID)
             docStatus = it?.getInt(DOC_STATUS,0)
             stateId = it?.getInt(STATE_ID,0)
+            documentStateId = it?.getInt(DOCUMENT_STATE_ID,-1)
+            docType = it?.getString(DOC_TYPE)
         }
     }
 
@@ -85,101 +101,161 @@ class DocumentInfoFragment : BaseFragment<FragmentDocumentInfoBinding>() {
         binding.apply {
             when(docStatus){
                 1->{
-                    documentViewModel.getDocument(getLanguage(requireContext()),docId.toString())
-                    lifecycleScope.launchWhenCreated {
-                        documentViewModel.document.collect { result->
-                            when(result){
-                                is ResponseState.Loading->{
-                                    progress.visible()
-                                }
-                                is ResponseState.Success->{
-                                    progress.gone()
-                                     val actDocument = result.data?.parseClass(ActDocument::class.java)
-                                    if (actDocument?.data?.stateid == 15){
-                                        cancel.visible()
-                                        sendSign.gone()
-                                        edit.gone()
-                                        cancel.setOnClickListener {
-                                            cancelAct(actDocument)
-                                        }
-                                    }
-                                    includeActCreateDoc.idDoc.text = "ID: ${actDocument?.data?._id}"
-                                    includeActCreateDoc.actNumber.text = "${getString(R.string.act)} № ${actDocument?.data?.actdoc?.actno} \n ${getString(R.string.from)} ${getDateFormat(actDocument?.data?.actdoc?.actdate.toString(),requireContext())}"
-                                    includeActCreateDoc.contractNumber.text = "${getString(R.string.contract)} № ${actDocument?.data?.contractdoc?.contractno} \n ${getString(R.string.from)} ${getDateFormat(actDocument?.data?.contractdoc?.contractdate.toString(),requireContext())}"
-                                    includeActCreateDoc.textAct.text = actDocument?.data?.actdoc?.acttext
-                                    mainActivity.supportActionBar?.title = "${requireActivity().getString(R.string.act)} № ${actDocument?.data?.actdoc?.actno} ${requireActivity().getString(R.string.from)} ${actDocument?.data?.actdoc?.actdate}"
-                                   // update status act
-                                    editStatus.setOnClickListener {
-                                        actStatusUpdate(actDocument)
-                                    }
-                                    // copy act
-                                    copy.setOnClickListener {
-                                        actCopy(actDocument)
-                                    }
-                                    // delete act
-
-                                    delete.setOnClickListener {
-                                        mainActivity.containerApplication.dialogStatus<String>(DELETE_TYPE,getString(R.string.delete_text)){clickType ->
-                                            if (clickType==1)  actDelete(actDocument)
-                                        }
-                                    }
-                                    // update act
-                                    edit.setOnClickListener {
-                                        mainActivity.containerApplication.screenNavigate.createUpdateDocumentScreen(1,docId)
-                                    }
-
-                                    // send
-                                    sendSign.setOnClickListener {
-                                        if (mainActivity.horcrux.isEImzoInstalled()){
-                                            documentViewModel.getSignData(getLanguage(requireContext()),docId.toString())
-                                            lifecycleScope.launchWhenCreated {
-                                                documentViewModel.signData.collect { result->
-                                                    when(result){
-                                                        is ResponseState.Loading->{
-                                                            mainActivity.containerApplication.loadingSaved(true)
-                                                        }
-                                                        is ResponseState.Success->{
-                                                            val data = result.data?.asJsonObject
-                                                            val jsonObject = JSONObject(data.toString())
-                                                            if (jsonObject.has("data")) {
-                                                                mainActivity.horcrux.createPKCS7(requireActivity(),jsonObject.getJSONObject("data").toString())
-                                                                clickStatus = 0
-                                                            }
-                                                        }
-                                                        is ResponseState.Error->{
-                                                            val errorData = JsonParser.parseString(result.exception.localizedMessage).asJsonObject
-                                                            errorDialog(errorData,actDocument)
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }else{
-                                            noSign()
-                                        }
-                                    }
-                                    tableList(actDocument)
-                                }
-                                is ResponseState.Error->{
-                                    progress.gone()
-                                }
-                            }
-                        }
-                    }
-                    includeActCreateDoc.rvData.adapter = tableAdapter
-                    includeActCreateDoc.rvId.adapter = tableAdapterId
+                 actDocument()
                 }
             }
         }
     }
 
 
+    @SuppressLint("SetTextI18n")
+    private fun actDocument(){
+
+        binding.apply {
+
+            includeActCreateDoc.copyDocId.setOnClickListener {
+                val clipBoardManager = mainActivity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clipData = ClipData.newPlainText("copy_text",docId)
+                clipBoardManager.setPrimaryClip(clipData)
+                Toast.makeText(mainActivity, mainActivity.getString(R.string.copy_doc_id), Toast.LENGTH_SHORT).show()
+            }
+
+            documentViewModel.getDocument(getLanguage(requireContext()),docId.toString())
+            lifecycleScope.launchWhenCreated {
+                documentViewModel.document.collect { result->
+                    when(result){
+                        is ResponseState.Loading->{
+                            progress.visible()
+                        }
+                        is ResponseState.Success->{
+                            progress.gone()
+                            val actDocument = result.data?.parseClass(ActDocument::class.java)
+                            if (documentStateId!=null && docType.isNotEmptyOrNull()){
+                                val checkDocType = checkDocType(docType?.lowercase().toString())
+                                logData(documentStateId.toString())
+                                when(documentStateId) {
+                                    15->{
+                                        if (checkDocType==2){
+                                            checked.visible()
+                                            cancel.visible()
+                                            delete.gone()
+                                            sendSign.gone()
+                                            edit.gone()
+                                            copy.gone()
+                                            checked.setOnClickListener {
+                                                // vxodyashi tomonidan tasdiqlash
+                                            }
+                                            cancel.setOnClickListener {
+                                                cancelAct(actDocument)
+                                            }
+                                        } else if (checkDocType==3){
+                                            cancel.visible()
+                                            sendSign.gone()
+                                            edit.gone()
+                                            copy.gone()
+                                            cancel.setOnClickListener {
+                                                cancelAct(actDocument)
+                                            }
+                                        }
+                                    }
+                                    1,17,20,30->{
+                                        if (checkDocType==2){
+                                            // recive vxodyashi
+                                            cancel.gone()
+                                            sendSign.gone()
+                                            edit.gone()
+                                            delete.gone()
+                                            copy.gone()
+
+                                        } else if (checkDocType==3) {
+                                            // send act isxodyashi
+                                            cancel.gone()
+                                            sendSign.gone()
+                                            edit.gone()
+                                            delete.gone()
+                                        }
+                                    }
+                                }
+                            }
+                            includeActCreateDoc.idDoc.text = "ID: ${actDocument?.data?._id}"
+                            includeActCreateDoc.actNumber.text = "${getString(R.string.act)} № ${actDocument?.data?.actdoc?.actno} \n ${getString(R.string.from)} ${getDateFormat(actDocument?.data?.actdoc?.actdate.toString(),requireContext())}"
+                            includeActCreateDoc.contractNumber.text = "${getString(R.string.contract)} № ${actDocument?.data?.contractdoc?.contractno} \n ${getString(R.string.from)} ${getDateFormat(actDocument?.data?.contractdoc?.contractdate.toString(),requireContext())}"
+                            includeActCreateDoc.textAct.text = actDocument?.data?.actdoc?.acttext
+                            mainActivity.supportActionBar?.title = "${requireActivity().getString(R.string.act)} № ${actDocument?.data?.actdoc?.actno} ${requireActivity().getString(R.string.from)} ${actDocument?.data?.actdoc?.actdate}"
+                            // update status act
+                            editStatus.setOnClickListener {
+                                actStatusUpdate(actDocument)
+                            }
+                            // copy act
+                            copy.setOnClickListener {
+                                actCopy(actDocument)
+                            }
+                            // delete act
+
+                            delete.setOnClickListener {
+                                mainActivity.containerApplication.dialogStatus<String>(DELETE_TYPE,requireActivity().getString(R.string.delete_text)){clickType ->
+                                    if (clickType==1)  actDelete(actDocument)
+                                }
+                            }
+                            // update act
+                            edit.setOnClickListener {
+                                mainActivity.containerApplication.screenNavigate.createUpdateDocumentScreen(1,docId)
+                            }
+
+                            // send
+                            sendSign.setOnClickListener {
+                                if (mainActivity.horcrux.isEImzoInstalled()){
+                                    documentViewModel.getSignData(getLanguage(requireContext()),docId.toString())
+                                    lifecycleScope.launchWhenCreated {
+                                        documentViewModel.signData.collect { result->
+                                            when(result){
+                                                is ResponseState.Loading->{
+                                                    mainActivity.containerApplication.loadingSaved(true)
+                                                }
+                                                is ResponseState.Success->{
+                                                    val data = result.data?.asJsonObject
+                                                    val jsonObject = JSONObject(data.toString())
+                                                    if (jsonObject.has("data")) {
+                                                        mainActivity.horcrux.createPKCS7(requireActivity(),jsonObject.getJSONObject("data").toString())
+                                                        clickStatus = 0
+                                                    }
+                                                }
+                                                is ResponseState.Error->{
+                                                    val errorData = JsonParser.parseString(result.exception.localizedMessage).asJsonObject
+                                                    errorDialog(errorData,actDocument)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }else{
+                                    noSign()
+                                }
+                            }
+                            tableList(actDocument)
+                        }
+                        is ResponseState.Error->{
+                            progress.gone()
+                        }
+                    }
+                }
+            }
+            includeActCreateDoc.rvData.adapter = tableAdapter
+            includeActCreateDoc.rvId.adapter = tableAdapterId
+        }
+    }
+
+    // act accptni api tayyor emas buni kurish kerak
+    private fun actAccepted(actDocument: ActDocument?){
+       // actViewModel.cancelAct()
+    }
+
+
     private fun cancelAct(actDocument: ActDocument?){
-        //{ ActId: data._id, SellerTin: data.sellertin }
         clickStatus = 1
         val cancelAct = CancelActApp(docId,actDocument?.data?.sellertin.toString())
         val gsonCancelAct = Gson().toJson(cancelAct)
         mainActivity.horcrux.createPKCS7(requireActivity(),gsonCancelAct)
-       // actViewModel.cancelAct(getLanguage(requireContext()),)
+       // actViewModel.cancelAct(getLanguage(requireContext()))
     }
     private fun errorDialog(errorData:JsonObject,actDocument: ActDocument?){
         mainActivity.containerApplication.dialogData(ERROR_STATUS_UPDATE_ACT,errorData){ clickType ->
@@ -188,20 +264,24 @@ class DocumentInfoFragment : BaseFragment<FragmentDocumentInfoBinding>() {
     }
 
     private fun noSign(){
-        mainActivity.containerApplication.dialogStatus<String>(0,getString(R.string.no_eimzo)){ clickType->
-            if (clickType==1) noSign()
+        mainActivity.containerApplication.dialogStatus<String>(0,mainActivity.getString(R.string.no_eimzo)){ clickType->
+            if (clickType==1) {
+                mainActivity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=${Constants.E_IMZO_APP}")))
+            }
         }
     }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            Constants.CREATE_PKCS7 -> {
+            CREATE_PKCS7->{
                 if (data != null) {
-                    val pkcs7 = Base64.encodeToString(data.getByteArrayExtra(Constants.EXTRA_RESULT_PKCS7), Base64.NO_WRAP)
-                    val signature = mainActivity.horcrux.toHexString(data.getByteArrayExtra(Constants.EXTRA_RESULT_SIGNATURE))
-                    val subjectName = data.getCharSequenceExtra(Constants.EXTRA_RESULT_SUBJECT_NAME)
-                    val serialNumber = data.getCharSequenceExtra(Constants.EXTRA_RESULT_SERIAL_NUMBER)
+                    val pkcs7 = Base64.encodeToString(data.getByteArrayExtra(EXTRA_RESULT_PKCS7), Base64.NO_WRAP)
+                    val signature = mainActivity.horcrux.toHexString(data.getByteArrayExtra(
+                        EXTRA_RESULT_SIGNATURE
+                    ))
+                    val subjectName = data.getCharSequenceExtra(EXTRA_RESULT_SUBJECT_NAME)
+                    val serialNumber = data.getCharSequenceExtra(EXTRA_RESULT_SERIAL_NUMBER)
                     mainActivity.containerViewModel.getTimesTemp(getLanguage(requireContext()), signature)
                     lifecycleScope.launchWhenCreated {
                         mainActivity.containerViewModel.timesTempData.collect { result->
@@ -220,10 +300,35 @@ class DocumentInfoFragment : BaseFragment<FragmentDocumentInfoBinding>() {
                             }
                         }
                     }
+                } else {
+                    mainActivity.containerApplication.loadingSaved(false)
                 }
             }
-            Constants.ATTACH_CODE -> {
-                val pkcs7 = Base64.encodeToString(data!!.getByteArrayExtra(Constants.EXTRA_RESULT_PKCS7), Base64.NO_WRAP)
+            APPEND_CODE-> {
+                val pkcs7 = Base64.encodeToString(data?.getByteArrayExtra(EXTRA_RESULT_PKCS7), Base64.NO_WRAP)
+                val signature = mainActivity.horcrux.toHexString(data?.getByteArrayExtra(EXTRA_RESULT_SIGNATURE))
+                val serialNumber = data?.getCharSequenceExtra(EXTRA_RESULT_SERIAL_NUMBER)
+                mainActivity.containerViewModel.getTimesTemp(getLanguage(requireContext()), signature)
+                lifecycleScope.launchWhenCreated {
+                    mainActivity.containerViewModel.timesTempData.collect { result->
+                        when(result){
+                            is ResponseState.Loading->{
+                                mainActivity.containerApplication.loadingSaved(true)
+                            }
+                            is ResponseState.Success->{
+                                val timesTemp = result.data?.parseClass(TimestempModel::class.java)
+                                mainActivity.horcrux.attachPkcs7(requireActivity(),pkcs7,serialNumber.toString(),timesTemp?.data?.token.toString())
+                            }
+                            is ResponseState.Error->{
+                                val errorData = JsonParser.parseString(result.exception.localizedMessage).asJsonObject
+                                mainActivity.containerApplication.dialogData(ERROR_STATUS_UPDATE_ACT,errorData){ clickType -> }
+                            }
+                        }
+                    }
+                }
+            }
+            ATTACH_CODE->{
+                val pkcs7 = Base64.encodeToString(data!!.getByteArrayExtra(EXTRA_RESULT_PKCS7), Base64.NO_WRAP)
                 val saveSignAct = SaveSignAct(docId.toString(), pkcs7)
 
                 when(clickStatus){
@@ -251,7 +356,7 @@ class DocumentInfoFragment : BaseFragment<FragmentDocumentInfoBinding>() {
                         }
                     }
                     1->{
-                       actViewModel.cancelAct(getLanguage(requireContext()), CancelAct(docId,pkcs7))
+                        actViewModel.cancelAct(getLanguage(requireContext()), CancelAct(docId,pkcs7))
                         lifecycleScope.launchWhenCreated {
                             actViewModel.cancelActData.collect { result->
                                 when(result){
@@ -260,7 +365,9 @@ class DocumentInfoFragment : BaseFragment<FragmentDocumentInfoBinding>() {
                                     }
                                     is ResponseState.Success->{
                                         mainActivity.containerApplication.loadingSaved(false)
-                                        init()
+                                        mainActivity.containerApplication.dialogStatus<String>(CHECK_STATUS,getString(R.string.check_sign)){
+                                            init()
+                                        }
                                     }
                                     is ResponseState.Error->{
                                         mainActivity.containerApplication.loadingSaved(false)
@@ -273,6 +380,7 @@ class DocumentInfoFragment : BaseFragment<FragmentDocumentInfoBinding>() {
                     }
                 }
             }
+
         }
     }
 

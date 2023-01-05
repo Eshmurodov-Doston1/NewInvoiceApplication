@@ -9,9 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import uz.einvoice.domain.database.actProductEntity.ActProductEntity
 import uz.einvoice.domain.models.act.actCopy.copyRequest.ActCopyModel
-import uz.einvoice.domain.models.act.actDraftModel.actDraftFilter.ActDraftFilter
-import uz.einvoice.domain.models.act.actIncoming.incomingFilterModule.IncomingFilterModel
-import uz.einvoice.domain.models.act.actSend.actSendFilter.ActSendFilter
 import uz.einvoice.domain.models.act.deleteAct.requestDeleteAct.DeleteActModel
 import uz.einvoice.domain.models.act.editStatus.editStatusrequest.EditStatusRequest
 import uz.einvoice.domain.models.createActModel.CreateActModel
@@ -29,6 +26,8 @@ import uz.einvoice.android.utils.appConstant.AppConstant.EMPTY_MAP
 import uz.einvoice.android.utils.extension.parseClass
 import uz.einvoice.android.utils.myshared.MySharedPreferences
 import uz.einvoice.android.utils.networkHelper.NetworkHelper
+import uz.einvoice.domain.models.act.acceptedAct.accepterRequest.AcceptedRequest
+import uz.einvoice.domain.models.act.actDocument.actDocumentFilter.ActDocumentFilter
 import uz.einvoice.domain.models.act.cancelAct.CancelAct
 import uz.einvoice.domain.models.act.saveSignAct.SaveSignAct
 import javax.inject.Inject
@@ -39,7 +38,6 @@ const val PRODUCT_PATH = "provider/tasnif"
 const val UNIQUE_PATH = "utils/get/id"
 const val ACT_PATH = "documents/act/save"
 const val ACT_UPDATE_PATH = "documents/act/update"
-const val ACT_QUEUE_PATH = "documents/act/queue"
 const val ACT_STATUS_EDIT = "documents/act/update/status"
 const val COPY_ACT = "documents/act/clone"
 const val DELETE_ACT = "documents/act/delete"
@@ -259,21 +257,28 @@ class ActViewModel @Inject constructor(
         }
     }
 
+    // accepted  act
+    val acceptedAct:StateFlow<ResponseState<JsonElement?>> get() = _acceptedAct
+    private val _acceptedAct = MutableStateFlow<ResponseState<JsonElement?>>(ResponseState.Loading)
+
+    fun acceptedAct(lang:String,acceptedRequest: AcceptedRequest) = viewModelScope.launch {
+        if (networkHelper.isNetworkConnected()){
+            val url = "/$API/$lang/$CANCEL_ACT"
+            _acceptedAct.emit(ResponseState.Loading)
+            apiUsesCase.methodePOST(url, acceptedRequest, EMPTY_MAP).collect { response->
+                _acceptedAct.emit(response)
+            }
+        }else {
+            _acceptedAct.emit(ResponseState.Error(NetworkErrorException(AppConstant.NO_INTERNET,"")))
+        }
+    }
 
 
-    // act draft
-    fun actDraftData(lang:String,body: ActDraftFilter)
-    = draftPagingUsesCase.getDraftData("/$API/$lang/documents/act/draft",body, EMPTY_MAP)
- // act Incoming
-    fun actIncomingData(lang:String,body: IncomingFilterModel)
-    = draftPagingUsesCase.getIncomingData("/$API/$lang/documents/act/receive",body, EMPTY_MAP)
-    // act send
-    fun actSendData(lang:String,body: ActSendFilter)
-    = draftPagingUsesCase.getActSendData("/$API/$lang/documents/act/send",body, EMPTY_MAP)
-
-    // act queue
-    fun actProcess(lang:String,body: ActSendFilter)
-    = draftPagingUsesCase.getActSendData("/$API/$lang/documents/act/queue",body, EMPTY_MAP)
+    // act documents
+    fun actDocuments(lang:String,body: ActDocumentFilter,url:String)
+    = draftPagingUsesCase.getDocumentAct(
+        "/$API/$lang/documents/${if (url == "/acts/draft") "act/draft" else if (url == "/acts/receive") "act/receive" else if (url == "/acts/sent") "act/send" else if (url == "/acts/queue") "act/queue" else "act/draft"}"
+        ,body, EMPTY_MAP)
 
     // measure
     fun getMeasure() = measureRepo.getAllMeasureEntity()

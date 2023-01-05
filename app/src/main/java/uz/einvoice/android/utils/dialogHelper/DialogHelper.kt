@@ -14,6 +14,7 @@ import uz.einvoice.android.databinding.DialogSpinnerBinding
 import uz.einvoice.android.databinding.SpinnerDialogBinding
 import uz.einvoice.android.presentation.activities.MainActivity
 import uz.einvoice.android.utils.appConstant.AppConstant
+import uz.einvoice.android.utils.appConstant.AppConstant.DELETE_TYPE
 import uz.einvoice.android.utils.appConstant.AppConstant.NO_INTERNET
 import uz.einvoice.android.utils.extension.isNotEmptyOrNull
 import java.util.LinkedList
@@ -104,15 +105,17 @@ class DialogHelper(
         val binding = DialogBinding.inflate(activity.layoutInflater)
         create.setView(binding.root)
         when(statusDialog){
-         0->{
-             binding.lottie.setAnimation(R.raw.no_application)
-         }
-            AppConstant.DELETE_TYPE->{
+            0->{
+                binding.lottie.setAnimation(R.raw.no_application)
+                binding.okBtn.text = activity.getString(R.string.install_e_signed)
+            }
+            DELETE_TYPE->{
                 binding.lottie.setAnimation(R.raw.delete)
+                binding.okBtn.text = activity.getString(R.string.delete)
             }
         }
         binding.message.text = message
-        create.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
         binding.okBtn.setOnClickListener {
             onClick.invoke(1)
             create.dismiss()
@@ -121,6 +124,7 @@ class DialogHelper(
             onClick.invoke(0)
             create.dismiss()
         }
+        create.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         if (!create.isShowing){
             create.show()
         }

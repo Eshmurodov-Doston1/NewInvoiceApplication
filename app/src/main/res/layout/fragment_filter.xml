@@ -6,7 +6,7 @@
     tools:context=".presentation.screens.filterScreen.FilterFragment">
 
     <include
-        android:id="@+id/incoming_act_filter"
+        android:id="@+id/document_act_filter"
         layout="@layout/filter_act_incoming"/>
     <include
         android:id="@+id/include_create_filter"

@@ -1,10 +1,10 @@
-package uz.einvoice.domain.models.act.actSend.actSendData
+package uz.einvoice.domain.models.act.actDocument.actDocumentData
 
-data class Data(
+data class ActDocumentData(
     val _id: String,
     val actdoc: Actdoc,
     val buyername: String,
-    val buyertin: Long,
+    val buyertin: Int,
     val contractdoc: Contractdoc,
     val payabletotal: Double,
     val sellername: String,

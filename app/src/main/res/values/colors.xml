@@ -20,6 +20,7 @@
     <color name="delete_color">#FF0000</color>
     <color name="copy_color">#FF5722</color>
     <color name="partner_color">#FF9800</color>
+    <color name="error_sending">#FBC82E</color>
     <color name="update_status">#8BC34A</color>
     <color name="preview_color">#009688</color>
     <color name="shimmer_first">#CACACA</color>

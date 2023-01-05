@@ -11,6 +11,7 @@ import uz.einvoice.android.databinding.FragmentFilterBinding
 import uz.einvoice.android.presentation.controllers.actController.ActFilterUiController
 import uz.einvoice.android.presentation.screens.baseFragment.BaseFragment
 import uz.einvoice.android.utils.appConstant.AppConstant
+import uz.einvoice.android.utils.appConstant.AppConstant.ACT_ADD
 import uz.einvoice.android.utils.extension.gone
 import uz.einvoice.android.utils.extension.visible
 import uz.einvoice.android.utils.language.LocaleManager
@@ -52,32 +53,16 @@ class FilterFragment : BaseFragment<FragmentFilterBinding>() {
             lifecycleScope.launchWhenCreated {
                 mainActivity.containerViewModel.children.collect { children->
                     when(children?.path){
-                        "/acts/add"->{
+                        ACT_ADD->{
                             if (!isCreate) actFilterUiController()
-                            binding.incomingActFilter.consIncomingFilter.gone()
+                            binding.documentActFilter.consIncomingFilter.gone()
                            actFilterUiController.createAct()
                         }
-                        "/acts/draft"->{
+                        else ->{
                             if (!isCreate) actFilterUiController()
-                            binding.incomingActFilter.consIncomingFilter.visible()
-                            actFilterUiController.draftAct()
-                          scrollFilterAct()
-                        }
-                        "/acts/receive"->{
-                            if (!isCreate) actFilterUiController()
-                            binding.incomingActFilter.consIncomingFilter.visible()
-                            actFilterUiController.incomingAct()
+                            binding.documentActFilter.consIncomingFilter.visible()
+                            actFilterUiController.documentViews(children?.path.toString())
                             scrollFilterAct()
-                        }
-                        "/acts/sent"->{
-                            if (!isCreate) actFilterUiController()
-                            binding.incomingActFilter.consIncomingFilter.visible()
-                            actFilterUiController.outgoingAct()
-                            scrollFilterAct()
-                        }
-                        "/acts/queue"->{
-                            if (!isCreate) actFilterUiController()
-
                         }
                     }
                 }
@@ -86,7 +71,7 @@ class FilterFragment : BaseFragment<FragmentFilterBinding>() {
     }
 
     private fun scrollFilterAct(){
-        binding.incomingActFilter.nested.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+        binding.documentActFilter.nested.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if (scrollY < oldScrollY) {
                 mainActivity.bottomBarView(true)
             }

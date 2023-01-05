@@ -7,7 +7,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import uz.einvoice.domain.database.measure.MeasureEntity
-import uz.einvoice.domain.models.act.actDraftModel.actDraftFilter.ActDraftFilter
 import uz.einvoice.domain.models.menuModel.Children
 import uz.einvoice.domain.usesCase.apiUsesCase.ApiUsesCase
 import uz.einvoice.domain.utils.NetworkErrorException
@@ -16,6 +15,7 @@ import uz.einvoice.android.utils.appConstant.AppConstant
 import uz.einvoice.android.utils.appConstant.AppConstant.API
 import uz.einvoice.android.utils.appConstant.AppConstant.EMPTY_MAP
 import uz.einvoice.android.utils.networkHelper.NetworkHelper
+import uz.einvoice.domain.models.act.actDocument.actDocumentFilter.ActDocumentFilter
 import javax.inject.Inject
 const val MEASURE_PATH = "utils/measure/list"
 const val TIMES_TAMP = "utils/timestamp"
@@ -31,7 +31,7 @@ class ContainerViewModel @Inject constructor(
         _children.emit(children)
     }
 
-    val actFilter = MutableStateFlow<ActDraftFilter?>(null)
+    val actFilter = MutableStateFlow<ActDocumentFilter?>(null)
 
 
     // measure list

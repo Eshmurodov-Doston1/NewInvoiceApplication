@@ -8,6 +8,7 @@ interface HolderPaging {
         data:T,
         position:Int,
         @LayoutRes layoutRes:Int,
+        type:String,
         onClick:(data:T,position:Int,clickType:Int,viewBinding:ViewBinding)->Unit
     )
 }
