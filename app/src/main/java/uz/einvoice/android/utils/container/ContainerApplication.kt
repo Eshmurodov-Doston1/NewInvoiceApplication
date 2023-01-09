@@ -45,7 +45,7 @@ class ContainerApplication(
         dialogHelper.dialogHelper(status,listData,onClick)
     }
 
-    fun <T> dialogStatus(
+    fun dialogStatus(
         status:Int,
         message:String,
         onClick: (clickType: Int) -> Unit

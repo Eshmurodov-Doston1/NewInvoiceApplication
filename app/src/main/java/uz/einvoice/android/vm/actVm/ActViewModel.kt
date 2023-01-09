@@ -4,8 +4,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonElement
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import uz.einvoice.domain.database.actProductEntity.ActProductEntity
 import uz.einvoice.domain.models.act.actCopy.copyRequest.ActCopyModel
@@ -144,18 +147,19 @@ class ActViewModel @Inject constructor(
 
 
     // save act
-    val saveAct:StateFlow<ResponseState<JsonElement?>> get() = _saveAct
-    private val _saveAct = MutableStateFlow<ResponseState<JsonElement?>>(ResponseState.Loading)
+
+    val saveAct get() = _saveAct.receiveAsFlow()
+    private val _saveAct = Channel<ResponseState<JsonElement?>>()
 
     fun saveAct(lang:String,createActModel: CreateActModel) = viewModelScope.launch {
         if (networkHelper.isNetworkConnected()){
             val url = "/$API/$lang/$ACT_PATH"
-            _saveAct.emit(ResponseState.Loading)
+            _saveAct.send(ResponseState.Loading)
                 apiUsesCase.methodePOST(url,createActModel, EMPTY_MAP).collect { response->
-                    _saveAct.emit(response)
+                    _saveAct.send(response)
                 }
         }else {
-            _saveAct.emit(ResponseState.Error(NetworkErrorException(AppConstant.NO_INTERNET,"")))
+            _saveAct.send(ResponseState.Error(NetworkErrorException(AppConstant.NO_INTERNET,"")))
         }
     }
 

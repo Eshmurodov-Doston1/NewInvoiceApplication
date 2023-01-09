@@ -3,8 +3,9 @@ package uz.einvoice.android.presentation.controllers.documentUpdateController
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.os.Handler
-import android.os.Looper
+import android.text.Editable
+import android.text.InputFilter
+import android.text.TextWatcher
 import android.widget.TextView
 import androidx.core.widget.NestedScrollView
 import androidx.core.widget.doAfterTextChanged
@@ -45,6 +46,8 @@ import uz.einvoice.android.utils.appConstant.AppConstant.ERROR_BRANCH_CODE
 import uz.einvoice.android.utils.extension.*
 import uz.einvoice.android.vm.actVm.ActViewModel
 import uz.einvoice.android.vm.documnetVm.DocumentViewModel
+import uz.einvoice.domain.models.act.actCopy.copyRequest.ActCopyModel
+import uz.einvoice.domain.models.act.actCopy.responceCopyAct.ResActCopy
 import java.math.BigDecimal
 import java.util.*
 import kotlin.math.abs
@@ -55,7 +58,7 @@ class DocumentUpdateController(
     private val actViewModel: ActViewModel,
     private val documentViewModel: DocumentViewModel,
     private val updateFragment: UpdateFragment,
-    private val docId:String?
+    private var docId:String?
 ):UpdateController {
     // save act data
     private var actDate:String?=null
@@ -69,8 +72,46 @@ class DocumentUpdateController(
     var measureData: MeasureEntity?=null
     private var liveList = MutableLiveData<List<Product>>()
     override fun actDocumentUpdate() {
-        binding.apply {
+      actDocument(false)
+    }
 
+
+    override fun copyActDocument() {
+        binding.apply {
+            val actCopyModel = ActCopyModel(docId.toString())
+            actViewModel.actCopy(getLanguage(mainActivity),actCopyModel)
+            updateFragment.lifecycleScope.launchWhenCreated {
+                actViewModel.copyAct.collect { result->
+                    when(result){
+                        is ResponseState.Loading->{
+                            mainActivity.containerApplication.loadingSaved(true)
+                        }
+                        is ResponseState.Success->{
+                            mainActivity.containerApplication.loadingSaved(false)
+                           /// binding.menuViewAct.close(true)
+                            val resActCopy = result.data?.parseClass(ResActCopy::class.java)
+                            docId = resActCopy?.data?.actid.toString()
+                            mainActivity.containerViewModel.updateDocument.postValue(true)
+                            actDocument(true)
+                            // update btn save
+                        }
+                        is ResponseState.Error->{
+                            mainActivity.containerApplication.loadingSaved(false)
+                            //binding.menuViewAct.close(true)
+                            val errorAuth = JsonParser.parseString(result.exception.localizedMessage).asJsonObject
+                            mainActivity.containerApplication.dialogData(AppConstant.ERROR_STATUS_UPDATE_ACT,errorAuth){ clickType ->
+                                if (clickType==1) copyActDocument()
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    private fun actDocument(isUpdate: Boolean){
+        binding.apply {
             documentViewModel.getDocument(getLanguage(mainActivity),docId.toString())
             updateFragment.lifecycleScope.launchWhenCreated {
                 documentViewModel.document.collect { result->
@@ -90,7 +131,7 @@ class DocumentUpdateController(
                             editSellerName.setText(actDocument?.data?.sellername)
                             editSellerTin.setText(actDocument?.data?.sellertin.toString())
                             // seller branch data
-                           sellerBranch(actDocument)
+                            sellerBranch(actDocument)
                             // contract data
                             editContractno.setText(actDocument?.data?.contractdoc?.contractno)
                             tvContractDate.text = actDocument?.data?.contractdoc?.contractdate
@@ -104,27 +145,42 @@ class DocumentUpdateController(
                                 listBuyerBranches.text = actDocument.data.buyerbranchname
                             }
 
-                            editBuyerTinOrPinfl.doAfterTextChanged { tinOrPinfl->
-                                if(tinOrPinfl.toString().trim().isNotEmptyOrNull()){
-                                    if (editBuyerTinOrPinfl.text.toString().trim().length == 9) {
-                                        Handler(Looper.getMainLooper()).postDelayed({
-                                            if(editBuyerTinOrPinfl.text.toString().trim().length == 9) {
-                                                actViewModel.buyerData(
-                                                    getLanguage(mainActivity),
-                                                    tinOrPinfl.toString().trim()
-                                                )
-                                                buyerData(tinOrPinfl.toString())
-                                            }
-                                        },1000)
-                                    } else if (editBuyerTinOrPinfl.text.toString().trim().length == 14){
-                                        actViewModel.buyerData(
-                                            getLanguage(mainActivity),
-                                            tinOrPinfl.toString().trim()
-                                        )
-                                        buyerData(tinOrPinfl.toString())
-                                    }
+
+                            editBuyerTinOrPinfl.addTextChangedListener(object: TextWatcher {
+                                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+                                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
                                 }
-                            }
+                                var timer = Timer()
+                                val DELAY: Long = 1000 // Milliseconds
+                                override fun afterTextChanged(tinOrPinfl: Editable?) {
+                                    if (tinOrPinfl.toString().isNotEmptyOrNull()){
+                                        timer.cancel()
+                                        timer = Timer()
+                                        timer.schedule(object:TimerTask(){
+                                            override fun run() {
+                                                if(tinOrPinfl.toString().trim().isNotEmptyOrNull()){
+                                                    if (editBuyerTinOrPinfl.text.toString().trim().length == 9 || editBuyerTinOrPinfl.text.toString().trim().length == 14) {
+                                                        actViewModel.buyerData(getLanguage(mainActivity), tinOrPinfl.toString().trim())
+                                                        buyerData(tinOrPinfl.toString())
+                                                    } else {
+                                                        editActText.text.clear()
+                                                        editBuyerName.text.clear()
+                                                    }
+                                                }
+                                            }
+                                        },DELAY)
+                                    } else {
+                                        editActText.text.clear()
+                                        editBuyerName.text.clear()
+                                    }
+
+                                }
+
+                            })
+
+
                             // product list
                             productList(actDocument)
                             liveList.observe(updateFragment.viewLifecycleOwner){ listProduct->
@@ -135,8 +191,9 @@ class DocumentUpdateController(
                                 addProduct(false,null,null)
                             }
                             // update act
+                            if (isUpdate) btnUpdate.text = updateFragment.getString(R.string.save)
                             btnUpdate.setOnClickListener {
-                                updateActData(actDocument)
+                                updateActData(actDocument,isUpdate)
                             }
                         }
                         is ResponseState.Error->{
@@ -171,7 +228,7 @@ class DocumentUpdateController(
 
 
     // save act
-    private fun updateActData(actDocument: ActDocument?){
+    private fun updateActData(actDocument: ActDocument?,isUpdate: Boolean){
         binding.apply {
             val actNumber = editActno.text.toString().trim()
             val actDate = tvActDate.text.toString().trim()
@@ -184,7 +241,6 @@ class DocumentUpdateController(
                 if (!actDate.isNotEmptyOrNull()){ mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_data)) } else
                     if (!actText.isNotEmptyOrNull()){ mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_description)) } else {
                         actDoc  = Actdoc(this@DocumentUpdateController.actDate.toString(),actNumber,actText)
-                        logData(actDoc.toString())
                     }
             val contractNumber = editContractno.text.toString().trim()
             val contractDate = tvContractDate.text.toString().trim()
@@ -233,20 +289,22 @@ class DocumentUpdateController(
                                 actProductEntity.name,
                                 actProductEntity.ordno.toInt(),
                                 actProductEntity.summa,
-                                actProductEntity.totalsum
+                                BigDecimal(actProductEntity.totalsum)
                             )
                         )
                     }
-                    val productList = Productlist(actDocument?.data?.productlist?.actproductid.toString(),listProducts,sellerTinProduct.toString())
+
                     // big class act save
+                    
+
+                    val productList = Productlist(actDocument?.data?.productlist?.actproductid.toString(),listProducts,sellerTinProduct.toString())
+
                     val createActModel = CreateActModel(actDoc, actDocument?.data?._id.toString(),buyerBranchCode.toString(),
                         buyerBranchName.toString(),buyerNameData.toString(),
                         buyerTinOrPinfl.toString(),contractDoc, productList,sellerBranchCode.toString(),
                         sellerBranchName.toString(),sellerName.toString(),sellerTin.toString(),actDocument?.data?.stateid)
-
-
-                    actViewModel.updateAct(getLanguage(mainActivity),createActModel)
-                    updateFragment.lifecycleScope.launchWhenCreated {
+                       actViewModel.updateAct(getLanguage(mainActivity),createActModel)
+                       updateFragment.lifecycleScope.launchWhenCreated {
                         actViewModel.updateAct.collect { result->
                             when(result){
                                 is ResponseState.Loading->{
@@ -254,6 +312,7 @@ class DocumentUpdateController(
                                     mainActivity.loadingSave(true)
                                 }
                                 is ResponseState.Success->{
+                                    mainActivity.containerViewModel.updateDocument.postValue(true)
                                     loadingButton(false)
                                     mainActivity.loadingSave(false)
                                     binding.btnUpdate.enabled()
@@ -266,11 +325,11 @@ class DocumentUpdateController(
                                     if (result.exception.localizedMessage.isNotEmptyOrNull()){
                                         val errorAuth = JsonParser.parseString(result.exception.localizedMessage).asJsonObject
                                         mainActivity.containerApplication.dialogData(AppConstant.MENU_ERROR,errorAuth){ clickType->
-                                            if(clickType==1) updateActData(actDocument)
+                                            if(clickType==1) updateActData(actDocument,isUpdate)
                                         }
                                     } else {
                                         mainActivity.containerApplication.dialogData(AppConstant.NO_INTERNET,null){ clickType ->
-                                            if(clickType==1) updateActData(actDocument)
+                                            if(clickType==1) updateActData(actDocument,isUpdate)
                                         }
                                     }
                                 }
@@ -281,6 +340,7 @@ class DocumentUpdateController(
             }
         }
     }
+
     private fun clearUiActCreate(){
         binding.apply {
             editActno.text.clear()
@@ -510,10 +570,18 @@ class DocumentUpdateController(
                             addProductBinding.addProductView.visible()
                             val tasnifProduct = result.data?.parseClass(TasnifProduct::class.java)
                             if (tasnifProduct?.data?.isNotEmpty() == true){
-                                addProductBinding.listCatalogCode.text =
-                                    "${if (isUpdate) product?.catalogcode else tasnifProduct.data[0].mxikCode} ${if (isUpdate) product?.catalogname else tasnifProduct.data[0].mxikFullName}"
-                                this@DocumentUpdateController.tasnifProduct = tasnifProduct.data[0]
+                                addProductBinding.listCatalogCode.text = "${if (isUpdate) product?.catalogcode else mainActivity.getString(R.string.checked_text)} ${if (isUpdate) product?.catalogname else ""}"
+
+                                this@DocumentUpdateController.tasnifProduct = null
                                 if (tasnifProduct.data.size > 1){
+                                    if (isUpdate){
+                                        tasnifProduct.data.map {  data ->
+                                            if (data.mxikCode == product?.catalogcode && data.mxikFullName == product.catalogname){
+                                                this@DocumentUpdateController.tasnifProduct = data
+                                            }
+                                        }
+                                    }
+
                                     addProductBinding.listCatalogCode.setOnClickListener {
                                         mainActivity.containerApplication.applicationDialog(1, tasnifProduct.data){ data ->
                                             addProductBinding.listCatalogCode.text = "${data.mxikCode} ${data.mxikFullName}"
@@ -549,6 +617,10 @@ class DocumentUpdateController(
                                 addProductBinding.editSumma.setText(product?.summa.toString())
                                 addProductBinding.editTotalSum.setText(product?.totalsum.toString())
                                 addProductBinding.btnSaveProduct.text = mainActivity.getString(R.string.update)
+                                addProductBinding.btnAdded.text = mainActivity.getString(R.string.close)
+                            } else {
+                                addProductBinding.btnSaveProduct.text = mainActivity.getString(R.string.close)
+                                addProductBinding.btnAdded.text = mainActivity.getString(R.string.added)
                             }
                             addProductBinding.editCount.doAfterTextChanged { countApp->
                                 val priceOne = addProductBinding.editSumma.text.toString()
@@ -561,16 +633,46 @@ class DocumentUpdateController(
                                 }
                             }
 
-                            addProductBinding.editSumma.doAfterTextChanged { priceApp->
-                                val countApp = addProductBinding.editCount.text.toString()
-                                if (priceApp.toString().isNotEmptyOrNull() && countApp.isNotEmptyOrNull()){
-                                    val price = addProductBinding.editSumma.text.toString()
-                                    val priceAll = formatterApp(formatterApp(price).multiply(
-                                        BigDecimal(countApp)
-                                    ).toPlainString())
-                                    addProductBinding.editTotalSum.setText(priceAll.toPlainString())
+
+
+                            addProductBinding.editSumma.filters = arrayOf<InputFilter>(DecimalDigitsInputFilter(30, 2))
+
+                            addProductBinding.editSumma.addTextChangedListener(object:TextWatcher{
+                                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+                                var timer = Timer()
+                                val DELAY: Long = 1000 // Milliseconds
+                                override fun afterTextChanged(priceApp: Editable?) {
+                                    if (priceApp.toString().isNotEmptyOrNull()){
+                                        timer.cancel()
+                                        timer = Timer()
+                                        timer.schedule(object:TimerTask(){
+                                            override fun run() {
+                                                if(priceApp.toString().trim().isNotEmptyOrNull()){
+                                                    if (addProductBinding.editSumma.text.toString().trim().length > 1) {
+                                                        val countApp = addProductBinding.editCount.getNumericValue()
+                                                        if (priceApp.toString().isNotEmptyOrNull() && countApp.toString().isNotEmptyOrNull()){
+                                                            val price = addProductBinding.editSumma.text.toString()
+                                                            val priceAll = formatterApp(formatterApp(price).multiply(BigDecimal(countApp)).toPlainString())
+                                                            updateFragment.lifecycleScope.launchWhenCreated {
+                                                                addProductBinding.editTotalSum.setText(priceAll.toPlainString())
+                                                            }
+                                                        }
+                                                    } else {
+                                                        addProductBinding.editSumma.text.clear()
+                                                        addProductBinding.editSumma.text.clear()
+                                                    }
+                                                }
+                                            }
+                                        },DELAY)
+                                    } else {
+                                        addProductBinding.editSumma.text.clear()
+                                        addProductBinding.editSumma.text.clear()
+                                    }
                                 }
-                            }
+                            })
+
                             updateFragment.lifecycleScope.launchWhenCreated {
                                 actViewModel.getAllActProduct().collect{ listActProduct->
                                     if (listActProduct.isNotEmpty()){
@@ -586,44 +688,10 @@ class DocumentUpdateController(
 
                             // save product
                             addProductBinding.btnSaveProduct.setOnClickListener {
-                                val listProduct = LinkedList<Product>()
-                                listProduct.addAll(liveList.value?: emptyList())
-                                val name = addProductBinding.editName.text.toString()
-                                val count = addProductBinding.editCount.text.toString()
-                                val summa = addProductBinding.editSumma.text.toString()
-                                val totalSumma = addProductBinding.editTotalSum.text.toString()
-                                if (!name.isNotEmptyOrNull()){
-                                    mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_product_name))
-                                } else if (!count.isNotEmptyOrNull() || count.toDouble()==0.0){
-                                    mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_product_count))
-                                } else if (!summa.isNotEmptyOrNull()){
-                                    mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_product_summa))
-                                } else if (!totalSumma.isNotEmptyOrNull()){
-                                    mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_product_total_summa))
+                                if (isUpdate){
+                                    productAdded(addProductBinding,isUpdate, product, position, bottomSheetDialog)
                                 } else {
-                                    if (orderNumber != 0L && measureData!=null) {
-                                        val orderNumberProduct = orderNumber
-                                        val catalogCode = this@DocumentUpdateController.tasnifProduct?.mxikCode
-                                        val catalogName = this@DocumentUpdateController.tasnifProduct?.mxikFullName
-                                        val measureId = measureData?.measureId
-                                        if (isUpdate){
-                                            product?.catalogcode = catalogCode.toString()
-                                            product?.catalogname = catalogName.toString()
-                                            product?.name = name
-                                            product?.measureid = measureId?:0
-                                            product?.count = count
-                                            product?.summa = summa
-                                            product?.totalsum = totalSumma
-                                            listProduct[position?:0] = product!!
-                                            liveList.postValue(listProduct)
-                                            mainActivity.motionAnimation("success",mainActivity.getString(R.string.success_update_product))
-                                        } else {
-                                            val product = Product(catalogCode,catalogName,count,measureId?:0,name,orderNumberProduct.toString(),summa,totalSumma)
-                                            listProduct.add(product)
-                                            liveList.postValue(listProduct)
-                                            mainActivity.motionAnimation("success",mainActivity.getString(R.string.success_add_product))
-                                        }
-                                    }
+                                    bottomSheetDialog.dismiss()
                                 }
                             }
 
@@ -636,13 +704,60 @@ class DocumentUpdateController(
                 }
             }
             this.btnAdded.setOnClickListener {
-                bottomSheetDialog.dismiss()
+                if (!isUpdate){
+                    productAdded(addProductBinding,isUpdate, product, position, bottomSheetDialog)
+                } else {
+                    bottomSheetDialog.dismiss()
+                }
             }
         }
         bottomSheetDialog.setContentView(addProductBinding.root)
         bottomSheetDialog.show()
     }
 
+    private fun productAdded(addProductBinding:AddProductActBinding,isUpdate: Boolean,product: Product?,position: Int?,bottomSheetDialog: BottomSheetDialog){
+        val listProduct = LinkedList<Product>()
+        listProduct.addAll(liveList.value?: emptyList())
+        val name = addProductBinding.editName.text.toString()
+        val count = addProductBinding.editCount.text.toString()
+        val summa = addProductBinding.editSumma.text.toString()
+        val totalSumma = addProductBinding.editTotalSum.getNumericValue().toString()
+        if (!name.isNotEmptyOrNull()){
+            mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_product_name))
+        } else if (!count.isNotEmptyOrNull() || count.toDouble()==0.0){
+            mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_product_count))
+        } else if (!summa.isNotEmptyOrNull()){
+            mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_product_summa))
+        } else if (!totalSumma.isNotEmptyOrNull()){
+            mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_product_total_summa))
+        } else {
+            if (orderNumber != 0L && measureData!=null) {
+                val orderNumberProduct = orderNumber
+                val catalogCode = this@DocumentUpdateController.tasnifProduct?.mxikCode
+                val catalogName = this@DocumentUpdateController.tasnifProduct?.mxikFullName
+                logData("catalogCode-> $catalogCode \n catalogName->${catalogName}")
+                val measureId = measureData?.measureId
+                if (isUpdate){
+                    product?.catalogcode = catalogCode.toString()
+                    product?.catalogname = catalogName.toString()
+                    product?.name = name
+                    product?.measureid = measureId?:0
+                    product?.count = count
+                    product?.summa = summa
+                    product?.totalsum = totalSumma
+                    listProduct[position?:0] = product!!
+                    liveList.postValue(listProduct)
+                    mainActivity.motionAnimation("success",mainActivity.getString(R.string.success_update_product))
+                    bottomSheetDialog.dismiss()
+                } else {
+                    val productData = Product(catalogCode,catalogName,count,measureId?:0,name,orderNumberProduct.toString(),summa,totalSumma)
+                    listProduct.add(productData)
+                    liveList.postValue(listProduct)
+                    mainActivity.motionAnimation("success",mainActivity.getString(R.string.success_add_product))
+                }
+            }
+        }
+    }
 
 
     @SuppressLint("SetTextI18n")

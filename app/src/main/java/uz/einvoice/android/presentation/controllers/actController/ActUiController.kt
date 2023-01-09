@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.os.Bundle
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -13,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +26,10 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import uz.einvoice.android.R
 import uz.einvoice.android.adapters.genericPagingAdapter.GenericPagingAdapter
@@ -70,9 +75,9 @@ class ActUiController<T>(
     private val binding:FragmentHomeBinding,
     private val actViewModel: ActViewModel,
     private val homeFragment: HomeFragment,
-    private val onClick:(data:T,position:Int)->Unit
+    private val onClick:(data:T,position:Int,typeDoc:String)->Unit
 ):ActController{
-
+    val sendCount = 0
     // save act data
     var branchDataMainSeller:Data?=null
     var branchDataMainBuyer:Data?=null
@@ -306,7 +311,7 @@ class ActUiController<T>(
                 // productList
                 val sellerTinProduct = sellerTin
 
-                homeFragment.lifecycleScope.launchWhenCreated {
+                homeFragment.lifecycleScope.launchWhenResumed {
                     actViewModel.getAllActProduct().collect{ listProduct->
                         val listProducts = LinkedList<Product>()
                         listProduct.onEach { actProductEntity->
@@ -314,7 +319,8 @@ class ActUiController<T>(
                                 actProductEntity.catalogname, actProductEntity.count,
                                 actProductEntity.measureid,actProductEntity.name,
                                 actProductEntity.ordno,actProductEntity.summa,
-                                actProductEntity.totalSumma))
+                                BigDecimal(actProductEntity.totalSumma)
+                                ))
                         }
                         val productList = Productlist(uniqueIdProduct,listProducts,sellerTinProduct.toString())
                         // big class act save
@@ -324,6 +330,7 @@ class ActUiController<T>(
                             sellerBranchName.toString(),sellerName.toString(),sellerTin.toString())
 
                         actViewModel.saveAct(getLanguage(mainActivity),createActModel)
+
                         actViewModel.saveAct.collect { result->
                             when(result){
                                 is ResponseState.Loading->{
@@ -338,6 +345,7 @@ class ActUiController<T>(
                                     clearUiActCreate(result.data)
                                 }
                                 is ResponseState.Error->{
+                                    actViewModel.deleteTableActProduct()
                                     loadingButton(false)
                                     mainActivity.loadingSave(false)
                                      binding.includeActCreate.btnSave.enabled()
@@ -369,7 +377,8 @@ class ActUiController<T>(
             editBuyerName.clear()
             editActText.text.clear()
             val responseSaveAct = jsonElement?.parseClass(ResponseSaveAct::class.java)
-            mainActivity.containerApplication.screenNavigate.createDocument(responseSaveAct?.data?.actid.toString(),1,SELLER_TYPE,null,null)
+             logData(responseSaveAct.toString())
+             mainActivity.containerApplication.screenNavigate.createDocument(responseSaveAct?.data?.actid.toString(),1,SELLER_TYPE,null,null)
         }
     }
     @SuppressLint("SetTextI18n")
@@ -480,6 +489,14 @@ class ActUiController<T>(
                                 addProductBinding.listCatalogCode.text = "${if (isUpdate) actProductEntityUpdate?.catalogcode else mainActivity.getString(R.string.checked_text)} ${if (isUpdate) actProductEntityUpdate?.catalogname else ""}"
                                 this@ActUiController.tasnifProduct = null
                                 if (tasnifProduct.data.size > 1){
+                                    if (isUpdate){
+                                        tasnifProduct.data.map {  data ->
+                                            if (data.mxikCode == actProductEntityUpdate?.catalogcode && data.mxikFullName == actProductEntityUpdate.catalogname){
+                                                this@ActUiController.tasnifProduct = data
+                                            }
+                                        }
+                                    }
+
                                     addProductBinding.listCatalogCode.setOnClickListener {
                                         mainActivity.containerApplication.applicationDialog(1, tasnifProduct.data){ data ->
                                             addProductBinding.listCatalogCode.text = "${data.mxikCode} ${data.mxikFullName}"
@@ -517,7 +534,11 @@ class ActUiController<T>(
                                 addProductBinding.editName.setText(actProductEntityUpdate?.name.toString())
                                 addProductBinding.editSumma.setText(actProductEntityUpdate?.summa.toString())
                                 addProductBinding.editTotalSum.setText(actProductEntityUpdate?.totalSumma.toString())
-                                addProductBinding.btnSaveProduct.text = mainActivity.getString(R.string.update)
+                                addProductBinding.btnSaveProduct.text = mainActivity.getString(R.string.close)
+                                addProductBinding.btnAdded.text = mainActivity.getString(R.string.update)
+                            } else {
+                                addProductBinding.btnSaveProduct.text = mainActivity.getString(R.string.close)
+                                addProductBinding.btnAdded.text = mainActivity.getString(R.string.added)
                             }
                             addProductBinding.editCount.doAfterTextChanged { countApp->
                                 val priceOne = addProductBinding.editSumma.text.toString()
@@ -544,11 +565,13 @@ class ActUiController<T>(
                                             override fun run() {
                                                 if(priceApp.toString().trim().isNotEmptyOrNull()){
                                                     if (addProductBinding.editSumma.text.toString().trim().length > 1) {
-                                                        val countApp = addProductBinding.editCount.text.toString()
-                                                        if (priceApp.toString().isNotEmptyOrNull() && countApp.isNotEmptyOrNull()){
+                                                        val countApp = addProductBinding.editCount.getNumericValue()
+                                                        if (priceApp.toString().isNotEmptyOrNull() && countApp.toString().isNotEmptyOrNull()){
                                                             val price = addProductBinding.editSumma.text.toString()
                                                             val priceAll = formatterApp(formatterApp(price).multiply(BigDecimal(countApp)).toPlainString())
-                                                            addProductBinding.editTotalSum.setText(priceAll.toPlainString())
+                                                            homeFragment.lifecycleScope.launchWhenCreated {
+                                                                addProductBinding.editTotalSum.setText(priceAll.toPlainString())
+                                                            }
                                                         }
                                                     } else {
                                                         addProductBinding.editSumma.text.clear()
@@ -579,11 +602,11 @@ class ActUiController<T>(
                             }
 
                             // save product
-                            addProductBinding.btnSaveProduct.setOnClickListener {
+                            addProductBinding.btnAdded.setOnClickListener {
                                 val name = addProductBinding.editName.text.toString()
                                 val count = addProductBinding.editCount.text.toString()
                                 val summa = addProductBinding.editSumma.text.toString()
-                                val totalSumma = addProductBinding.editTotalSum.text.toString()
+                                val totalSumma = addProductBinding.editTotalSum.getNumericValue().toString()
                                 if (!name.isNotEmptyOrNull()){
                                     mainActivity.motionAnimation("error",mainActivity.getString(R.string.no_act_product_name))
                                 } else if (!count.isNotEmptyOrNull() || count.toDouble()==0.0){
@@ -608,12 +631,16 @@ class ActUiController<T>(
                                             actProductEntityUpdate?.totalSumma = totalSumma
                                             actViewModel.updateActProduct(actProductEntityUpdate!!)
                                             mainActivity.motionAnimation("success",mainActivity.getString(R.string.success_update_product))
-                                        } else
-                                        {
+                                            bottomSheetDialog.dismiss()
+                                        } else {
                                             val actProductEntity = ActProductEntity(ordno = orderNumberProduct.toInt(), catalogcode = catalogCode.toString(),
                                                 catalogname = catalogName.toString(), name = name, measureid = measureId?:0, count = count, summa = summa, totalSumma = totalSumma)
                                             actViewModel.saveActProduct(actProductEntity)
                                             mainActivity.motionAnimation("success",mainActivity.getString(R.string.success_add_product))
+                                            addProductBinding.editName.text.clear()
+                                            addProductBinding.editCount.text?.clear()
+                                            addProductBinding.editSumma.text.clear()
+                                            addProductBinding.editTotalSum.text?.clear()
                                         }
                                     }
                                 }
@@ -627,7 +654,7 @@ class ActUiController<T>(
                     }
                 }
             }
-            this.btnAdded.setOnClickListener {
+            this.btnSaveProduct.setOnClickListener {
                 bottomSheetDialog.dismiss()
             }
         }
@@ -687,14 +714,15 @@ class ActUiController<T>(
 
     private lateinit var genericPagingAdapterActDocument:GenericPagingAdapter<ActDocumentData>
     override fun documentViews(type: String) {
-        genericPagingAdapterActDocument = GenericPagingAdapter(R.layout.item_document,type){ data, position, clickType, viewBinding ->
+        genericPagingAdapterActDocument = GenericPagingAdapter(R.layout.item_document,type){ data, position, clickType, viewBinding,typeDoc:String ->
+            logData(clickType.toString())
             when(clickType){
                 DEFAULT_CLICK_TYPE->{
                     mainActivity.containerApplication.screenNavigate.createDocument(data?._id.toString(),1,BUYER_TYPE,data?.stateid,RECEIVE)
                 }
                 CLICK_TYPE_SIGNED->{
                     if (mainActivity.horcrux.isEImzoInstalled()){
-                        onClick.invoke(data as T,position)
+                        onClick.invoke(data as T,position,typeDoc)
                     } else {
                         noSign()
                     }
@@ -745,7 +773,7 @@ class ActUiController<T>(
         }
     }
     private fun noSign(){
-        mainActivity.containerApplication.dialogStatus<String>(0,mainActivity.getString(R.string.no_eimzo)){ clickType->
+        mainActivity.containerApplication.dialogStatus(0,mainActivity.getString(R.string.no_eimzo)){ clickType->
             if (clickType==1) {
                 mainActivity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=${Constants.E_IMZO_APP}")))
             }

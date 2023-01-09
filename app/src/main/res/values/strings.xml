@@ -129,4 +129,9 @@
     <string name="install_e_signed">Ўрнатиш</string>
     <string name="checked_text">Танлаш</string>
     <string name="added">Қўшиш</string>
+    <string name="close">Ёпиш</string>
+    <string name="mxic">МХИК:</string>
+    <string name="check_type">Ҳақиқатан ҳам бу ҳаракатни такрорлашни хоҳлайсизми?</string>
+    <string name="accept">Қабул қилиш</string>
+
 </resources>

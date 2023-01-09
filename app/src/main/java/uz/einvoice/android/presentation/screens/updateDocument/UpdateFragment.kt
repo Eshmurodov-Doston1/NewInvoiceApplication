@@ -45,6 +45,10 @@ class UpdateFragment : BottomSheetDialogFragment(R.layout.fragment_update) {
                     updateController()
                     documentUpdateController.actDocumentUpdate()
                 }
+                2->{
+                    updateController()
+                    documentUpdateController.copyActDocument()
+                }
             }
         }
     }

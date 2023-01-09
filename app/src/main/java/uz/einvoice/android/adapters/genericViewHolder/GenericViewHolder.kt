@@ -50,7 +50,7 @@ class GenericViewHolder<T>(private val itemView:View):RecyclerView.ViewHolder(it
                 recyclerActProductItem(itemView,data,position,onClick)
             }
             R.layout.item_act_doc->{
-                itemActDoc(itemView,data,position,onClick)
+                itemActDoc(itemView, data)
             }
             R.layout.spinner_item->{
                 spinnerItem(itemView,data,position,onClick)
@@ -83,7 +83,10 @@ class GenericViewHolder<T>(private val itemView:View):RecyclerView.ViewHolder(it
     }
 
     // item_act_doc
-    private fun itemActDoc(itemView:View, data: T, position: Int, onClick: (data: T, position: Int, clickType: Int) -> Unit){
+    private fun itemActDoc(
+        itemView: View,
+        data: T
+    ){
         val binding = ItemActDocBinding.bind(itemView)
         if (data is ActCreateTable){
             binding.tvService.text = data.actService
@@ -102,10 +105,12 @@ class GenericViewHolder<T>(private val itemView:View):RecyclerView.ViewHolder(it
             binding.tvName.text = data.name
             binding.tvCount.text = data.count
             binding.tvCost.text = data.totalSumma
+            binding.tvMxik.text = data.catalogcode
         } else if (data is Product){
             binding.tvName.text = data.name
             binding.tvCount.text = data.count
             binding.tvCost.text = data.totalsum
+            binding.tvMxik.text = data.catalogcode
         }
         binding.editCard.setOnClickListener {
             onClick.invoke(data,position, EDITE_CLICK)

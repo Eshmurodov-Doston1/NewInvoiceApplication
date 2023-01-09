@@ -135,4 +135,8 @@
     <string name="install_e_signed">Установка</string>
     <string name="checked_text">Выберите</string>
     <string name="added">Добавить</string>
+    <string name="close">Закрыт</string>
+    <string name="mxic">МХИК:</string>
+    <string name="check_type">Вы действительно хотите дублировать этот акт?</string>
+    <string name="accept">Принятие</string>
 </resources>

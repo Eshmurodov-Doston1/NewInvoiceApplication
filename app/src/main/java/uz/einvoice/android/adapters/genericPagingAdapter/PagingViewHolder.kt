@@ -29,7 +29,7 @@ class PagingViewHolder(var itemView:View):RecyclerView.ViewHolder(itemView),Hold
         position: Int,
         layoutRes: Int,
         type:String,
-        onClick: (data: T, position: Int, clickType: Int, viewBinding: ViewBinding) -> Unit
+        onClick: (data: T, position: Int, clickType: Int, viewBinding: ViewBinding,type:String) -> Unit
     ) {
        when(layoutRes){
            R.layout.item_document->{
@@ -41,7 +41,7 @@ class PagingViewHolder(var itemView:View):RecyclerView.ViewHolder(itemView),Hold
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.P)
-    private fun <T> itemDocument(data:T,position:Int,type: String,onClick:(data: T, position: Int, clickType: Int, viewBinding: ViewBinding) -> Unit){
+    private fun <T> itemDocument(data:T,position:Int,type: String,onClick:(data: T, position: Int, clickType: Int, viewBinding: ViewBinding,type:String) -> Unit){
         val binding = ItemDocumentBinding.bind(itemView)
         if (data is ActDocumentData){
 
@@ -110,10 +110,10 @@ class PagingViewHolder(var itemView:View):RecyclerView.ViewHolder(itemView),Hold
             binding.totalSumma.text = "${data.payabletotal.numberFormatter()} ${itemView.context.getString(R.string.money_type)}"
         }
         itemView.setOnClickListener {
-            onClick.invoke(data,position,DEFAULT_CLICK_TYPE,binding)
+            onClick.invoke(data,position,DEFAULT_CLICK_TYPE,binding,type)
         }
         binding.linearSend.setOnClickListener {
-            onClick.invoke(data,position, CLICK_TYPE_SIGNED,binding)
+            onClick.invoke(data,position, CLICK_TYPE_SIGNED,binding,type)
         }
     }
     @RequiresApi(Build.VERSION_CODES.P)

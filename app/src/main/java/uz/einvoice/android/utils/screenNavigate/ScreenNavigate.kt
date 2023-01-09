@@ -21,7 +21,7 @@ class ScreenNavigate(
         bundle.putInt(DOC_STATUS,docStatus)
         bundle.putInt(STATE_ID,stateId)
         bundle.putInt(DOCUMENT_STATE_ID,documentStateId?:-1)
-        navController.navigate(R.id.action_home_to_documentFragment,bundle,animationViewCreateRight())
+        navController.navigate(R.id.documentFragment,bundle,animationViewCreateRight())
     }
 
     fun createUpdateDocumentScreen(documentId:Int,docId:String?){

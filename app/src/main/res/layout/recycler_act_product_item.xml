@@ -84,6 +84,40 @@
           tools:text="121" />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_marginHorizontal="@dimen/_8sdp"
+        android:orientation="horizontal">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:ellipsize="end"
+          android:textSize="@dimen/_10sdp"
+          android:textStyle="normal"
+          android:fontFamily="@font/inter_regular"
+          android:maxLines="1"
+          android:text="@string/mxic"
+          android:textColor="@color/text_color_gray" />
+
+      <TextView
+          android:id="@+id/tv_mxik"
+          android:textSize="@dimen/_10sdp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="@dimen/_8sdp"
+          android:ellipsize="end"
+          android:textStyle="bold"
+          android:fontFamily="@font/inter_regular"
+          android:gravity="start"
+          android:layout_weight="1"
+          android:maxLines="1"
+          android:textColor="@color/text_color"
+          tools:text="121" />
+
+    </LinearLayout>
 
     <View
       android:layout_width="match_parent"

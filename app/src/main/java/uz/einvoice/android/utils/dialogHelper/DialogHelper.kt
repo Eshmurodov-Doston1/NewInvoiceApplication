@@ -113,6 +113,10 @@ class DialogHelper(
                 binding.lottie.setAnimation(R.raw.delete)
                 binding.okBtn.text = activity.getString(R.string.delete)
             }
+            4->{
+                binding.lottie.setAnimation(R.raw.info)
+                binding.okBtn.text = activity.getString(R.string.accept)
+            }
         }
         binding.message.text = message
 

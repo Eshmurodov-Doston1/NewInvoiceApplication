@@ -18,12 +18,10 @@ abstract class BaseFragment<VB:ViewBinding>:Fragment() {
     val mainActivity:MainActivity get() = (activity as MainActivity)
     val authActivity: AuthActivity get() = (activity as AuthActivity)
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return if (_binding == null){
+         if (_binding == null){
             _binding = inflateViewBinding(inflater,container)
-            _binding?.root
-        } else {
-            binding.root
         }
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

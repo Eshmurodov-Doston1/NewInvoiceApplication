@@ -1,5 +1,7 @@
 package uz.einvoice.domain.models.createActModel
 
+import java.math.BigDecimal
+
 data class Product(
     val catalogcode: String,
     val catalogname: String,
@@ -8,5 +10,5 @@ data class Product(
     val name: String,
     val ordno: Int,
     val summa: String,
-    val totalsum: String
+    val totalsum: BigDecimal
 )

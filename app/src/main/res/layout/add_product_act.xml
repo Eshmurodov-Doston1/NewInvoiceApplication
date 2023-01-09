@@ -281,7 +281,7 @@
                       app:layout_constraintLeft_toLeftOf="parent"
                       app:layout_constraintRight_toRightOf="parent">
                       <androidx.appcompat.widget.AppCompatButton
-                          android:id="@+id/btn_added"
+                          android:id="@+id/btn_save_product"
                           android:layout_width="match_parent"
                           android:layout_height="@dimen/_28sdp"
                           android:layout_marginStart="@dimen/_8sdp"
@@ -294,11 +294,11 @@
                           android:background="@drawable/button_bac"
                           android:fontFamily="@font/inter_medium"
                           android:gravity="center"
-                          android:text="@string/added"
+                          android:text="@string/save"
                           android:textColor="@color/white"
                           android:textStyle="normal" />
                       <androidx.appcompat.widget.AppCompatButton
-                          android:id="@+id/btn_save_product"
+                          android:id="@+id/btn_added"
                           android:layout_width="match_parent"
                           android:layout_height="@dimen/_28sdp"
                           android:textAllCaps="false"
@@ -311,7 +311,7 @@
                           android:background="@drawable/button_bac"
                           android:fontFamily="@font/inter_medium"
                           android:gravity="center"
-                          android:text="@string/save"
+                          android:text="@string/close"
                           android:textColor="@color/white"
                           android:textStyle="normal" />
                   </LinearLayout>

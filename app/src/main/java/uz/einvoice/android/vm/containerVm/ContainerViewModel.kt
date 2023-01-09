@@ -1,5 +1,6 @@
 package uz.einvoice.android.vm.containerVm
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonElement
@@ -32,6 +33,7 @@ class ContainerViewModel @Inject constructor(
     }
 
     val actFilter = MutableStateFlow<ActDocumentFilter?>(null)
+    val updateDocument = MutableLiveData(false)
 
 
     // measure list

@@ -10,7 +10,7 @@ import uz.einvoice.android.adapters.GenericDiffUtil
 class  GenericPagingAdapter<T:Any>(
     @LayoutRes private val layoutRes:Int,
     private val type:String,
-    private val onClick:(data:T?,position:Int,clickType:Int,viewBinding: ViewBinding)->Unit
+    private val onClick:(data:T?,position:Int,clickType:Int,viewBinding: ViewBinding,type:String)->Unit
 ):PagingDataAdapter<T,PagingViewHolder>(GenericDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PagingViewHolder {
